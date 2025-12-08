@@ -1,0 +1,87 @@
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const http = require('http');
+const db = require('./models');
+const errorHandler = require('./middleware/errorHandler');
+const socketService = require('./services/socketService');
+
+require('dotenv').config();
+
+const app = express();
+const server = http.createServer(app);
+
+// Initialize Socket.io
+socketService.initialize(server);
+
+// Middleware
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' || !process.env.NODE_ENV) {
+  app.use(cors({ origin: true, credentials: true }));
+  console.log('CORS: permissive development mode (origin: any)');
+} else {
+  app.use(cors());
+}
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to YCD Farmer Guide API' });
+});
+
+// API Routes
+const routes = require('./routes');
+app.use('/api', routes);
+
+// Error handling
+app.use(errorHandler);
+
+const os = require('os');
+const PORT = process.env.PORT || 3000;
+
+async function startServer() {
+  try {
+    // Test database connection
+    await db.sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+
+    // Sync database (in development)
+    if (process.env.NODE_ENV === 'development') {
+      await db.sequelize.sync({ alter: false });
+      console.log('Database synced');
+    }
+
+    // Start server and bind to all interfaces
+    server.listen(PORT, '0.0.0.0', () => {
+      const nets = os.networkInterfaces();
+      let localIp = 'localhost';
+      for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+          if (net.family === 'IPv4' && !net.internal) {
+            localIp = net.address;
+            break;
+          }
+        }
+        if (localIp !== 'localhost') break;
+      }
+      console.log(`Server is running on port ${PORT}`);
+      console.log(`Accessible on LAN at http://${localIp}:${PORT}`);
+      console.log('Socket.io is ready for real-time connections');
+    });
+
+    return server;
+  } catch (error) {
+    console.error('Unable to start server:', error);
+    process.exit(1);
+  }
+}
+
+// Start server if this file is run directly
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, server, startServer };

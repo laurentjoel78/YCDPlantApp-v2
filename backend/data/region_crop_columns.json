@@ -1,0 +1,17 @@
+[
+  "Region",
+  "Crop",
+  "N_kg_per_ha",
+  "P2O5_kg_per_ha",
+  "K2O_kg_per_ha",
+  "Split_Timing",
+  "Application_Method",
+  "Rainfall_Water_Requirement",
+  "Soil_Type_Notes",
+  "Adaptation_Notes",
+  "Suitability",
+  "Common_Diseases",
+  "Easy_Treatments",
+  "Common_Pests",
+  "Pest_Control_Methods"
+]

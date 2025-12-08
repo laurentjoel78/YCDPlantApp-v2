@@ -1,0 +1,406 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { User, Wallet, Farm, Crop, FarmCrop } = require('../models');
+const emailService = require('../services/emailService');
+
+const generateToken = (user) => {
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      role: user.role
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+};
+
+const logout = async (req, res) => {
+  try {
+    // You might want to add the token to a blacklist here if you're implementing token invalidation
+    // For now, we'll just send a success response as the frontend will handle token removal
+    res.status(200).json({
+      success: true,
+      message: 'Successfully logged out'
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error during logout'
+    });
+  }
+};
+
+const register = async (req, res) => {
+  try {
+    console.log('Registration request received:', JSON.stringify(req.body, null, 2));
+
+    const {
+      email,
+      password,
+      first_name,
+      last_name,
+      phone_number,
+      role,
+      location_lat,
+      location_lng,
+      address,
+      region,
+      preferred_language,
+      // Farm-specific fields
+      farm_name,
+      farm_size_hectares,
+      crops_grown,
+      farming_experience_years,
+      farm_location_lat,
+      farm_location_lng
+    } = req.body;
+
+    // Validate required fields
+    const requiredFields = ['email', 'password', 'first_name', 'role'];
+    const missingFields = requiredFields.filter(field => !req.body[field]);
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
+      return res.status(400).json({
+        error: 'Missing required fields',
+        missingFields
+      });
+    }
+
+    // Additional validation for farmer role
+    if (role === 'farmer') {
+      const requiredFarmerFields = ['farm_size_hectares', 'crops_grown', 'farming_experience_years'];
+      const missingFarmerFields = requiredFarmerFields.filter(field => !req.body[field]);
+      if (missingFarmerFields.length > 0) {
+        console.error('Missing required farmer fields:', missingFarmerFields);
+        return res.status(400).json({
+          error: 'Missing required farmer information',
+          missingFields: missingFarmerFields
+        });
+      }
+    }
+
+    // Provide a safe logger fallback if request-level logger isn't set by middleware
+    const logger = (req && req.log) ? req.log : console;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      logger.warn('Registration attempt with existing email', {
+        email,
+        attemptedRole: role,
+        existingRole: existingUser.role
+      });
+      return res.status(400).json({ error: 'Email already registered' });
+    }
+
+    logger.info('Creating new user account', {
+      email,
+      role,
+      hasFirstName: !!first_name,
+      hasLastName: !!last_name,
+      hasPhone: !!phone_number,
+      isFarmer: role === 'farmer'
+      buyer: 'buyer',
+      expert: 'expert',
+      admin: 'admin'
+    };
+    const walletType = roleToWalletType[role] || 'buyer';
+
+    await Wallet.create({
+      user_id: user.id,
+      balance: 0,
+      currency: 'XAF',
+      wallet_type: walletType,
+      verification_level: 'basic'
+    });
+
+    // If user is a farmer, create farm record
+    if (role === 'farmer' && farm_name) {
+      // Map incoming farm fields to model columns. The Farm model expects `size` and `region`.
+      const farmLocationLat = farm_location_lat || location_lat || null;
+      const farmLocationLng = farm_location_lng || location_lng || null;
+      const farmRegion = region || 'Not specified';
+      const farmSize = farm_size_hectares || null;
+
+      const createdFarm = await Farm.create({
+        farmer_id: user.id,
+        name: farm_name,
+        description: `Farm owned by ${first_name}`,
+        location_lat: farmLocationLat,
+        location_lng: farmLocationLng,
+        address: address || 'Address pending',
+        region: farmRegion,
+        size: farmSize,
+        size_hectares: farmSize,
+        soil_type: 'Not specified', // Can be updated later
+        irrigation_system: 'Not specified', // Can be updated later
+        is_active: true
+      });
+
+      // Create FarmCrop entries for provided crops_grown
+      if (Array.isArray(crops_grown) && crops_grown.length > 0) {
+        const numCrops = crops_grown.length;
+        const defaultArea = (farmSize && numCrops > 0) ? Math.max((Number(farmSize) / numCrops), 0.1) : 0.1;
+        const plantingDate = new Date();
+        const expectedHarvestDate = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000); // +90 days
+
+        for (const cropName of crops_grown) {
+          if (!cropName || typeof cropName !== 'string') continue;
+          // Find or create crop by name
+          const [crop] = await Crop.findOrCreate({
+            where: { name: cropName },
+            defaults: { category: 'general' }
+          });
+
+          // Create farm crop record
+          await FarmCrop.create({
+            farm_id: createdFarm.id,
+            crop_id: crop.id,
+            area: defaultArea,
+            planting_date: plantingDate,
+            expected_harvest_date: expectedHarvestDate,
+            status: 'planning',
+            is_active: true
+          }).catch(err => {
+            // Log and continue on farm crop creation errors
+            isFarmer: role === 'farmer'
+          });
+
+          // Generate token
+          const token = generateToken(user);
+
+          res.status(201).json({
+            message: 'User registered successfully',
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              role: user.role,
+              approval_status: user.approval_status
+            }
+          });
+        } catch (error) {
+          // Avoid referencing block-scoped variables declared inside try — use req.body as a safe fallback
+          const logger = (req && req.log) ? req.log : console;
+
+          const body = req && req.body ? req.body : {};
+          const registrationDataSafe = {
+            email: body.email || null,
+            role: body.role || null,
+            hasFirstName: !!(body.first_name),
+            hasLastName: !!(body.last_name),
+            isFarmer: body.role === 'farmer'
+          };
+
+          // Log the error without sensitive values (avoid logging passwords)
+          try {
+            logger.error('Registration failed', {
+              error: {
+                name: error && error.name,
+                message: error && error.message,
+                stack: error && error.stack
+              },
+              registrationData: registrationDataSafe
+            });
+          } catch (loggingError) {
+            // Final fallback to console
+            console.error('Failed to log error via logger object, falling back to console.error');
+            console.error(error);
+            console.error('Registration data (safe):', registrationDataSafe);
+          }
+
+          res.status(500).json({ error: 'Error registering user' });
+        }
+      };
+
+      const login = async (req, res) => {
+        try {
+          const { email, password } = req.body;
+
+          // Provide a safe logger fallback if request-level logger isn't set by middleware
+          const logger = (req && req.log) ? req.log : console;
+
+          logger.info('Login attempt', { email });
+
+          // Find user
+          const user = await User.findOne({ where: { email } });
+          if (!user) {
+            logger.warn('Login failed - user not found', { email });
+            return res.status(401).json({ error: 'Invalid credentials' });
+          }
+
+          logger.debug('User found', {
+            userId: user.id,
+            role: user.role,
+            isEmailVerified: user.email_verified,
+            isActive: user.is_active,
+            approvalStatus: user.approval_status
+          });
+
+          // Check if email is verified
+          if (!user.email_verified) {
+            logger.warn('Login failed - email not verified', {
+              userId: user.id,
+              email: user.email
+            });
+            return res.status(401).json({ error: 'Email not verified' });
+          }
+
+          // Check if user is active
+          if (!user.is_active) {
+            logger.warn('Login failed - account inactive', {
+              userId: user.id,
+              email: user.email
+            });
+            return res.status(401).json({ error: 'Account is inactive' });
+          }
+
+          // Check if farmer is approved
+          if (user.role === 'farmer' && user.approval_status !== 'approved') {
+            logger.warn('Login failed - farmer account not approved', {
+              userId: user.id,
+              email: user.email,
+              approvalStatus: user.approval_status
+            });
+            return res.status(401).json({ error: 'Account pending approval' });
+          }
+
+          // Verify password
+          if (!user.password_hash) {
+            logger.error('Login failed - user has no password hash', {
+              userId: user.id,
+              email: user.email
+            });
+            return res.status(401).json({ error: 'Invalid credentials' });
+          }
+
+          const isValid = await bcrypt.compare(password, user.password_hash);
+          if (!isValid) {
+            logger.warn('Login failed - invalid password', {
+              userId: user.id,
+              email: user.email
+            });
+            return res.status(401).json({ error: 'Invalid credentials' });
+          }
+
+          // Update last login
+          await user.update({ last_login: new Date() });
+
+          // Generate token
+          const token = generateToken(user);
+
+          res.json({
+            message: 'Login successful',
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              role: user.role,
+              approval_status: user.approval_status
+            }
+          });
+        } catch (error) {
+          // Use logger fallback in catch block
+          const logger = (req && req.log) ? req.log : console;
+          const body = req && req.body ? req.body : {};
+
+          logger.error('Login error', {
+            error: error.message,
+            stack: error.stack,
+            email: body.email
+          });
+          res.status(500).json({ error: 'Error during login' });
+        }
+      };
+
+      const getCurrentUser = async (req, res) => {
+        try {
+          // Use a safe logger: prefer request-level logger if available, otherwise fall back to console
+          const logger = (req && req.log) ? req.log : console;
+          logger.info('Fetching current user details', { userId: req.user && req.user.id });
+
+          const user = await User.findByPk(req.user.id, {
+            attributes: { exclude: ['password_hash'] },
+            include: [{
+              model: Farm,
+              as: 'farms',
+              attributes: ['id', 'name', 'location_lat', 'location_lng']
+            }]
+          });
+
+          if (!user) {
+            logger.warn('Current user not found', { userId: req.user && req.user.id });
+            return res.status(404).json({ error: 'User not found' });
+          }
+
+          // Prefer debug on the logger if available, otherwise use console.debug
+          if (typeof logger.debug === 'function') {
+            logger.debug('Current user details retrieved', {
+              userId: user.id,
+              role: user.role,
+              isActive: user.is_active
+            });
+          } else {
+            console.debug('Current user details retrieved', {
+              userId: user.id,
+              role: user.role,
+              isActive: user.is_active
+            });
+          }
+
+          res.json({ user });
+        } catch (error) {
+          console.error('Error fetching current user details', {
+            error: error.message,
+            stack: error.stack,
+            userId: req.user?.id
+          });
+          res.status(500).json({ error: 'Error fetching user details' });
+        }
+      };
+
+      const updateProfile = async (req, res) => {
+        try {
+          const logger = (req && req.log) ? req.log : console;
+          const userId = req.user && req.user.id;
+          if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
+          const allowed = ['first_name', 'last_name', 'phone_number', 'region', 'profile_image_url', 'address', 'preferred_language'];
+          const updates = {};
+          for (const key of allowed) {
+            if (req.body[key] !== undefined) updates[key] = req.body[key];
+          }
+
+          if (Object.keys(updates).length === 0) {
+            return res.status(400).json({ error: 'No valid fields to update' });
+          }
+
+          const user = await User.findByPk(userId);
+          if (!user) return res.status(404).json({ error: 'User not found' });
+
+          await user.update(updates);
+
+          // Return updated user without sensitive fields
+          const safeUser = await User.findByPk(userId, { attributes: { exclude: ['password_hash'] } });
+          logger.info('User profile updated', { userId });
+          res.json({ user: safeUser });
+        } catch (error) {
+          console.error('Error updating profile', error);
+          res.status(500).json({ error: 'Error updating profile' });
+        }
+      };
+
+      module.exports = {
+        register,
+        login,
+        getCurrentUser,
+        logout,
+        updateProfile
+      };

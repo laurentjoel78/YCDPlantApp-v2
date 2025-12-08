@@ -1,0 +1,284 @@
+{
+  "common": {
+    "next": "Suivant",
+    "back": "Retour",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "create": "Créer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "loading": "Chargement...",
+    "or": "OU"
+  },
+  "navigation": {
+    "back": "Retour",
+    "diseaseDetection": "Détection de Maladies",
+    "consultation": "Consultation",
+    "forumDetails": "Détails du Forum",
+    "newPost": "Nouveau Post"
+  },
+  "auth": {
+    "signIn": "Se Connecter",
+    "signUp": "Créer un Compte",
+    "welcomeBack": "Bon retour !",
+    "signInToContinue": "Connectez-vous pour continuer",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Numéro de téléphone",
+    "address": "Adresse",
+    "region": "Région",
+    "role": {
+      "farmer": "Agriculteur",
+      "buyer": "Acheteur",
+      "select": "Sélectionner un rôle"
+    },
+    "language": {
+      "select": "Langue de l'application",
+      "en": "English",
+      "fr": "Français"
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "email": "Veuillez entrer une adresse email valide",
+      "passwordMinLength": "Le mot de passe doit contenir au moins {{count}} caractères",
+      "passwordMatch": "Les mots de passe ne correspondent pas",
+      "passwordRequirements": {
+        "title": "Le mot de passe doit contenir :",
+        "uppercase": "Une lettre majuscule",
+        "lowercase": "Une lettre minuscule",
+        "number": "Un chiffre",
+        "special": "Un caractère spécial"
+      }
+    },
+    "social": {
+      "google": "Continuer avec Google",
+      "facebook": "Continuer avec Facebook"
+    },
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "errors": {
+      "loginFailed": "Échec de la connexion. Veuillez vérifier vos identifiants."
+    }
+  },
+  "farmer": {
+    "registration": {
+      "title": "Détails de la Ferme",
+      "farmName": "Nom de la ferme (Optionnel)",
+      "farmSize": "Taille de la ferme (Hectares)",
+      "location": "Emplacement de la ferme",
+      "experience": "Années d'expérience en agriculture",
+      "crops": {
+        "title": "Sélectionner les cultures (Multiple)",
+        "maize": "Maïs",
+        "cassava": "Manioc",
+        "plantains": "Plantains",
+        "cocoa": "Cacao",
+        "coffee": "Café",
+        "rice": "Riz",
+        "vegetables": "Légumes",
+        "other": "Autre"
+      },
+      "soil": {
+        "title": "Sélectionner le type de sol",
+        "clay": "Argileux",
+        "sandy": "Sableux",
+        "silty": "Limoneux",
+        "loamy": "Terreau",
+        "chalky": "Calcaire",
+        "peaty": "Tourbeux",
+        "saline": "Salin",
+        "other": "Autre"
+      },
+      "validation": {
+        "farmSize": "La taille de la ferme est requise",
+        "farmSizeNumber": "La taille de la ferme doit être un nombre positif",
+        "location": "L'emplacement de la ferme est requis",
+        "experience": "Les années d'expérience sont requises",
+        "experienceNumber": "Les années d'expérience doivent être un nombre positif",
+        "crops": "Veuillez sélectionner au moins une culture",
+        "soil": "Veuillez sélectionner un type de sol"
+      }
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": {
+      "english": "English",
+      "french": "Français"
+    }
+  },
+  "services": {
+    "location": {
+      "permissionDenied": "Permission d'accès à la localisation refusée",
+      "unableToGet": "Impossible d'obtenir la position actuelle"
+    }
+  },
+  "expert": {
+    "request": {
+      "title": "Demander un Expert",
+      "subtitle": "YCD vous connectera avec le meilleur expert pour votre problème",
+      "type": "Type d'expertise",
+      "describe": "Décrivez votre problème",
+      "examplePlaceholder": "Ex: Taches noires sur les feuilles de cacao...",
+      "consultationType": "Type de consultation",
+      "urgencyLevel": "Niveau d'urgence",
+      "maxBudget": "Budget maximum",
+      "selectedBudget": "Budget sélectionné",
+      "estimatedCost": "Estimation du coût",
+      "expertFee": "Honoraires expert",
+      "commission": "Commission YCD (20%)",
+      "totalEstimated": "Total estimé",
+      "availableExperts": "Experts disponibles",
+      "submitRequest": "Soumettre la demande"
+    },
+    "chat": {
+      "welcome": "Bonjour! Je suis YCD Assistant. Comment puis-je vous aider avec votre consultation agricole?",
+      "acknowledge": "Je comprends votre demande. Je vais chercher un expert approprié...",
+      "title": "Assistant Virtuel YCD"
+    }
+  },
+  "detection": {
+    "title": "Détection des maladies des plantes",
+    "noCameraAccess": "Pas d'accès à la caméra",
+    "selectFromGallery": "Sélectionner depuis la galerie",
+    "cameraUnavailable": "Composant caméra indisponible",
+    "cameraHelp": "Vérifiez les logs Expo pour la forme du module. Si vous utilisez Expo Go, essayez de mettre à jour Expo et expo-camera.",
+    "takePhoto": "Prendre une photo",
+    "chooseFromGallery": "Choisir depuis la galerie",
+    "analyzing": "Analyse de l'image...",
+    "description": "Description:",
+    "recommendedTreatment": "Traitement recommandé:",
+    "confidence": "Confiance : {{percent}}%",
+    "startNew": "Démarrer une nouvelle détection"
+  },
+  "suggestions": {
+    "title": "Suggestions intelligentes",
+    "fetchError": "Échec du chargement des suggestions: {{message}}",
+    "recommended": "Recommandé",
+    "nearbyMarkets": "Marchés à proximité",
+    "buy": "Acheter"
+  },
+  "forum": {
+    "chat": {
+      "loading": "Chargement du chat...",
+      "title": "Chat du Forum",
+      "members": "{{count}} membres",
+      "joinBanner": "Rejoignez ce forum pour participer au chat",
+      "join": "Rejoindre le Forum",
+      "error": "Échec du chargement des messages",
+      "retry": "Réessayer",
+      "empty": "Aucun message pour le moment",
+      "beFirst": "Soyez le premier à lancer la conversation !",
+      "joinToStart": "Rejoignez le forum pour commencer à discuter",
+      "placeholder": "Écrivez un message...",
+      "sendError": "Échec de l'envoi du message",
+      "joinError": "Échec de l'adhésion au forum",
+      "today": "Aujourd'hui",
+      "yesterday": "Hier"
+    }
+  },
+  "date": {
+    "today": "Aujourd'hui",
+    "yesterday": "Hier"
+  },
+  "ecommerce": {
+    "cart": {
+      "title": "Mon Panier",
+      "empty": "Votre panier est vide",
+      "startShopping": "Commencer les achats",
+      "addToCart": "Ajouter au Panier",
+      "added": "Ajouté au Panier",
+      "addedMessage": "Produit ajouté avec succès!",
+      "continueShopping": "Continuer les achats",
+      "viewCart": "Voir le Panier",
+      "outOfStock": "Rupture de Stock",
+      "subtotal": "Sous-total",
+      "delivery": "Livraison",
+      "total": "Total",
+      "proceedToCheckout": "Passer à la Caisse",
+      "removeItem": "Retirer l'Article",
+      "confirmRemove": "Êtes-vous sûr de vouloir retirer cet article du panier?",
+      "remove": "Retirer"
+    },
+    "checkout": {
+      "title": "Paiement",
+      "deliveryAddress": "Adresse de Livraison",
+      "streetAddress": "Adresse de rue",
+      "city": "Ville",
+      "region": "Région",
+      "paymentMethod": "Méthode de Paiement",
+      "mtn": "MTN Mobile Money",
+      "orange": "Orange Money",
+      "cashOnDelivery": "Paiement à la Livraison",
+      "payWith": "Payer avec {{method}}",
+      "payOnDelivery": "Payer à la réception",
+      "phoneNumber": "Numéro de téléphone (ex: +237 6XX XXX XXX)",
+      "orderSummary": "Résumé de la Commande",
+      "completeOrder": "Finaliser la Commande",
+      "errors": {
+        "addressRequired": "Veuillez entrer l'adresse de livraison",
+        "cityRequired": "Veuillez entrer la ville",
+        "phoneRequired": "Veuillez entrer le numéro de téléphone pour Mobile Money"
+      }
+    },
+    "payment": {
+      "title": "Compléter le Paiement",
+      "instructions": "Instructions de Paiement",
+      "verifying": "Vérification du paiement...",
+      "autoVerifying": "Auto-vérification dans {{count}} seconde",
+      "autoVerifying_plural": "Auto-vérification dans {{count}} secondes",
+      "verifyNow": "Vérifier Maintenant",
+      "cancel": "Annuler"
+    },
+    "order": {
+      "success": "Commande Passée avec Succès!",
+      "thankYou": "Merci pour votre commande",
+      "orderId": "N° de Commande",
+      "totalAmount": "Montant Total",
+      "status": "Statut",
+      "expectedDelivery": "Livraison prévue dans 2-3 jours ouvrables",
+      "viewOrders": "Voir Mes Commandes",
+      "myOrders": "Mes Commandes",
+      "noOrders": "Aucune commande trouvée",
+      "filter": {
+        "all": "Tout",
+        "pending": "En Attente",
+        "confirmed": "Confirmée",
+        "delivered": "Livrée"
+      },
+      "items": "{{count}} article",
+      "items_plural": "{{count}} articles"
+    },
+    "expert": {
+      "bookConsultation": "Réserver une Consultation",
+      "scheduledDate": "Date et Heure Prévues",
+      "duration": "Durée",
+      "minutes": "{{count}} minutes",
+      "consultationType": "Type de Consultation",
+      "remote": "À Distance",
+      "onSite": "Sur Place",
+      "describeIssue": "Décrivez Votre Problème",
+      "issuePlaceholder": "Quel problème avez-vous besoin d'aide?",
+      "consultationFee": "Frais de Consultation",
+      "bookAndPay": "Réserver et Payer",
+      "rating": {
+        "title": "Évaluer la Consultation",
+        "howWasExperience": "Comment était votre expérience?",
+        "poor": "😞 Médiocre",
+        "fair": "😕 Passable",
+        "good": "😐 Bien",
+        "veryGood": "😊 Très Bien",
+        "excellent": "🤩 Excellent",
+        "feedback": "Commentaires Supplémentaires (Optionnel)",
+        "feedbackPlaceholder": "Partagez vos pensées...",
+        "submit": "Soumettre l'Évaluation",
+        "thankYou": "Merci pour votre évaluation!"
+      }
+    }
+  }
+}

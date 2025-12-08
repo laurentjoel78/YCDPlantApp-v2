@@ -1,0 +1,1532 @@
+[
+  {
+    "region": "Adamawa",
+    "crop": "Maize",
+    "fertilizer": "N 108 kg/ha; P2O5 60 kg/ha; K2O 60 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Cassava",
+    "fertilizer": "N 43 kg/ha; P2O5 44 kg/ha; K2O 72 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 180 kg/ha; P2O5 40 kg/ha; K2O 200 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Cocoa",
+    "fertilizer": "N 81 kg/ha; P2O5 80 kg/ha; K2O 120 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Potato",
+    "fertilizer": "N 144 kg/ha; P2O5 90 kg/ha; K2O 200 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Yam",
+    "fertilizer": "N 90 kg/ha; P2O5 50 kg/ha; K2O 100 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 90 kg/ha; P2O5 60 kg/ha; K2O 90 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 40 kg/ha; K2O 40 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 40 kg/ha; K2O 40 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 9 kg/ha; P2O5 50 kg/ha; K2O 40 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Sorghum",
+    "fertilizer": "N 54 kg/ha; P2O5 40 kg/ha; K2O 40 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Millet",
+    "fertilizer": "N 27 kg/ha; P2O5 35 kg/ha; K2O 30 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 108 kg/ha; P2O5 60 kg/ha; K2O 80 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter. Rice requires paddies or controlled flooding/irrigation. Suitable in riverine/irrigated pockets; otherwise limited"
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Cotton",
+    "fertilizer": "N 72 kg/ha; P2O5 60 kg/ha; K2O 60 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Oil Palm",
+    "fertilizer": "N 117 kg/ha; P2O5 80 kg/ha; K2O 150 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Rubber",
+    "fertilizer": "N 108 kg/ha; P2O5 80 kg/ha; K2O 150 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Adamawa",
+    "crop": "Coffee",
+    "fertilizer": "N 90 kg/ha; P2O5 70 kg/ha; K2O 100 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Plateau/savanna: cooler nights; adjust timing to single long rainy season; add organic matter."
+  },
+  {
+    "region": "Centre",
+    "crop": "Maize",
+    "fertilizer": "N 120 kg/ha; P2O5 60 kg/ha; K2O 60 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Cassava",
+    "fertilizer": "N 48 kg/ha; P2O5 44 kg/ha; K2O 72 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 200 kg/ha; P2O5 40 kg/ha; K2O 200 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Cocoa",
+    "fertilizer": "N 90 kg/ha; P2O5 80 kg/ha; K2O 120 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Potato",
+    "fertilizer": "N 160 kg/ha; P2O5 90 kg/ha; K2O 200 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Yam",
+    "fertilizer": "N 100 kg/ha; P2O5 50 kg/ha; K2O 100 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 100 kg/ha; P2O5 60 kg/ha; K2O 90 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 40 kg/ha; K2O 40 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 40 kg/ha; K2O 40 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 10 kg/ha; P2O5 50 kg/ha; K2O 40 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Sorghum",
+    "fertilizer": "N 60 kg/ha; P2O5 40 kg/ha; K2O 40 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Millet",
+    "fertilizer": "N 30 kg/ha; P2O5 35 kg/ha; K2O 30 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 120 kg/ha; P2O5 60 kg/ha; K2O 80 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Cotton",
+    "fertilizer": "N 80 kg/ha; P2O5 60 kg/ha; K2O 60 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Oil Palm",
+    "fertilizer": "N 130 kg/ha; P2O5 80 kg/ha; K2O 150 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Rubber",
+    "fertilizer": "N 120 kg/ha; P2O5 80 kg/ha; K2O 150 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "Centre",
+    "crop": "Coffee",
+    "fertilizer": "N 100 kg/ha; P2O5 70 kg/ha; K2O 100 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Baseline Centre-like recommendation; soil test recommended."
+  },
+  {
+    "region": "East",
+    "crop": "Maize",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Cassava",
+    "fertilizer": "N 53 kg/ha; P2O5 53 kg/ha; K2O 86 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 220 kg/ha; P2O5 48 kg/ha; K2O 240 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Cocoa",
+    "fertilizer": "N 99 kg/ha; P2O5 96 kg/ha; K2O 144 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Potato",
+    "fertilizer": "N 176 kg/ha; P2O5 108 kg/ha; K2O 240 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Yam",
+    "fertilizer": "N 110 kg/ha; P2O5 60 kg/ha; K2O 120 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 110 kg/ha; P2O5 72 kg/ha; K2O 108 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 11 kg/ha; P2O5 60 kg/ha; K2O 48 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Sorghum",
+    "fertilizer": "N 66 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Millet",
+    "fertilizer": "N 33 kg/ha; P2O5 42 kg/ha; K2O 36 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 96 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Rice requires paddies or controlled flooding/irrigation. Suitable in riverine/irrigated pockets; otherwise limited"
+  },
+  {
+    "region": "East",
+    "crop": "Cotton",
+    "fertilizer": "N 88 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Oil Palm",
+    "fertilizer": "N 143 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Rubber",
+    "fertilizer": "N 132 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "East",
+    "crop": "Coffee",
+    "fertilizer": "N 110 kg/ha; P2O5 84 kg/ha; K2O 120 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Maize",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Cassava",
+    "fertilizer": "N 53 kg/ha; P2O5 53 kg/ha; K2O 86 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 220 kg/ha; P2O5 48 kg/ha; K2O 240 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Cocoa",
+    "fertilizer": "N 99 kg/ha; P2O5 96 kg/ha; K2O 144 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Potato",
+    "fertilizer": "N 176 kg/ha; P2O5 108 kg/ha; K2O 240 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Potatoes/vegetables require good drainage and disease management in humid lowlands. Possible in uplands only; drainage and disease control needed"
+  },
+  {
+    "region": "Littoral",
+    "crop": "Yam",
+    "fertilizer": "N 110 kg/ha; P2O5 60 kg/ha; K2O 120 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 110 kg/ha; P2O5 72 kg/ha; K2O 108 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Potatoes/vegetables require good drainage and disease management in humid lowlands. Possible in uplands only; drainage and disease control needed"
+  },
+  {
+    "region": "Littoral",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 11 kg/ha; P2O5 60 kg/ha; K2O 48 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Sorghum",
+    "fertilizer": "N 66 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Millet",
+    "fertilizer": "N 33 kg/ha; P2O5 42 kg/ha; K2O 36 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 96 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Cotton",
+    "fertilizer": "N 88 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Oil Palm",
+    "fertilizer": "N 143 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Rubber",
+    "fertilizer": "N 132 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Littoral",
+    "crop": "Coffee",
+    "fertilizer": "N 110 kg/ha; P2O5 84 kg/ha; K2O 120 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "North",
+    "crop": "Maize",
+    "fertilizer": "N 96 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Cassava",
+    "fertilizer": "N 38 kg/ha; P2O5 35 kg/ha; K2O 58 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 160 kg/ha; P2O5 32 kg/ha; K2O 160 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "North",
+    "crop": "Cocoa",
+    "fertilizer": "N 72 kg/ha; P2O5 64 kg/ha; K2O 96 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "North",
+    "crop": "Potato",
+    "fertilizer": "N 128 kg/ha; P2O5 72 kg/ha; K2O 160 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Yam",
+    "fertilizer": "N 80 kg/ha; P2O5 40 kg/ha; K2O 80 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 80 kg/ha; P2O5 48 kg/ha; K2O 72 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 32 kg/ha; K2O 32 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 32 kg/ha; K2O 32 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 8 kg/ha; P2O5 40 kg/ha; K2O 32 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Sorghum",
+    "fertilizer": "N 48 kg/ha; P2O5 32 kg/ha; K2O 32 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Millet",
+    "fertilizer": "N 24 kg/ha; P2O5 28 kg/ha; K2O 24 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 96 kg/ha; P2O5 48 kg/ha; K2O 64 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Cotton",
+    "fertilizer": "N 64 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "North",
+    "crop": "Oil Palm",
+    "fertilizer": "N 104 kg/ha; P2O5 64 kg/ha; K2O 120 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "North",
+    "crop": "Rubber",
+    "fertilizer": "N 96 kg/ha; P2O5 64 kg/ha; K2O 120 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "North",
+    "crop": "Coffee",
+    "fertilizer": "N 80 kg/ha; P2O5 56 kg/ha; K2O 80 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Coffee suited to highland, humid zones. Not typical — requires highland humid areas"
+  },
+  {
+    "region": "Far North",
+    "crop": "Maize",
+    "fertilizer": "N 96 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Cassava",
+    "fertilizer": "N 38 kg/ha; P2O5 35 kg/ha; K2O 58 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 160 kg/ha; P2O5 32 kg/ha; K2O 160 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "Far North",
+    "crop": "Cocoa",
+    "fertilizer": "N 72 kg/ha; P2O5 64 kg/ha; K2O 96 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "Far North",
+    "crop": "Potato",
+    "fertilizer": "N 128 kg/ha; P2O5 72 kg/ha; K2O 160 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Yam",
+    "fertilizer": "N 80 kg/ha; P2O5 40 kg/ha; K2O 80 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 80 kg/ha; P2O5 48 kg/ha; K2O 72 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 32 kg/ha; K2O 32 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 32 kg/ha; K2O 32 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 8 kg/ha; P2O5 40 kg/ha; K2O 32 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Sorghum",
+    "fertilizer": "N 48 kg/ha; P2O5 32 kg/ha; K2O 32 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Millet",
+    "fertilizer": "N 24 kg/ha; P2O5 28 kg/ha; K2O 24 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 96 kg/ha; P2O5 48 kg/ha; K2O 64 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Cotton",
+    "fertilizer": "N 64 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops."
+  },
+  {
+    "region": "Far North",
+    "crop": "Oil Palm",
+    "fertilizer": "N 104 kg/ha; P2O5 64 kg/ha; K2O 120 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "Far North",
+    "crop": "Rubber",
+    "fertilizer": "N 96 kg/ha; P2O5 64 kg/ha; K2O 120 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Not typical — irrigation or protected environment required"
+  },
+  {
+    "region": "Far North",
+    "crop": "Coffee",
+    "fertilizer": "N 80 kg/ha; P2O5 56 kg/ha; K2O 80 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Dry zone: reduce rates and split carefully; prefer moisture-conservation and irrigation for high-demand crops. Crop generally not suited to very dry climates without irrigation. Coffee suited to highland, humid zones. Not typical — requires highland humid areas"
+  },
+  {
+    "region": "Northwest",
+    "crop": "Maize",
+    "fertilizer": "N 132 kg/ha; P2O5 63 kg/ha; K2O 66 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Cassava",
+    "fertilizer": "N 53 kg/ha; P2O5 46 kg/ha; K2O 79 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 220 kg/ha; P2O5 42 kg/ha; K2O 220 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Cocoa",
+    "fertilizer": "N 99 kg/ha; P2O5 84 kg/ha; K2O 132 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Potato",
+    "fertilizer": "N 176 kg/ha; P2O5 94 kg/ha; K2O 220 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Yam",
+    "fertilizer": "N 110 kg/ha; P2O5 52 kg/ha; K2O 110 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 110 kg/ha; P2O5 63 kg/ha; K2O 99 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 42 kg/ha; K2O 44 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 42 kg/ha; K2O 44 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 11 kg/ha; P2O5 52 kg/ha; K2O 44 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Sorghum",
+    "fertilizer": "N 66 kg/ha; P2O5 42 kg/ha; K2O 44 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Millet",
+    "fertilizer": "N 33 kg/ha; P2O5 37 kg/ha; K2O 33 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 132 kg/ha; P2O5 63 kg/ha; K2O 88 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response. Rice requires paddies or controlled flooding/irrigation. Suitable in riverine/irrigated pockets; otherwise limited"
+  },
+  {
+    "region": "Northwest",
+    "crop": "Cotton",
+    "fertilizer": "N 88 kg/ha; P2O5 63 kg/ha; K2O 66 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Oil Palm",
+    "fertilizer": "N 143 kg/ha; P2O5 84 kg/ha; K2O 165 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Rubber",
+    "fertilizer": "N 132 kg/ha; P2O5 84 kg/ha; K2O 165 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "Northwest",
+    "crop": "Coffee",
+    "fertilizer": "N 110 kg/ha; P2O5 74 kg/ha; K2O 110 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Maize",
+    "fertilizer": "N 132 kg/ha; P2O5 63 kg/ha; K2O 66 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Cassava",
+    "fertilizer": "N 53 kg/ha; P2O5 46 kg/ha; K2O 79 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 220 kg/ha; P2O5 42 kg/ha; K2O 220 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Cocoa",
+    "fertilizer": "N 99 kg/ha; P2O5 84 kg/ha; K2O 132 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Potato",
+    "fertilizer": "N 176 kg/ha; P2O5 94 kg/ha; K2O 220 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Yam",
+    "fertilizer": "N 110 kg/ha; P2O5 52 kg/ha; K2O 110 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 110 kg/ha; P2O5 63 kg/ha; K2O 99 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 42 kg/ha; K2O 44 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 42 kg/ha; K2O 44 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 11 kg/ha; P2O5 52 kg/ha; K2O 44 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Sorghum",
+    "fertilizer": "N 66 kg/ha; P2O5 42 kg/ha; K2O 44 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Millet",
+    "fertilizer": "N 33 kg/ha; P2O5 37 kg/ha; K2O 33 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 132 kg/ha; P2O5 63 kg/ha; K2O 88 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response. Rice requires paddies or controlled flooding/irrigation. Suitable in riverine/irrigated pockets; otherwise limited"
+  },
+  {
+    "region": "West",
+    "crop": "Cotton",
+    "fertilizer": "N 88 kg/ha; P2O5 63 kg/ha; K2O 66 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Oil Palm",
+    "fertilizer": "N 143 kg/ha; P2O5 84 kg/ha; K2O 165 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Rubber",
+    "fertilizer": "N 132 kg/ha; P2O5 84 kg/ha; K2O 165 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "West",
+    "crop": "Coffee",
+    "fertilizer": "N 110 kg/ha; P2O5 74 kg/ha; K2O 110 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Highland: slightly higher N/K for tuber/vegetable crops; good soils often give higher response."
+  },
+  {
+    "region": "South",
+    "crop": "Maize",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Cassava",
+    "fertilizer": "N 53 kg/ha; P2O5 53 kg/ha; K2O 86 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 220 kg/ha; P2O5 48 kg/ha; K2O 240 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Cocoa",
+    "fertilizer": "N 99 kg/ha; P2O5 96 kg/ha; K2O 144 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Potato",
+    "fertilizer": "N 176 kg/ha; P2O5 108 kg/ha; K2O 240 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Potatoes/vegetables require good drainage and disease management in humid lowlands. Possible in uplands only; drainage and disease control needed"
+  },
+  {
+    "region": "South",
+    "crop": "Yam",
+    "fertilizer": "N 110 kg/ha; P2O5 60 kg/ha; K2O 120 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 110 kg/ha; P2O5 72 kg/ha; K2O 108 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Potatoes/vegetables require good drainage and disease management in humid lowlands. Possible in uplands only; drainage and disease control needed"
+  },
+  {
+    "region": "South",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 11 kg/ha; P2O5 60 kg/ha; K2O 48 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Sorghum",
+    "fertilizer": "N 66 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Millet",
+    "fertilizer": "N 33 kg/ha; P2O5 42 kg/ha; K2O 36 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 96 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Cotton",
+    "fertilizer": "N 88 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Oil Palm",
+    "fertilizer": "N 143 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Rubber",
+    "fertilizer": "N 132 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "South",
+    "crop": "Coffee",
+    "fertilizer": "N 110 kg/ha; P2O5 84 kg/ha; K2O 120 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Maize",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at planting (NPK), split urea at 3–4 WAE and 6–7 WAE.; Method: Band basal 5–7 cm from seed; topdress broadcast and incorporate; avoid seed contact.",
+    "pests": "Fall armyworm (Spodoptera frugiperda); Stem borers; Maize weevil (storage); Aphids",
+    "diseases": "Maize streak virus; Grey leaf spot; Northern leaf blight; Rust; Ear rots (Fusarium)",
+    "pest_control": "Field sanitation; early planting; pheromone traps for stem borers; biocontrol/Bt or neem extracts for caterpillars; targeted insecticide only when thresholds exceeded (e.g., lambda-cyhalothrin or chlorantraniliprole per label).",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Cassava",
+    "fertilizer": "N 53 kg/ha; P2O5 53 kg/ha; K2O 86 kg/ha; Timing: Split: 1 month and 3 months after planting (e.g., NPK12-11-18 @ total 300–400 kg/ha).; Method: Ring or hole placement 10–20 cm from stem; combine with organic manure.",
+    "pests": "Cassava green mite; Mealybugs; Whiteflies (vector for viruses); Termites (on stems/tablets)",
+    "diseases": "Cassava mosaic disease (CMD); Cassava bacterial blight; Root rot (various fungi); Brown leaf spot",
+    "pest_control": "Use clean cuttings and resistant varieties; release/encourage natural enemies; apply neem or insecticidal soap for mealybugs; control whiteflies with sticky traps and intercropping; treat cuttings with ash or hot-water therapy for some pests.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Plantain/Banana",
+    "fertilizer": "N 220 kg/ha; P2O5 48 kg/ha; K2O 240 kg/ha; Timing: At planting + 3–4 maintenance dressings per year to reach annual total.; Method: Ring application 30–50 cm from pseudostem; frequent small dressings preferred.",
+    "pests": "Banana weevil (Cosmopolites sordidus); Nematodes (root-knot); Aphids (virus vectors)",
+    "diseases": "Black Sigatoka (Mycosphaerella fijiensis); Panama disease (Fusarium wilt); Bunchy top (virus)",
+    "pest_control": "Use clean planting material; cultural control (weevil traps, sanitation); biological control for weevils (entomopathogenic nematodes/Beauveria); nematode-resistant roots or soil amendments; apply nematicides where appropriate and legal.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Cocoa",
+    "fertilizer": "N 99 kg/ha; P2O5 96 kg/ha; K2O 144 kg/ha; Timing: Base P/K at establishment; N split 2–3 times/year; foliar micronutrients as needed.; Method: Apply in canopy dripline ring; avoid trunk contact; mulch recommended.",
+    "pests": "Cocoa mirids/capsids; Cocoa pod borer; Termites; Mealybugs",
+    "diseases": "Black pod disease (Phytophthora spp.); Vascular-streak dieback; Witches' broom (in some areas); Vascular diseases",
+    "pest_control": "Regular monitoring and timely pod collection; pruning; biological controls (predators/parasitoids); targeted insecticides for severe infestations; maintain shade management and good canopy structure; use pheromone traps for some borers where applicable.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Potato",
+    "fertilizer": "N 176 kg/ha; P2O5 108 kg/ha; K2O 240 kg/ha; Timing: Basal NPK at planting; side-dress N at hilling (30–40 DAP).; Method: Incorporate basal fertilizer into seedbed; side-dress in bands at hilling.",
+    "pests": "Aphids (virus vectors); Potato tuber moth; Cutworms; Leafminers",
+    "diseases": "Late blight (Phytophthora infestans); Bacterial wilt; Common scab; Blackleg",
+    "pest_control": "Use pheromone traps for tuber moth; apply Bacillus thuringiensis (Bt) or neem for caterpillars; use insecticidal soap or systemic insecticides for heavy aphid pressure; maintain field sanitation and rotation.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Potatoes/vegetables require good drainage and disease management in humid lowlands. Possible in uplands only; drainage and disease control needed"
+  },
+  {
+    "region": "Southwest",
+    "crop": "Yam",
+    "fertilizer": "N 110 kg/ha; P2O5 60 kg/ha; K2O 120 kg/ha; Timing: Basal in mounds before planting; sidedress K mid-season.; Method: Fertilizer in pits/mounds, avoid direct contact with seed pieces.",
+    "pests": "Yam beetles; Nematodes; Dioscorea weevils",
+    "diseases": "Yam mosaic virus; Anthracnose; Root rot (Fusarium, Pythium)",
+    "pest_control": "Use clean planting material; soil amendments and crop rotations; handpicking adult pests; where available use biocontrols or registered insecticides per label.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Vegetables (mixed)",
+    "fertilizer": "N 110 kg/ha; P2O5 72 kg/ha; K2O 108 kg/ha; Timing: Basal at transplant + side/top-dress once or twice during growth.; Method: Band or spot-apply at transplant hole; frequent small doses for long cycles.",
+    "pests": "Aphids; Whiteflies; Thrips; Caterpillars (armyworms); Spider mites",
+    "diseases": "Bacterial wilts; Foliar fungal diseases (blights, anthracnose); Downy mildew; Powdery mildew (depending on crop)",
+    "pest_control": "Use insect netting, sticky traps for whiteflies, neem or Bt for caterpillars; apply insecticidal soap for aphids; encourage beneficial insects and use trap cropping.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Potatoes/vegetables require good drainage and disease management in humid lowlands. Possible in uplands only; drainage and disease control needed"
+  },
+  {
+    "region": "Southwest",
+    "crop": "Groundnuts",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: P & K at planting; split K if sandy/leached.; Method: Place fertilizer near rows; light incorporation; avoid seed contact.",
+    "pests": "Aphids; Pod borers; Termites (in storage/fields)",
+    "diseases": "Leaf spots (early & late); Groundnut rosette virus; Aflatoxin (post-harvest)",
+    "pest_control": "Use pheromone traps for borers; maintain field sanitation; timely harvest to reduce pod damage; insecticidal treatment when threshold exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Soybean",
+    "fertilizer": "P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal P & K at planting; inoculate seed with Rhizobia.; Method: Band P/K near seed row; ensure good seedbed preparation.",
+    "pests": "Pod borers; Aphids; Stemborers",
+    "diseases": "Rust; Bacterial blight; Root rots (Phytophthora)",
+    "pest_control": "Encourage natural enemies; use pheromone/pheromone traps; neem extracts or Bt for caterpillars; targeted insecticide only when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Beans (dry)",
+    "fertilizer": "N 11 kg/ha; P2O5 60 kg/ha; K2O 48 kg/ha; Timing: Basal P/K at planting; optional small N starter (10–20 kg/ha).; Method: Shallow banding near seed row; avoid deep placement.",
+    "pests": "Aphids; Pod borers; Bruchids (storage)",
+    "diseases": "Bean common mosaic virus; Anthracnose; Rust",
+    "pest_control": "Early harvesting; good storage practices; neem or insecticidal soap for aphids; Bt for caterpillars; solar/clean storage to reduce bruchids.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Sorghum",
+    "fertilizer": "N 66 kg/ha; P2O5 48 kg/ha; K2O 48 kg/ha; Timing: Basal at planting; small topdress mid-season if sufficient rain.; Method: Band near row; light incorporation.",
+    "pests": "Stem borers; Head bugs; Aphids; Midges",
+    "diseases": "Sorghum downy mildew; Anthracnose; Grain mold",
+    "pest_control": "Use pheromone traps for borers; conserve natural enemies; if needed, apply appropriate insecticides per label and thresholds.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Millet",
+    "fertilizer": "N 33 kg/ha; P2O5 42 kg/ha; K2O 36 kg/ha; Timing: Entire fertilizer at planting; small starter N + P/K.; Method: Near-row banding; light incorporation.",
+    "pests": "Birds (grain losses); Stem borers; Aphids",
+    "diseases": "Blast; Smuts; Downy mildew",
+    "pest_control": "Scare tactics/traps for birds; field sanitation; biological/chemical control for borers when necessary.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Rice (paddy)",
+    "fertilizer": "N 132 kg/ha; P2O5 72 kg/ha; K2O 96 kg/ha; Timing: Basal before flooding or transplant; topdress N at tillering/panicle initiation.; Method: Broadcast into puddled soil or place in row for upland rice; ensure leveled fields.",
+    "pests": "Rice stem borer; Brown planthopper; Rice bug; Leaf folder; Rats (storage/field)",
+    "diseases": "Rice blast; Sheath blight; Bacterial leaf blight; Bakanae (seedling disease)",
+    "pest_control": "Use field sanitation; pheromone traps for stem borers; water management (drainage breaks) to control some pests; encourage natural enemies; apply insecticides only when thresholds exceeded.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings. Rice requires paddies or controlled flooding/irrigation. Suitable in riverine/irrigated pockets; otherwise limited"
+  },
+  {
+    "region": "Southwest",
+    "crop": "Cotton",
+    "fertilizer": "N 88 kg/ha; P2O5 72 kg/ha; K2O 72 kg/ha; Timing: Basal at sowing + one or two side/top-dressings during growth.; Method: Band close to row; avoid root damage; incorporate lightly.",
+    "pests": "Bollworms/Helicoverpa; Aphids; Jassids; Whiteflies",
+    "diseases": "Bacterial blight; Alternaria leaf spot; Verticillium wilt",
+    "pest_control": "Use Bt cotton if available; pheromone traps; integrated pest management (IPM) combining natural enemies, pheromone traps and targeted insecticide use.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Oil Palm",
+    "fertilizer": "N 143 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Base dressing at establishment; annual maintenance dressings in ring under canopy.; Method: Spread in frond dripline circle; incorporate lightly into mulch.",
+    "pests": "Rhinoceros beetle; Red palm weevil; Bagworms",
+    "diseases": "Bud rot (Phytophthora spp. in some zones); Ganoderma (basal stem rot) in some areas; Fusarium wilt",
+    "pest_control": "Pheromone/pheromone traps for rhinoceros beetle; sanitation; biological control agents (Metarhizium, Beauveria) where available; regular collection of breeding material.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Rubber",
+    "fertilizer": "N 132 kg/ha; P2O5 96 kg/ha; K2O 180 kg/ha; Timing: Annual or periodic maintenance dressings; larger when trees mature.; Method: Ring application in dripline; mulch to conserve nutrients.",
+    "pests": "Mealybugs; Scale insects; Termites",
+    "diseases": "Black stripe; Phytophthora leaf fall; Corynespora leaf disease",
+    "pest_control": "Monitor and prune; apply appropriate insecticides; encourage natural predators; maintain good tapping and field sanitation practices.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  },
+  {
+    "region": "Southwest",
+    "crop": "Coffee",
+    "fertilizer": "N 110 kg/ha; P2O5 84 kg/ha; K2O 120 kg/ha; Timing: Base fertilizer at establishment; annual maintenance splits as per age.; Method: Ring application under canopy; consider legume cover crops.",
+    "pests": "Coffee berry borer; Antestia bug; Mealybugs",
+    "diseases": "Coffee berry disease; Leaf rust (Hemileia vastatrix); Coffee wilt (in some regions)",
+    "pest_control": "Pheromone traps for berry borer; biological control (Beauveria bassiana) and cultural sanitation; targeted insecticide when needed.",
+    "notes": "Humid zone: increase P & K due to leaching; use split dressings."
+  }
+]

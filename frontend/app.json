@@ -1,0 +1,42 @@
+{
+    "expo": {
+        "name": "YCD Farmer Guide",
+        "slug": "ycd-farmer-guide",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#4CAF50"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.ycd.farmerguide"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/icon.png",
+                "backgroundColor": "#4CAF50"
+            },
+            "package": "com.ycd.farmerguide",
+            "permissions": [
+                "CAMERA",
+                "READ_EXTERNAL_STORAGE",
+                "WRITE_EXTERNAL_STORAGE",
+                "ACCESS_FINE_LOCATION",
+                "ACCESS_COARSE_LOCATION"
+            ]
+        },
+        "web": {
+            "favicon": "./assets/icon.png"
+        },
+        "extra": {
+            "apiUrl": "http://10.0.2.2:3000/api"
+        }
+    }
+}

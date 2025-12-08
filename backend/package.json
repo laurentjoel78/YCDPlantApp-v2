@@ -1,0 +1,52 @@
+{
+  "name": "ycd-farmer-guide-backend",
+  "version": "1.0.0",
+  "description": "Backend server for YCD Farmer Guide App",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "node src/scripts/setupTestDb.js && jest --detectOpenHandles",
+    "create-db": "node src/scripts/createDatabase.js",
+    "migrate": "sequelize-cli db:migrate",
+    "migrate:undo": "sequelize-cli db:migrate:undo"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^7.2.0",
+    "@google-cloud/translate": "^9.2.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.4.0",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "fluent-ffmpeg": "^2.1.3",
+    "geoip-lite": "^1.4.10",
+    "groq-sdk": "^0.37.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "node-cache": "^5.1.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.6",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "redis": "^5.8.2",
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.8.1",
+    "streamifier": "^0.1.1",
+    "uuid": "^13.0.0",
+    "winston": "^3.17.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.1.3",
+    "nodemon": "^3.1.10",
+    "sequelize-cli": "^6.6.3",
+    "supertest": "^7.1.4"
+  }
+}

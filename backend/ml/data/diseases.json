@@ -1,0 +1,79 @@
+{
+  "cocoa_black_pod": {
+    "name": "Cocoa Black Pod Disease",
+    "description": "Fungal disease caused by Phytophthora species. Appears as dark brown to black lesions on cocoa pods. Most severe during rainy season.",
+    "treatment": "1. Remove and destroy all infected pods immediately\n2. Apply copper-based fungicide (e.g., Kocide) every 2 weeks during rainy season\n3. Improve farm drainage to reduce moisture\n4. Harvest ripe pods promptly",
+    "prevention": "Regular pruning for air circulation, maintain 3m spacing between trees, remove pod husks from farm, timely harvesting",
+    "recommendations": [
+      "Spray fungicide early morning or late evening",
+      "Increase frequency during heavy rains",
+      "Prune to allow 30% light penetration"
+    ]
+  },
+  "cassava_mosaic": {
+    "name": "Cassava Mosaic Virus",
+    "description": "Viral disease transmitted by whiteflies. Causes yellow and white mosaic patterns on leaves, leaf distortion, and stunted growth.",
+    "treatment": "1. No cure available - remove infected plants immediately\n2. Burn or bury removed plants far from field\n3. Use virus-free planting material from certified sources\n4. Control whitefly population with neem-based sprays",
+    "prevention": "Plant resistant varieties (e.g., TMS varieties), use certified disease-free stems, maintain 1m x 1m spacing, remove infected plants within 2 weeks of planting",
+    "recommendations": [
+      "Rogue out infected plants every 2 weeks",
+      "Plant during dry season to reduce whitefly activity",
+      "Avoid planting near infected fields"
+    ]
+  },
+  "maize_streak": {
+    "name": "Maize Streak Virus",
+    "description": "Viral disease transmitted by leafhoppers. Causes pale yellow streaks parallel to leaf veins. Can cause 100% yield loss if infection occurs early.",
+    "treatment": "1. No cure - focus on prevention\n2. Remove severely infected plants\n3. Plant maize early in season\n4. Use resistant varieties",
+    "prevention": "Early planting (start of rains), use resistant varieties, control leafhopper vectors, maintain field hygiene",
+    "recommendations": [
+      "Plant within first 2 weeks of rainy season",
+      "Use varieties like TZEE-W, TZEEI-W",
+      "Avoid late planting"
+    ]
+  },
+  "banana_sigatoka": {
+    "name": "Black Sigatoka",
+    "description": "Fungal leaf spot disease of banana and plantain. Starts as small brown spots, enlarges to black streaks with yellow halo. Reduces photosynthesis.",
+    "treatment": "1. Remove affected leaves (sanitize tools between plants)\n2. Apply systemic fungicide (e.g., Propiconazole)\n3. Improve drainage and air circulation\n4. Apply mulch to prevent soil splash",
+    "prevention": "Plant resistant varieties, wide spacing (3m x 3m), remove old leaves regularly, improve drainage",
+    "recommendations": [
+      "Deleaf weekly during rainy season",
+      "Alternate fungicide types to avoid resistance",
+      "Maintain 8-10 functional leaves per plant"
+    ]
+  },
+  "tomato_blight": {
+    "name": "Tomato Late Blight",
+    "description": "Fungal disease causing dark water-soaked lesions on leaves, stems, and fruits. Can destroy entire crop in days during cool wet weather.",
+    "treatment": "1. Apply copper-based fungicide immediately\n2. Remove all infected plant parts\n3. Improve air circulation by staking plants\n4. Reduce overhead irrigation",
+    "prevention": "Use resistant varieties, avoid overhead watering, stake plants for air flow, apply preventive fungicide sprays",
+    "recommendations": [
+      "Start fungicide sprays before symptoms appear in wet season",
+      "Harvest fruits before infection spreads",
+      "Rotate crops - don't plant tomatoes in same spot annually"
+    ]
+  },
+  "coffee_rust": {
+    "name": "Coffee Leaf Rust",
+    "description": "Fungal disease causing orange-yellow powdery spots on undersides of coffee leaves. Leads to premature leaf drop and reduced yields.",
+    "treatment": "1. Apply copper-based fungicide when disease first appears\n2. Remove heavily infected leaves\n3. Improve farm shade management (30-40% shade)\n4. Apply balanced fertilizer to strengthen plants",
+    "prevention": "Plant rust-resistant varieties, maintain optimal shade, prune for air circulation, apply preventive fungicide",
+    "recommendations": [
+      "Monitor undersides of leaves weekly",
+      "Apply fungicide every 3 weeks during rainy season",
+      "Maintain good nutrition with NPK 15-15-15"
+    ]
+  },
+  "healthy": {
+    "name": "Healthy Plant",
+    "description": "No disease symptoms detected. Plant appears healthy with normal leaf color and structure.",
+    "treatment": "No treatment needed. Continue regular maintenance and monitoring.",
+    "prevention": "Maintain good agricultural practices: balanced fertilization, proper spacing, regular weeding, pest monitoring",
+    "recommendations": [
+      "Continue regular monitoring for early disease detection",
+      "Maintain soil health with organic matter",
+      "Practice crop rotation"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment
+.env
+.env.local
+**/.env
+**/.env.local
+
+# Expo
+frontend/.expo/
+frontend/dist/
+frontend/web-build/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build files
+*.apk
+*.ipa
+*.aab
+frontend/android/app/build/
+frontend/ios/build/
+backend/dist/
+
+# Uploads & temp files
+backend/uploads/
+backend/public/uploads/
+*.tsbuildinfo

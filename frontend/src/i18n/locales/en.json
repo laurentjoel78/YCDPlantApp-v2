@@ -1,0 +1,284 @@
+{
+  "navigation": {
+    "back": "Back",
+    "diseaseDetection": "Disease Detection",
+    "consultation": "Consultation",
+    "forumDetails": "Forum Details",
+    "newPost": "New Post"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "create": "Create",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "or": "OR"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Create Account",
+    "welcomeBack": "Welcome Back!",
+    "signInToContinue": "Sign in to continue",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone Number",
+    "address": "Address",
+    "region": "Region",
+    "role": {
+      "farmer": "Farmer",
+      "buyer": "Buyer",
+      "select": "Select Role"
+    },
+    "language": {
+      "select": "App Language",
+      "en": "English",
+      "fr": "Français"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "passwordMinLength": "Password must be at least {{count}} characters long",
+      "passwordMatch": "Passwords do not match",
+      "passwordRequirements": {
+        "title": "Password must contain:",
+        "uppercase": "Uppercase letter",
+        "lowercase": "Lowercase letter",
+        "number": "Number",
+        "special": "Special character"
+      }
+    },
+    "errors": {
+      "loginFailed": "Login failed. Please check your credentials."
+    },
+    "social": {
+      "google": "Continue with Google",
+      "facebook": "Continue with Facebook"
+    },
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?"
+  },
+  "farmer": {
+    "registration": {
+      "title": "Farm Details",
+      "farmName": "Farm Name (Optional)",
+      "farmSize": "Farm Size (Hectares)",
+      "location": "Farm Location",
+      "experience": "Years of Farming Experience",
+      "crops": {
+        "title": "Select Crops (Multiple)",
+        "maize": "Maize",
+        "cassava": "Cassava",
+        "plantains": "Plantains",
+        "cocoa": "Cocoa",
+        "coffee": "Coffee",
+        "rice": "Rice",
+        "vegetables": "Vegetables",
+        "other": "Other"
+      },
+      "soil": {
+        "title": "Select Soil Type",
+        "clay": "Clay",
+        "sandy": "Sandy",
+        "silty": "Silty",
+        "loamy": "Loamy",
+        "chalky": "Chalky",
+        "peaty": "Peaty",
+        "saline": "Saline",
+        "other": "Other"
+      },
+      "validation": {
+        "farmSize": "Farm size is required",
+        "farmSizeNumber": "Farm size must be a positive number",
+        "location": "Farm location is required",
+        "experience": "Years of experience is required",
+        "experienceNumber": "Years of experience must be a positive number",
+        "crops": "Please select at least one crop",
+        "soil": "Please select your soil type"
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "english": "English",
+      "french": "Français"
+    }
+  },
+  "services": {
+    "location": {
+      "permissionDenied": "Permission to access location was denied",
+      "unableToGet": "Could not get current location"
+    }
+  },
+  "expert": {
+    "request": {
+      "title": "Request an Expert",
+      "subtitle": "YCD will connect you with the best expert for your issue",
+      "type": "Type of expertise",
+      "describe": "Describe your problem",
+      "examplePlaceholder": "Ex: Black spots on cocoa leaves...",
+      "consultationType": "Consultation type",
+      "urgencyLevel": "Urgency level",
+      "maxBudget": "Maximum budget",
+      "selectedBudget": "Selected budget",
+      "estimatedCost": "Estimated cost",
+      "expertFee": "Expert fee",
+      "commission": "YCD commission (20%)",
+      "totalEstimated": "Total estimated",
+      "availableExperts": "Available experts",
+      "submitRequest": "Submit request"
+    },
+    "chat": {
+      "welcome": "Hello! I'm the YCD Assistant. How can I help with your agricultural consultation?",
+      "acknowledge": "I understand your request. I'll find a suitable expert...",
+      "title": "YCD Virtual Assistant"
+    }
+  },
+  "detection": {
+    "title": "Plant Disease Detection",
+    "noCameraAccess": "No access to camera",
+    "selectFromGallery": "Select from Gallery",
+    "cameraUnavailable": "Camera component unavailable",
+    "cameraHelp": "Check Expo logs for module shape. If running in Expo Go, try updating Expo and expo-camera.",
+    "takePhoto": "Take Photo",
+    "chooseFromGallery": "Choose from Gallery",
+    "analyzing": "Analyzing image...",
+    "description": "Description:",
+    "recommendedTreatment": "Recommended Treatment:",
+    "confidence": "Confidence: {{percent}}%",
+    "startNew": "Start New Detection"
+  },
+  "suggestions": {
+    "title": "Smart Suggestions",
+    "fetchError": "Failed to load suggestions: {{message}}",
+    "recommended": "Recommended",
+    "nearbyMarkets": "Nearby Markets",
+    "buy": "Buy"
+  },
+  "forum": {
+    "chat": {
+      "loading": "Loading chat...",
+      "title": "Forum Chat",
+      "members": "{{count}} members",
+      "joinBanner": "Join this forum to participate in the chat",
+      "join": "Join Forum",
+      "error": "Failed to load messages",
+      "retry": "Retry",
+      "empty": "No messages yet",
+      "beFirst": "Be the first to start the conversation!",
+      "joinToStart": "Join the forum to start chatting",
+      "placeholder": "Type a message...",
+      "sendError": "Failed to send message",
+      "joinError": "Failed to join forum",
+      "today": "Today",
+      "yesterday": "Yesterday"
+    }
+  },
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday"
+  },
+  "ecommerce": {
+    "cart": {
+      "title": "My Cart",
+      "empty": "Your cart is empty",
+      "startShopping": "Start Shopping",
+      "addToCart": "Add to Cart",
+      "added": "Added to Cart",
+      "addedMessage": "Product added successfully!",
+      "continueShopping": "Continue Shopping",
+      "viewCart": "View Cart",
+      "outOfStock": "Out of Stock",
+      "subtotal": "Subtotal",
+      "delivery": "Delivery",
+      "total": "Total",
+      "proceedToCheckout": "Proceed to Checkout",
+      "removeItem": "Remove Item",
+      "confirmRemove": "Are you sure you want to remove this item from cart?",
+      "remove": "Remove"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "deliveryAddress": "Delivery Address",
+      "streetAddress": "Street address",
+      "city": "City",
+      "region": "Region",
+      "paymentMethod": "Payment Method",
+      "mtn": "MTN Mobile Money",
+      "orange": "Orange Money",
+      "cashOnDelivery": "Cash on Delivery",
+      "payWith": "Pay with {{method}}",
+      "payOnDelivery": "Pay when you receive",
+      "phoneNumber": "Phone number (e.g., +237 6XX XXX XXX)",
+      "orderSummary": "Order Summary",
+      "completeOrder": "Complete Order",
+      "errors": {
+        "addressRequired": "Please enter delivery address",
+        "cityRequired": "Please enter city",
+        "phoneRequired": "Please enter phone number for Mobile Money"
+      }
+    },
+    "payment": {
+      "title": "Complete Payment",
+      "instructions": "Payment Instructions",
+      "verifying": "Verifying payment...",
+      "autoVerifying": "Auto-verifying in {{count}} second",
+      "autoVerifying_plural": "Auto-verifying in {{count}} seconds",
+      "verifyNow": "Verify Now",
+      "cancel": "Cancel"
+    },
+    "order": {
+      "success": "Order Placed Successfully!",
+      "thankYou": "Thank you for your order",
+      "orderId": "Order ID",
+      "totalAmount": "Total Amount",
+      "status": "Status",
+      "expectedDelivery": "Expected delivery in 2-3 business days",
+      "viewOrders": "View My Orders",
+      "myOrders": "My Orders",
+      "noOrders": "No orders found",
+      "filter": {
+        "all": "All",
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "delivered": "Delivered"
+      },
+      "items": "{{count}} item",
+      "items_plural": "{{count}} items"
+    },
+    "expert": {
+      "bookConsultation": "Book Consultation",
+      "scheduledDate": "Scheduled Date & Time",
+      "duration": "Duration",
+      "minutes": "{{count}} minutes",
+      "consultationType": "Consultation Type",
+      "remote": "Remote",
+      "onSite": "On-site",
+      "describeIssue": "Describe Your Issue",
+      "issuePlaceholder": "What problem do you need help with?",
+      "consultationFee": "Consultation Fee",
+      "bookAndPay": "Book & Pay",
+      "rating": {
+        "title": "Rate Consultation",
+        "howWasExperience": "How was your experience?",
+        "poor": "😞 Poor",
+        "fair": "😕 Fair",
+        "good": "😐 Good",
+        "veryGood": "😊 Very Good",
+        "excellent": "🤩 Excellent",
+        "feedback": "Additional Feedback (Optional)",
+        "feedbackPlaceholder": "Share your thoughts...",
+        "submit": "Submit Rating",
+        "thankYou": "Thank you for your rating!"
+      }
+    }
+  }
+}
