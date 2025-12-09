@@ -25,12 +25,35 @@ class OrangeMobileMoneyProvider {
     });
 
     // Auto-complete after 5 seconds (simulation)
-    setTimeout(() => {
-      const payment = this.pendingPayments.get(reference);
-      if (payment) {
-        payment.status = 'completed';
-        payment.completedAt = new Date();
-        console.log(`[MockOrange] Payment ${reference} auto-completed`);
+    setTimeout(async () => {
+      try {
+        const payment = this.pendingPayments.get(reference);
+        if (payment) {
+          payment.status = 'completed';
+          payment.completedAt = new Date();
+
+          // Update database Transaction record
+          try {
+            // Re-fetch to ensure we have fresh data
+            const db = require('../models');
+            const txToUpdate = await db.Transaction.findOne({
+              where: { payment_reference: reference }
+            });
+
+            if (txToUpdate) {
+              await txToUpdate.update({ payment_status: 'completed' });
+              console.log(`[MockOrange] DB Updated for ${reference}`);
+            } else {
+              console.warn(`[MockOrange] Transaction not found in DB for ${reference}`);
+            }
+          } catch (dbError) {
+            console.error('[MockOrange] Database update failed:', dbError);
+          }
+
+          console.log(`[MockOrange] Payment ${reference} auto-completed in memory`);
+        }
+      } catch (err) {
+        console.error('[MockOrange] Callback error:', err);
       }
     }, 5000);
 

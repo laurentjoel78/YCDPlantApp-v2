@@ -12,9 +12,13 @@ type RouteParams = {
             id: string;
             total: number;
             status: string;
+            type?: 'order' | 'consultation';
         };
     };
 };
+
+import { api } from '../services/api';
+import RatingModal from '../components/RatingModal';
 
 export default function OrderSuccessScreen() {
     const navigation = useNavigation<any>();
@@ -22,6 +26,9 @@ export default function OrderSuccessScreen() {
     const { order } = route.params;
 
     const scaleAnim = React.useRef(new Animated.Value(0)).current;
+
+    // Rating state
+    const [ratingModalVisible, setRatingModalVisible] = React.useState(false);
 
     React.useEffect(() => {
         Animated.spring(scaleAnim, {
@@ -32,6 +39,18 @@ export default function OrderSuccessScreen() {
         }).start();
     }, []);
 
+    const handleRatingSubmit = async (rating: number, feedback: string) => {
+        try {
+            await api.consultations.rate(order.id, rating, feedback);
+            // After rating, go to experts screen
+            navigation.navigate('Main', { screen: 'Experts' });
+        } catch (error) {
+            console.error('Rating error:', error);
+            // Even if error, likely already rated or network issue, proceed
+            navigation.navigate('Main', { screen: 'Experts' });
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.content, { transform: [{ scale: scaleAnim }] }]}>
@@ -39,12 +58,18 @@ export default function OrderSuccessScreen() {
                     <MaterialCommunityIcons name="check-circle" size={100} color="#4CAF50" />
                 </View>
 
-                <Text style={styles.title}>Order Placed Successfully!</Text>
-                <Text style={styles.subtitle}>Thank you for your order</Text>
+                <Text style={styles.title}>
+                    {order.type === 'consultation' ? 'Consultation Booked!' : 'Order Placed Successfully!'}
+                </Text>
+                <Text style={styles.subtitle}>
+                    {order.type === 'consultation' ? 'Your expert session is confirmed' : 'Thank you for your order'}
+                </Text>
 
                 <View style={styles.orderDetails}>
                     <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Order ID:</Text>
+                        <Text style={styles.detailLabel}>
+                            {order.type === 'consultation' ? 'Consultation ID:' : 'Order ID:'}
+                        </Text>
                         <Text style={styles.detailValue}>#{order.id.substring(0, 8).toUpperCase()}</Text>
                     </View>
                     <View style={styles.detailRow}>
@@ -58,24 +83,58 @@ export default function OrderSuccessScreen() {
                 </View>
 
                 <Text style={styles.message}>
-                    You will receive a confirmation email shortly. Expected delivery in 2-3 business days.
+                    {order.type === 'consultation'
+                        ? 'You can rate your expert now or later from your consultation history.'
+                        : 'You will receive a confirmation email shortly. Expected delivery in 2-3 business days.'}
                 </Text>
 
-                <TouchableOpacity
-                    style={styles.primaryButton}
-                    onPress={() => navigation.navigate('Orders')}
-                >
-                    <MaterialCommunityIcons name="package-variant" size={20} color="#FFF" />
-                    <Text style={styles.primaryButtonText}>View My Orders</Text>
-                </TouchableOpacity>
+                {order.type === 'consultation' ? (
+                    <>
+                        <TouchableOpacity
+                            style={styles.primaryButton}
+                            onPress={() => setRatingModalVisible(true)}
+                        >
+                            <MaterialCommunityIcons name="star" size={20} color="#FFF" />
+                            <Text style={styles.primaryButtonText}>Rate Expert</Text>
+                        </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.secondaryButton}
-                    onPress={() => navigation.navigate('Marketplace')}
-                >
-                    <Text style={styles.secondaryButtonText}>Continue Shopping</Text>
-                </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.secondaryButton}
+                            onPress={() => navigation.navigate('Main', { screen: 'Experts' })}
+                        >
+                            <Text style={styles.secondaryButtonText}>Rate Later</Text>
+                        </TouchableOpacity>
+                    </>
+                ) : (
+                    <>
+                        <TouchableOpacity
+                            style={styles.primaryButton}
+                            onPress={() => navigation.navigate('Orders')}
+                        >
+                            <MaterialCommunityIcons name="package-variant" size={20} color="#FFF" />
+                            <Text style={styles.primaryButtonText}>View My Orders</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.secondaryButton}
+                            onPress={() => navigation.navigate('Main', { screen: 'Marketplace' })}
+                        >
+                            <Text style={styles.secondaryButtonText}>Continue Shopping</Text>
+                        </TouchableOpacity>
+                    </>
+                )}
             </Animated.View>
+
+            {/* Rating Modal */}
+            <RatingModal
+                visible={ratingModalVisible}
+                consultation={{
+                    id: order.id,
+                    expertName: 'Expert' // Ideally we should pass expert name, but fallback is fine
+                }}
+                onClose={() => setRatingModalVisible(false)}
+                onRatingSubmit={handleRatingSubmit}
+            />
         </View>
     );
 }
@@ -154,7 +213,8 @@ const styles = StyleSheet.create({
         color: '#666',
         textAlign: 'center',
         marginBottom: 24,
-        lineHeight: 20
+        lineHeight: 20,
+        paddingHorizontal: 10
     },
     primaryButton: {
         flexDirection: 'row',

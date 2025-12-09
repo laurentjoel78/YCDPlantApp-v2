@@ -17,6 +17,10 @@ router.post('/book-with-payment',
   auth,
   consultationController.bookConsultationWithPayment
 );
+router.post('/verify-payment',
+  auth,
+  consultationController.verifyPayment
+);
 router.post('/:consultationId/rate',
   auth,
   consultationController.rateConsultation

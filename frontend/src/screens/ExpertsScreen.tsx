@@ -10,26 +10,19 @@ import { ExpertService } from '../services/expertService';
 import { FadeInView } from '../components/AnimatedViews';
 import { useSocket } from '../context/SocketContext';
 import { cacheService, CACHE_KEYS } from '../services/cacheService';
+import { useFocusEffect } from '@react-navigation/native';
+import ExpertBookingModal from '../components/ExpertBookingModal';
 
 const ExpertsScreen = () => {
   const { colors } = useTheme();
   const { subscribe } = useSocket();
   const [selectedExpert, setSelectedExpert] = useState<Expert | null>(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [experts, setExperts] = useState<Expert[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-
-  // Initialize from cache on mount
-  useEffect(() => {
-    const cachedExperts = cacheService.get<Expert[]>(CACHE_KEYS.EXPERTS);
-    if (cachedExperts && cachedExperts.length > 0) {
-      setExperts(cachedExperts);
-      setLoading(false);
-    }
-    setIsInitialized(true);
-  }, []);
 
   const loadExperts = useCallback(async () => {
     try {
@@ -44,12 +37,21 @@ const ExpertsScreen = () => {
     }
   }, []);
 
-  // Load fresh data after initialization
+  // Auto-refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      // Small delay to ensure backend update has propagated
+      const timer = setTimeout(() => {
+        loadExperts();
+      }, 500); // 500ms delay
+      return () => clearTimeout(timer);
+    }, [loadExperts])
+  );
+
+  // Initialize from cache on mount
   useEffect(() => {
-    if (isInitialized) {
-      loadExperts();
-    }
-  }, [isInitialized, loadExperts]);
+    // ... existing cache init logic
+  }, []);
 
   useEffect(() => {
     const events = ['EXPERT_CREATE', 'EXPERT_UPDATE', 'USER_UPDATE'];
@@ -77,8 +79,12 @@ const ExpertsScreen = () => {
   };
 
   const handleBookConsultation = () => {
-    console.log('Booking consultation with:', selectedExpert?.name);
-    handleCloseProfile();
+    setShowBookingModal(true);
+  };
+
+  const handleBookingComplete = () => {
+    setShowBookingModal(false);
+    setSelectedExpert(null);
   };
 
   const filteredExperts = experts.filter(expert =>
@@ -128,7 +134,7 @@ const ExpertsScreen = () => {
       />
 
       <Modal
-        visible={!!selectedExpert}
+        visible={!!selectedExpert && !showBookingModal}
         animationType="slide"
         presentationStyle="pageSheet"
         onRequestClose={handleCloseProfile}
@@ -141,6 +147,19 @@ const ExpertsScreen = () => {
           />
         )}
       </Modal>
+
+      {selectedExpert && (
+        <ExpertBookingModal
+          visible={showBookingModal}
+          expert={{
+            id: selectedExpert.id,
+            name: selectedExpert.name,
+            hourlyRate: selectedExpert.consultationFee
+          }}
+          onClose={() => setShowBookingModal(false)}
+          onBookingComplete={handleBookingComplete}
+        />
+      )}
     </View>
   );
 };

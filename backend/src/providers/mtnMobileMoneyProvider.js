@@ -1,7 +1,4 @@
-/**
- * Mock MTN Mobile Money Provider for Testing
- * Simulates MTN Mobile Money API responses
- */
+const db = require('../models');
 
 class MTNMobileMoneyProvider {
   constructor() {
@@ -26,25 +23,33 @@ class MTNMobileMoneyProvider {
 
     // Auto-complete after 5 seconds (simulation)
     setTimeout(async () => {
-      const payment = this.pendingPayments.get(reference);
-      if (payment) {
-        payment.status = 'completed';
-        payment.completedAt = new Date();
+      try {
+        const payment = this.pendingPayments.get(reference);
+        if (payment) {
+          payment.status = 'completed';
+          payment.completedAt = new Date();
 
-        // Update database Transaction record
-        try {
-          const db = require('../models');
-          const txToUpdate = await db.Transaction.findOne({
-            where: { payment_reference: reference }
-          });
-          if (txToUpdate) {
-            await txToUpdate.update({ payment_status: 'completed' });
+          // Update database Transaction record
+          try {
+            // Re-fetch to ensure we have fresh data
+            const txToUpdate = await db.Transaction.findOne({
+              where: { payment_reference: reference }
+            });
+
+            if (txToUpdate) {
+              await txToUpdate.update({ payment_status: 'completed' });
+              console.log(`[MockMTN] DB Updated for ${reference}`);
+            } else {
+              console.warn(`[MockMTN] Transaction not found in DB for ${reference}`);
+            }
+          } catch (dbError) {
+            console.error('[MockMTN] Database update failed:', dbError);
           }
-        } catch (error) {
-          console.error('Mock payment DB update error:', error);
-        }
 
-        console.log(`[MockMTN] Payment ${reference} auto-completed`);
+          console.log(`[MockMTN] Payment ${reference} auto-completed in memory`);
+        }
+      } catch (err) {
+        console.error('[MockMTN] Callback error:', err);
       }
     }, 5000);
 

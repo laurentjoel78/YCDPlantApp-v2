@@ -177,7 +177,7 @@ export default function OrdersScreen() {
                     <Text style={styles.emptyText}>No orders found</Text>
                     <TouchableOpacity
                         style={styles.shopButton}
-                        onPress={() => navigation.navigate('Marketplace')}
+                        onPress={() => navigation.navigate('Main', { screen: 'Marketplace' })}
                     >
                         <Text style={styles.shopButtonText}>Start Shopping</Text>
                     </TouchableOpacity>

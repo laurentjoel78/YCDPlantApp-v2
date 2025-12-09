@@ -17,12 +17,15 @@ interface ExpertBookingModalProps {
     onBookingComplete: () => void;
 }
 
+import { useNavigation } from '@react-navigation/native';
+
 export default function ExpertBookingModal({
     visible,
     expert,
     onClose,
     onBookingComplete
 }: ExpertBookingModalProps) {
+    const navigation = useNavigation<any>();
     const [loading, setLoading] = useState(false);
     const [scheduledDate, setScheduledDate] = useState('');
     const [duration, setDuration] = useState(60); // minutes
@@ -57,9 +60,19 @@ export default function ExpertBookingModal({
                 totalCost
             });
 
-            Alert.alert('Success', 'Booking created! Payment processing...');
-            onBookingComplete();
-            onClose();
+            if (response.success) {
+                onBookingComplete();
+                onClose();
+                // Navigate to PaymentModal for verification
+                navigation.navigate('PaymentModal', {
+                    payment: response.data.payment,
+                    order: {
+                        id: response.data.consultation.id,
+                        total: totalCost
+                    },
+                    paymentType: 'consultation'
+                });
+            }
         } catch (error: any) {
             console.error('Booking error:', error);
             Alert.alert('Error', error.message || 'Failed to create booking');

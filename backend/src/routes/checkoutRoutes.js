@@ -25,13 +25,13 @@ router.post('/verify-payment', checkoutController.verifyPayment);
  * @desc    Get user's orders
  * @access  Private
  */
-router.get('/orders', checkoutController.getOrders);
+router.get('/', checkoutController.getOrders);
 
 /**
  * @route   GET /api/orders/:orderId
  * @desc    Get single order details
  * @access  Private
  */
-router.get('/orders/:orderId', checkoutController.getOrderDetails);
+router.get('/:orderId', checkoutController.getOrderDetails);
 
 module.exports = router;

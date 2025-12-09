@@ -259,7 +259,7 @@ exports.getOrders = async (req, res) => {
 
         const orders = await Order.findAll({
             where,
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
 
         res.json({

@@ -50,6 +50,7 @@ module.exports = function defineAssociations(models) {
   User.hasMany(Order, { as: 'sellerOrders', foreignKey: 'seller_id' });
   User.hasMany(Farm, { as: 'farms', foreignKey: 'farmer_id' });
   User.hasMany(MarketReview, { foreignKey: 'user_id', as: 'marketReviews' });
+  User.hasOne(Expert, { foreignKey: 'user_id', as: 'expertProfile' });
 
   // Farm associations
   Farm.belongsTo(User, { as: 'farmer', foreignKey: 'farmer_id' });

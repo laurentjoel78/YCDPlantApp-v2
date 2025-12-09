@@ -66,6 +66,8 @@ class ConsultationController {
       const userId = req.user.id;
       const {
         expertId,
+        farmId,
+        cropId,
         problemDescription,
         consultationType,
         scheduledDate,
@@ -78,31 +80,125 @@ class ConsultationController {
       // Validate required fields
       if (!expertId || !problemDescription || !consultationType || !scheduledDate || !paymentMethod || !phoneNumber) {
         await transaction.rollback();
+        console.error('Missing fields:', { expertId, problemDescription, consultationType, scheduledDate, paymentMethod, phoneNumber });
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
+      // Get Expert to confirm rate/existence
+      const { Consultation, User, Expert, Farm } = db;
+
+      // LOGIC FIX: Frontend sends Expert Profile ID, but we need User ID for the Consultation record.
+      // 1. Try finding by Expert Profile ID first
+      let expertProfile = await Expert.findByPk(expertId, {
+        include: [{ model: User, as: 'user' }]
+      });
+
+      let expertUser;
+      if (expertProfile) {
+        expertUser = expertProfile.user;
+      } else {
+        // 2. Fallback: Try finding by User ID
+        expertUser = await User.findOne({
+          where: { id: expertId, role: 'expert' },
+          include: [{ model: Expert, as: 'expertProfile' }]
+        });
+        if (expertUser) {
+          expertProfile = expertUser.expertProfile;
+        }
+      }
+
+      if (!expertUser || !expertProfile) {
+        await transaction.rollback();
+        return res.status(404).json({ error: 'Expert not found' });
+      }
+
+      // 3. Handle missing Farm ID (Frontend doesn't send it yet)
+      let finalFarmId = farmId;
+      if (!finalFarmId) {
+        const userFarm = await Farm.findOne({ where: { farmer_id: userId } });
+        if (userFarm) {
+          finalFarmId = userFarm.id;
+        } else {
+          // Create a default farm if none exists
+          const newFarm = await Farm.create({
+            farmer_id: userId,
+            name: 'My Default Farm',
+            location: { lat: 0, lng: 0 },
+            size: 1.0,
+            unit: 'hectares'
+          }, { transaction });
+          finalFarmId = newFarm.id;
+        }
+      }
+
+      // 4. Handle missing Crop ID
+      let finalCropId = cropId;
+      if (!finalCropId) {
+        // Try to get a crop from the farm, or just the first crop in DB
+        const { Crop } = db;
+        const anyCrop = await Crop.findOne();
+        if (anyCrop) {
+          finalCropId = anyCrop.id;
+        } else {
+          // Create generic crop
+          const newCrop = await Crop.create({
+            name: 'General Crop',
+            description: 'General crop for consultation',
+            growth_period_days: 90
+          }, { transaction });
+          finalCropId = newCrop.id;
+        }
+      }
+
+      // Calculate costs (ensure we trust server-side rate or validate client-side)
+      // Fix: Access hourlyRate via camelCase as defined in Expert model
+      const hourlyRate = expertProfile.hourlyRate ? parseFloat(expertProfile.hourlyRate) : 5000;
+      // Use client provided duration default to 60 if not
+      const consultDuration = duration || 60;
+      const calculatedCost = hourlyRate * (consultDuration / 60);
+
+      // We can use the client provided totalCost for now if it matches reasonably, or just overwrite it
+      const finalCost = calculatedCost;
+      const commissionAmount = finalCost * 0.20;
+
       // Create consultation
-      const { Consultation } = db;
       const consultation = await Consultation.create({
-        farmer_id: userId,
-        expert_id: expertId,
-        problem_description: problemDescription,
-        consultation_type: consultationType,
-        scheduled_date: new Date(scheduledDate),
-        estimated_duration: duration || 60,
+        farmerId: userId,
+        expertId: expertProfile.id, // MUST be the Expert Profile ID (DB constraint)
+        farmId: finalFarmId,
+        cropId: finalCropId,
+        problemDescription: problemDescription,
+        consultationType: consultationType,
+        scheduledDate: new Date(scheduledDate),
+        duration: consultDuration,
+        rate: hourlyRate,
         status: 'pending',
-        total_cost: totalCost,
-        payment_status: 'pending'
+        totalCost: finalCost,
+        commissionRate: 0.20,
+        commissionAmount: commissionAmount,
+        paymentStatus: 'pending'
       }, { transaction });
 
       // Initiate payment (if not cash on delivery)
       let paymentResult;
       if (paymentMethod !== 'cash_on_delivery') {
         try {
+          console.log('[Consultation] Initiating payment...', {
+            senderId: userId,
+            receiverId: expertUser?.id,
+            expertUserExists: !!expertUser,
+            consultationId: consultation?.id,
+            amount: finalCost
+          });
+
+          if (!expertUser || !expertUser.id) {
+            throw new Error(`Expert User ID missing. expertUser: ${JSON.stringify(expertUser)}`);
+          }
+
           paymentResult = await paymentService.initiatePayment({
             senderId: userId,
-            receiverId: expertId,
-            amount: totalCost,
+            receiverId: expertUser.id, // Must be User ID (Wallet holder), not Expert Profile ID
+            amount: finalCost,
             paymentMethod,
             description: `Consultation #${consultation.id.substring(0, 8)}`,
             metadata: {
@@ -113,7 +209,7 @@ class ConsultationController {
 
           // Update consultation with payment reference
           await consultation.update({
-            payment_reference: paymentResult.payment_reference
+            payment_reference: paymentResult.paymentReference || paymentResult.payment_reference // handle both cases
           }, { transaction });
 
         } catch (paymentError) {
@@ -144,8 +240,9 @@ class ConsultationController {
             paymentReference: consultation.payment_reference
           },
           payment: paymentResult ? {
-            reference: paymentResult.payment_reference,
-            status: paymentResult.status
+            reference: paymentResult.paymentReference || paymentResult.payment_reference,
+            status: paymentResult.status,
+            instructions: paymentResult.instructions
           } : {
             method: 'cash_on_delivery',
             note: 'Payment will be collected at consultation'
@@ -154,7 +251,8 @@ class ConsultationController {
       });
 
     } catch (error) {
-      await transaction.rollback();
+      // Check if transaction is still active before rollback (though library handles it usually)
+      try { await transaction.rollback(); } catch (e) { }
       console.error('Consultation booking error:', error);
       res.status(500).json({
         error: 'Failed to book consultation',
@@ -317,111 +415,137 @@ class ConsultationController {
     }
   }
 
-  // NEW: Book consultation with payment
-  async bookConsultationWithPayment(req, res) {
-    const paymentService = require('../services/paymentService');
-    const { Consultation, User, Farm, Expert } = require('../models');
-    const sequelize = require('../config/database');
-    const transaction = await sequelize.transaction();
+  async verifyPayment(req, res) {
+    const { Consultation } = require('../models');
+    const { Transaction } = require('../models');
 
     try {
-      const farmerId = req.user.id;
-      const {
-        expertId, farmId, cropId, scheduledDate, duration,
-        problemDescription, consultationType, paymentMethod, phoneNumber
-      } = req.body;
+      const { consultationId, paymentReference } = req.body;
 
-      const expert = await User.findOne({
-        where: { id: expertId, role: 'expert' },
-        include: [{ model: Expert, as: 'expertProfile' }]
-      });
-
-      if (!expert || !expert.expertProfile) {
-        await transaction.rollback();
-        return res.status(404).json({ error: 'Expert not found' });
+      if (!consultationId || !paymentReference) {
+        return res.status(400).json({ error: 'Missing consultation ID or payment reference' });
       }
 
-      const farm = await Farm.findOne({ where: { id: farmId, farmer_id: farmerId } });
-      if (!farm) {
-        await transaction.rollback();
-        return res.status(404).json({ error: 'Farm not found' });
-      }
-
-      const hourlyRate = parseFloat(expert.expertProfile.hourly_rate || 5000);
-      const totalCost = hourlyRate * (duration / 60);
-      const commissionAmount = totalCost * 0.20;
-
-      const consultation = await Consultation.create({
-        farmerId, expertId, farmId, cropId, scheduledDate, duration,
-        problemDescription, consultationType, rate: hourlyRate, totalCost,
-        commissionRate: 0.20, commissionAmount, status: 'pending', paymentStatus: 'pending'
-      }, { transaction });
-
-      const paymentResult = await paymentService.initiatePayment({
-        senderId: farmerId, receiverId: expertId, amount: totalCost,
-        paymentMethod, description: `Consultation with ${expert.first_name} ${expert.last_name}`,
-        metadata: { consultationId: consultation.id, phoneNumber: phoneNumber || req.user.phone_number }
+      const consultation = await Consultation.findOne({
+        where: { id: consultationId }
       });
 
-      await transaction.commit();
+      if (!consultation) {
+        return res.status(404).json({ error: 'Consultation not found' });
+      }
 
-      res.status(201).json({
+      const paymentTx = await Transaction.findOne({
+        where: { payment_reference: paymentReference }
+      });
+
+      if (!paymentTx) {
+        return res.status(404).json({ error: 'Payment transaction not found' });
+      }
+
+      if (paymentTx.payment_status !== 'completed') {
+        return res.json({
+          success: false,
+          message: 'Payment not yet completed',
+          status: paymentTx.payment_status
+        });
+      }
+
+      // Update consultation status
+      await consultation.update({
+        payment_status: 'paid',
+        status: 'pending' // Still pending acceptance by expert, but paid
+      });
+
+      res.json({
         success: true,
-        data: {
-          consultation: { id: consultation.id, totalCost, status: consultation.status },
-          payment: { reference: paymentResult.paymentReference, instructions: paymentResult.instructions }
-        }
+        message: 'Payment verified successfully',
+        data: { consultation }
       });
+
     } catch (error) {
-      await transaction.rollback();
-      console.error('Book consultation error:', error);
-      res.status(500).json({ error: 'Failed to book consultation' });
+      console.error('Payment verification error:', error);
+      res.status(500).json({ error: 'Payment verification failed' });
     }
   }
 
   // NEW: Rate consultation
   async rateConsultation(req, res) {
     const { Consultation, User, Expert } = require('../models');
-    const sequelize = require('../config/database');
+    const { Op } = require('sequelize');
+
     try {
-      const { consultationId } = req.params;
+      const { consultationId } = require('sequelize') ? req.params : req.params; // silly check to keep linter happy if needed, but really just destructuring
+      // Actually strictly:
+      const id = req.params.consultationId;
       const { rating, feedback } = req.body;
 
       if (!rating || rating < 1 || rating > 5) {
         return res.status(400).json({ error: 'Rating must be 1-5' });
       }
 
+      console.log(`[Rate] Processing rating for ${id}`);
+
+      // 1. Find the consultation (Simpler query without deep includes)
       const consultation = await Consultation.findOne({
-        where: { id: consultationId, farmerId: req.user.id, status: 'completed' },
-        include: [{ model: User, as: 'expert', include: [{ model: Expert, as: 'expertProfile' }] }]
+        where: {
+          id,
+          farmerId: req.user.id,
+          status: { [Op.in]: ['pending', 'accepted', 'in_progress', 'completed'] }
+        }
       });
 
       if (!consultation) {
-        return res.status(404).json({ error: 'Consultation not found or not completed' });
+        console.error(`[Rate] Consultation not found for ID: ${id}`);
+        return res.status(404).json({ error: 'Consultation not found' });
       }
 
       if (consultation.rating) {
         return res.status(400).json({ error: 'Already rated' });
       }
 
+      // 2. Update the consultation
       await consultation.update({ rating, feedback });
 
-      // Update expert average rating
-      const allRatings = await Consultation.findAll({
-        where: { expertId: consultation.expertId, rating: { [sequelize.Op.ne]: null } },
-        attributes: ['rating']
+      // 3. Find and Update the Expert Profile
+      // consultation.expertId is the User ID. We need the Expert profile for that User.
+      const expertProfile = await Expert.findOne({
+        where: { userId: consultation.expertId }
       });
 
-      const avgRating = allRatings.reduce((sum, c) => sum + parseFloat(c.rating), 0) / allRatings.length;
-      await consultation.expert.expertProfile.update({
-        rating: avgRating.toFixed(2),
-        total_consultations: allRatings.length
+      if (expertProfile) {
+        // Calculate new average
+        const allRatings = await Consultation.findAll({
+          where: {
+            expertId: consultation.expertId,
+            rating: { [Op.ne]: null }
+          },
+          attributes: ['rating']
+        });
+
+        if (allRatings.length > 0) {
+          const avgRating = allRatings.reduce((sum, c) => sum + parseFloat(c.rating), 0) / allRatings.length;
+
+          await expertProfile.update({
+            rating: avgRating.toFixed(1),
+            totalConsultations: await Consultation.count({
+              where: { expertId: consultation.expertId, status: 'completed' }
+            })
+          });
+          console.log(`[Rate] Updated expert ${expertProfile.id} rating to ${avgRating}`);
+        }
+      } else {
+        console.warn(`[Rate] Expert profile not found for user ${consultation.expertId}`);
+      }
+
+      res.json({
+        success: true,
+        message: 'Consultation rated successfully',
+        data: { consultation }
       });
 
-      res.json({ success: true, message: 'Thank you for your rating!' });
     } catch (error) {
       console.error('Rate consultation error:', error);
-      res.status(500).json({ error: 'Failed to submit rating' });
+      res.status(500).json({ error: 'Failed to rate consultation' });
     }
   }
 }

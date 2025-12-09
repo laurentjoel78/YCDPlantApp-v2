@@ -60,11 +60,36 @@ export default function PaymentModalScreen() {
 
         setVerifying(true);
         try {
-            const response = await api.checkout.verifyPayment(order.id, payment.reference);
+            let response;
+            // Check payment type to determine which API to call
+            const paymentType = (route.params as any).paymentType || 'order';
+
+            if (paymentType === 'consultation') {
+                response = await api.consultations.verifyPayment(order.id, payment.reference);
+            } else {
+                response = await api.checkout.verifyPayment(order.id, payment.reference);
+            }
 
             if (response.success) {
                 // Payment confirmed!
-                navigation.replace('OrderSuccess', { order: response.data.order });
+                let successData;
+                if (paymentType === 'consultation') {
+                    // Map consultation data to order format for success screen
+                    const cons = response.data.consultation;
+                    successData = {
+                        id: cons.id,
+                        total: cons.totalCost,
+                        status: 'paid', // Consultation is paid
+                        type: 'consultation'
+                    };
+                } else {
+                    successData = {
+                        ...response.data.order,
+                        type: 'order'
+                    };
+                }
+
+                navigation.replace('OrderSuccess', { order: successData });
             } else {
                 // Payment still pending, retry
                 setRetryCount(prev => prev + 1);
