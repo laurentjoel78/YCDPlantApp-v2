@@ -93,6 +93,13 @@ export const api = {
         identifyDisease: (formData: FormData) => request<{ success: boolean; data: any }>(`/crops/identify-disease`, { method: 'POST', body: formData }),
         seasonal: (month: string) => request<{ crops: any[] }>(`/crops/seasonal?month=${encodeURIComponent(month)}`),
     },
+    chatbot: {
+        sendMessage: (message: string, language: string = 'en', isVoice: boolean = false, farmId?: string) =>
+            request<{ success: boolean; data: { text: string; suggestions?: string[]; audioUrl?: string; intent?: string } }>('/chatbot/message', {
+                method: 'POST',
+                body: JSON.stringify({ message, language, isVoice, farmId })
+            }),
+    },
     suggestions: {
         // Authenticated suggestions (include token in headers)
         get: (token: string) => {

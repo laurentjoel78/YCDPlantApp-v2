@@ -10,6 +10,7 @@ import {
 import { Text, TextInput, ActivityIndicator, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ChatService, Message } from '../services/chatService';
+import { api } from '../services/api';
 
 export default function AIAssistantScreen() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -47,13 +48,15 @@ export default function AIAssistantScreen() {
     setSuggestedActions([]);
 
     try {
-      const response = await ChatService.sendMessage(inputText);
-      const aiMessage = ChatService.createMessage(response.text, 'ai');
+      // Use the real backend API
+      const response = await api.chatbot.sendMessage(inputText.trim(), 'en');
+      const aiMessage = ChatService.createMessage(response.data.text, 'ai');
       setMessages(prev => [...prev, aiMessage]);
-      setSuggestedActions(response.suggestedActions || []);
+      setSuggestedActions(response.data.suggestions || []);
     } catch (error) {
+      console.error('Chatbot error:', error);
       const errorMessage = ChatService.createMessage(
-        'Sorry, I encountered an error. Please try again.',
+        'Sorry, I encountered an error connecting to the AI. Please try again.',
         'ai'
       );
       setMessages(prev => [...prev, errorMessage]);
