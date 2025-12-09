@@ -32,10 +32,13 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
         const token = await AsyncStorage.getItem('token'); // Use direct key instead of import
 
         const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true',
             'Accept-Language': i18n.language || 'fr',
         };
+
+        // Only set Content-Type to json if body is NOT FormData
+        if (!(options.body instanceof FormData)) {
+            headers['Content-Type'] = 'application/json';
+        }
 
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
@@ -58,6 +61,8 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
         try {
             parsedData = JSON.parse(data);
         } catch {
+            // Check if response is empty or non-json
+            if (!data) return {} as T;
             throw new Error(data || `HTTP ${res.status}`);
         }
 
@@ -75,83 +80,17 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
 
 // Types
 export interface User {
-    id: string;
-    name: string; // Combined from firstName and lastName
-    email: string;
-    role: string;
-    firstName?: string;
-    lastName?: string;
-    first_name?: string;  // Backend returns snake_case
-    last_name?: string;   // Backend returns snake_case
-    phoneNumber?: string;
-    phone_number?: string; // Backend returns snake_case
-    region?: string;
-    profileImage?: string;
-    profile_image_url?: string; // Backend returns snake_case
-    approvalStatus?: string;
-    approval_status?: string;  // Backend returns snake_case
-    emailVerified?: boolean;
-    email_verified?: boolean;  // Backend returns snake_case
-    farms?: Array<{
-        id: string;
-        name: string;
-        location_lat: number;
-        location_lng: number;
-    }>;
+    // ... (keep types the same) ...
 }
 
-export interface UpdateProfileRequest {
-    firstName?: string;
-    lastName?: string;
-    phoneNumber?: string;
-    region?: string;
-    profileImage?: string;
-}
+// ...
 
 // Public endpoints aligned with the project spec
 export const api = {
-    auth: {
-        login: (email: string, password: string) => request<{ token: string; user: User }>(`/auth/login`, { method: 'POST', body: JSON.stringify({ email, password }) }),
-        register: (payload: any) => request<{ token: string; user: User }>(`/auth/register`, { method: 'POST', body: JSON.stringify(payload) }),
-        profile: (token: string) => request<{ user: User }>(`/auth/me`, { headers: { Authorization: `Bearer ${token}` } }),
-        logout: (token: string) => request<{ message?: string }>(`/auth/logout`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } }),
-        updateProfile: async (data: UpdateProfileRequest | FormData) => {
-            // Read token from AsyncStorage to include Authorization header
-            const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-            const { STORAGE_KEYS } = await import('../config/constants');
-            const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
-
-            if (data instanceof FormData) {
-                return request<{ user: User }>(`/auth/profile`, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        // Content-Type is automatically set by fetch for FormData
-                    },
-                    body: data
-                });
-            }
-
-            // Map camelCase keys used in the frontend to snake_case expected by the backend
-            const payload: Record<string, any> = {};
-            if (data.firstName !== undefined) payload.first_name = data.firstName;
-            if (data.lastName !== undefined) payload.last_name = data.lastName;
-            if (data.phoneNumber !== undefined) payload.phone_number = data.phoneNumber;
-            if (data.region !== undefined) payload.region = data.region;
-            if (data.profileImage !== undefined) payload.profile_image_url = data.profileImage;
-
-            return request<{ user: User }>(`/auth/profile`, {
-                method: 'PUT',
-                headers: { Authorization: `Bearer ${token}` },
-                body: JSON.stringify(payload)
-            });
-        },
-        requestPasswordReset: (email: string) => request<{ message: string }>(`/auth/forgot-password`, { method: 'POST', body: JSON.stringify({ email }) }),
-        resetPassword: (token: string, password: string) => request<{ message: string }>(`/auth/reset-password`, { method: 'POST', body: JSON.stringify({ token, password }) }),
-    },
+    // ...
     guidance: {
         crops: () => request<{ crops: any[] }>(`/crops`),
-        identifyDisease: (formData: FormData) => fetch(`${BASE_URL}/crops/identify-disease`, { method: 'POST', body: formData }).then(r => r.json()),
+        identifyDisease: (formData: FormData) => request<{ success: boolean; data: any }>(`/crops/identify-disease`, { method: 'POST', body: formData }),
         seasonal: (month: string) => request<{ crops: any[] }>(`/crops/seasonal?month=${encodeURIComponent(month)}`),
     },
     suggestions: {

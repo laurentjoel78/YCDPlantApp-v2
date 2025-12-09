@@ -1,15 +1,5 @@
-const nodemailer = require('nodemailer');
-
-// Configure email transporter
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD
-  }
-});
+const emailService = require('../services/emailService');
+const { User } = require('../models');
 
 // Send notification through various channels (email, in-app, etc.)
 exports.sendNotification = async (userId, type, data) => {
@@ -34,14 +24,9 @@ exports.sendNotification = async (userId, type, data) => {
 const sendEmailNotification = async (user, type, data) => {
   const emailContent = generateEmailContent(type, data);
 
-  const mailOptions = {
-    from: process.env.SMTP_FROM,
-    to: user.email,
-    subject: emailContent.subject,
-    html: emailContent.body
-  };
-
-  await transporter.sendMail(mailOptions);
+  // Use the centralized email service
+  // Note: legacy vars SMTP_FROM vs EMAIL_FROM are handled by existing emailService config
+  await emailService.sendEmail(user.email, emailContent.subject, emailContent.body);
 };
 
 // Generate email content based on notification type
