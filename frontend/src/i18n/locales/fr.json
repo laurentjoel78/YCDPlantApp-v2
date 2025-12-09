@@ -9,7 +9,8 @@
     "delete": "Supprimer",
     "edit": "Modifier",
     "loading": "Chargement...",
-    "or": "OU"
+    "or": "OU",
+    "comingSoon": "Bientôt disponible"
   },
   "navigation": {
     "back": "Retour",
@@ -56,7 +57,8 @@
     },
     "social": {
       "google": "Continuer avec Google",
-      "facebook": "Continuer avec Facebook"
+      "facebook": "Continuer avec Facebook",
+      "socialComingSoon": "La connexion avec {{provider}} sera disponible dans la prochaine mise à jour."
     },
     "forgotPassword": "Mot de passe oublié ?",
     "noAccount": "Vous n'avez pas de compte ?",
@@ -111,6 +113,21 @@
       "english": "English",
       "french": "Français"
     }
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Informations Personnelles",
+    "myFarms": "Mes Fermes",
+    "edit": "Modifier",
+    "phone": "Téléphone",
+    "location": "Localisation",
+    "settings": "Paramètres",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité & Sécurité",
+    "help": "Aide & Support",
+    "logout": "Déconnexion",
+    "logoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "logoutError": "Échec de la déconnexion. Veuillez réessayer."
   },
   "services": {
     "location": {

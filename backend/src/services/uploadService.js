@@ -38,6 +38,29 @@ const deleteImage = async (publicId) => {
 };
 
 module.exports = {
+    deleteImage
+};
+
+/**
+ * Upload a file from path to Cloudinary
+ * @param {string} filePath - The file path
+ * @param {string} folder - The folder to upload to
+ * @returns {Promise<Object>} - The Cloudinary upload result
+ */
+const uploadFile = async (filePath, folder = 'ycd_products') => {
+    try {
+        const result = await cloudinary.uploader.upload(filePath, {
+            folder: folder,
+            resource_type: 'auto'
+        });
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+module.exports = {
     uploadImage,
+    uploadFile,
     deleteImage
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     View, Text, StyleSheet, FlatList, TouchableOpacity,
-    ActivityIndicator, RefreshControl
+    ActivityIndicator, RefreshControl, Alert
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -73,7 +73,7 @@ export default function OrdersScreen() {
     const renderOrder = ({ item }: { item: Order }) => (
         <TouchableOpacity
             style={styles.orderCard}
-            onPress={() => navigation.navigate('OrderDetails', { orderId: item.id })}
+            onPress={() => Alert.alert('Order Details', `Order details for #${item.id.substring(0, 8)} will be available in the next update.`)}
         >
             <View style={styles.orderHeader}>
                 <View>

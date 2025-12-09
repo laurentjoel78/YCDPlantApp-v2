@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { TextInput, Button, Text, Title, Paragraph, ActivityIndicator } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
@@ -53,7 +53,10 @@ export default function LoginScreen({ navigation }: Props) {
 
   const handleSocialLogin = (provider: string) => {
     // TODO: Implement social login
-    console.log(`${provider} login clicked`);
+    Alert.alert(
+      t('common.comingSoon'),
+      t('auth.socialComingSoon', { provider: provider === 'google' ? 'Google' : 'Facebook' } as any)
+    );
   };
 
   return (

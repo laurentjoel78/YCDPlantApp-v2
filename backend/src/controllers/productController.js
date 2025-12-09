@@ -19,7 +19,15 @@ exports.createProduct = async (req, res) => {
 
     let imageUrls = [];
     if (req.files && req.files.length > 0) {
-      const uploadPromises = req.files.map(file => uploadImage(file.buffer));
+      const { uploadFile } = require('../services/uploadService');
+      const fs = require('fs').promises;
+
+      const uploadPromises = req.files.map(async file => {
+        const result = await uploadFile(file.path, 'ycd_products');
+        await fs.unlink(file.path).catch(console.error);
+        return result;
+      });
+
       const uploadResults = await Promise.all(uploadPromises);
       imageUrls = uploadResults.map(result => result.secure_url);
     } else if (req.body.images) {

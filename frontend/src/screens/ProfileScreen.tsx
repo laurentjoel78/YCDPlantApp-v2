@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,18 @@ import {
   Image,
   ActivityIndicator
 } from 'react-native';
-import { useNavigation, CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 import { authService as AuthService } from '../services/authService';
 import { theme } from '../theme';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const ProfileScreen = () => {
   const navigation = useNavigation<any>();
   const { logout: authLogout, user: authUser, isLoading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // Build display user from auth context - no separate API call needed!
   // Backend returns snake_case, so we check both variants
@@ -32,8 +33,6 @@ const ProfileScreen = () => {
     farms: authUser?.farms || [],
   };
 
-  console.log('ProfileScreen - Raw authUser:', JSON.stringify(authUser, null, 2));
-
   // Show loading only during auth initialization, not on every visit
   if (authLoading) {
     return (
@@ -45,25 +44,24 @@ const ProfileScreen = () => {
 
   const handleLogout = async () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      t('profile.logout'),
+      t('profile.logoutConfirm'),
       [
         {
-          text: 'Cancel',
+          text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: 'Logout',
+          text: t('profile.logout'),
           style: 'destructive',
           onPress: async () => {
             try {
               setLoading(true);
               await AuthService.logout();
-              // Use auth context logout to trigger root navigator update
               await authLogout();
             } catch (error) {
               console.error('Logout error:', error);
-              Alert.alert('Error', 'Failed to logout. Please try again.');
+              Alert.alert('Error', t('profile.logoutError'));
             } finally {
               setLoading(false);
             }
@@ -74,9 +72,11 @@ const ProfileScreen = () => {
   };
 
   const handleEditProfile = () => {
-    // TODO: Add EditProfile route to navigator first
-    Alert.alert('Coming Soon', 'Profile editing feature will be available soon!');
-    // navigation.navigate('EditProfile');
+    Alert.alert(t('common.comingSoon'), t('profile.edit') + ' - ' + t('common.loading'));
+  };
+
+  const handleComingSoon = (feature: string) => {
+    Alert.alert(t('common.comingSoon'), `${feature} will be available in the next update.`);
   };
 
   const renderProfileItem = (icon: string, title: string, value: string) => (
@@ -120,20 +120,20 @@ const ProfileScreen = () => {
 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={styles.sectionTitle}>{t('profile.personalInfo')}</Text>
           <TouchableOpacity onPress={handleEditProfile}>
-            <Text style={styles.editButton}>Edit</Text>
+            <Text style={styles.editButton}>{t('common.edit')}</Text>
           </TouchableOpacity>
         </View>
 
-        {renderProfileItem('phone', 'Phone', user.phone)}
-        {renderProfileItem('map-marker', 'Location', user.location)}
+        {renderProfileItem('phone', t('profile.phone'), user.phone)}
+        {renderProfileItem('map-marker', t('profile.location'), user.location)}
       </View>
 
       {/* Farms Section */}
       {user.farms && user.farms.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>My Farms ({user.farms.length})</Text>
+          <Text style={styles.sectionTitle}>{t('profile.myFarms')} ({user.farms.length})</Text>
           {user.farms.map((farm: any, index: number) => (
             <View key={farm.id || index} style={styles.farmItem}>
               <MaterialCommunityIcons name="barn" size={28} color={theme.colors.primary} />
@@ -149,30 +149,30 @@ const ProfileScreen = () => {
       )}
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Settings</Text>
+        <Text style={styles.sectionTitle}>{t('profile.settings')}</Text>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => handleComingSoon(t('profile.notifications'))}>
           <MaterialCommunityIcons name="bell-outline" size={24} color={theme.colors.text} />
-          <Text style={styles.menuText}>Notifications</Text>
+          <Text style={styles.menuText}>{t('profile.notifications')}</Text>
           <MaterialCommunityIcons name="chevron-right" size={24} color={theme.colors.placeholder} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => handleComingSoon(t('profile.privacy'))}>
           <MaterialCommunityIcons name="shield-check-outline" size={24} color={theme.colors.text} />
-          <Text style={styles.menuText}>Privacy & Security</Text>
+          <Text style={styles.menuText}>{t('profile.privacy')}</Text>
           <MaterialCommunityIcons name="chevron-right" size={24} color={theme.colors.placeholder} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => handleComingSoon(t('profile.help'))}>
           <MaterialCommunityIcons name="help-circle-outline" size={24} color={theme.colors.text} />
-          <Text style={styles.menuText}>Help & Support</Text>
+          <Text style={styles.menuText}>{t('profile.help')}</Text>
           <MaterialCommunityIcons name="chevron-right" size={24} color={theme.colors.placeholder} />
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <MaterialCommunityIcons name="logout" size={24} color="#FFF" />
-        <Text style={styles.logoutText}>Logout</Text>
+        <Text style={styles.logoutText}>{t('profile.logout')}</Text>
       </TouchableOpacity>
 
       <Text style={styles.version}>Version 1.0.0</Text>

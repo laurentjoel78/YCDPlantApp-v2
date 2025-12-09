@@ -16,7 +16,8 @@
     "delete": "Delete",
     "edit": "Edit",
     "loading": "Loading...",
-    "or": "OR"
+    "or": "OR",
+    "comingSoon": "Coming Soon"
   },
   "auth": {
     "signIn": "Sign In",
@@ -59,7 +60,8 @@
     },
     "social": {
       "google": "Continue with Google",
-      "facebook": "Continue with Facebook"
+      "facebook": "Continue with Facebook",
+      "socialComingSoon": "{{provider}} login will be available in the next update."
     },
     "forgotPassword": "Forgot Password?",
     "noAccount": "Don't have an account?",
@@ -111,6 +113,21 @@
       "english": "English",
       "french": "Français"
     }
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "myFarms": "My Farms",
+    "edit": "Edit",
+    "phone": "Phone",
+    "location": "Location",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "privacy": "Privacy & Security",
+    "help": "Help & Support",
+    "logout": "Logout",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "logoutError": "Failed to logout. Please try again."
   },
   "services": {
     "location": {

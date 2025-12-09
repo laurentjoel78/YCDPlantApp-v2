@@ -353,8 +353,12 @@ const updateProfile = async (req, res) => {
 
     if (req.file) {
       try {
-        const result = await uploadImage(req.file.buffer, 'ycd_profiles');
+        const { uploadFile } = require('../services/uploadService');
+        const fs = require('fs').promises;
+
+        const result = await uploadFile(req.file.path, 'ycd_profiles');
         updates.profile_image_url = result.secure_url;
+        await fs.unlink(req.file.path).catch(console.error);
       } catch (uploadError) {
         console.error('Error uploading profile image:', uploadError);
         return res.status(500).json({ error: 'Failed to upload profile image' });
