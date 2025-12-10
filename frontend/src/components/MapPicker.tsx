@@ -1,28 +1,12 @@
-import React, { useState, useEffect, Component, ErrorInfo, ReactNode } from 'react';
-import { View, StyleSheet, Dimensions, TextInput as RNTextInput } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Button, Text, IconButton, TextInput } from 'react-native-paper';
+import { WebView } from 'react-native-webview';
 import { useTranslation } from 'react-i18next';
 import * as Location from 'expo-location';
 
-// Error Boundary to catch map crashes
-class MapErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }> {
-  state = { hasError: false };
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('MapPicker Error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
+// MapTiler API Key
+const MAPTILER_API_KEY = '9lMTxlVC1EysZQBcOfdS';
 
 type MapPickerProps = {
   latitude: number;
@@ -31,27 +15,40 @@ type MapPickerProps = {
   style?: object;
 };
 
-// Fallback component when maps don't work
-function ManualLocationInput({
+export default function MapPicker({
   latitude,
   longitude,
-  onLocationSelect
-}: {
-  latitude: number;
-  longitude: number;
-  onLocationSelect: (lat: number, lng: number) => void;
-}) {
-  const { t } = useTranslation();
-  const [lat, setLat] = useState(latitude?.toString() || '');
-  const [lng, setLng] = useState(longitude?.toString() || '');
+  onLocationSelect,
+  style
+}: MapPickerProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [currentLat, setCurrentLat] = useState(latitude || 7.3697); // Default: Cameroon
+  const [currentLng, setCurrentLng] = useState(longitude || 12.3547);
+  const [locationError, setLocationError] = useState<string | null>(null);
   const [gettingLocation, setGettingLocation] = useState(false);
+  const webViewRef = useRef<WebView>(null);
+
+  const { t } = useTranslation();
+
+  // Update state when props change
+  useEffect(() => {
+    if (latitude && longitude) {
+      setCurrentLat(latitude);
+      setCurrentLng(longitude);
+    }
+  }, [latitude, longitude]);
+
+  // Get current location on mount
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
 
   const getCurrentLocation = async () => {
     setGettingLocation(true);
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        alert('Location permission is required');
+        setLocationError('Location permission required');
         return;
       }
 
@@ -61,283 +58,176 @@ function ManualLocationInput({
 
       const newLat = location.coords.latitude;
       const newLng = location.coords.longitude;
-      setLat(newLat.toString());
-      setLng(newLng.toString());
+      setCurrentLat(newLat);
+      setCurrentLng(newLng);
       onLocationSelect(newLat, newLng);
+
+      // Update map if webview is loaded
+      if (webViewRef.current) {
+        webViewRef.current.injectJavaScript(`
+          if (typeof map !== 'undefined' && typeof marker !== 'undefined') {
+            map.setView([${newLat}, ${newLng}], 13);
+            marker.setLatLng([${newLat}, ${newLng}]);
+          }
+          true;
+        `);
+      }
     } catch (err) {
       console.error('Error getting location:', err);
-      alert('Could not get current location');
+      setLocationError('Could not get location');
     } finally {
       setGettingLocation(false);
     }
   };
 
-  const handleLatChange = (text: string) => {
-    setLat(text);
-    const parsedLat = parseFloat(text);
-    const parsedLng = parseFloat(lng);
-    if (!isNaN(parsedLat) && !isNaN(parsedLng)) {
-      onLocationSelect(parsedLat, parsedLng);
+  // Handle messages from WebView (map clicks)
+  const handleWebViewMessage = (event: any) => {
+    try {
+      const data = JSON.parse(event.nativeEvent.data);
+      if (data.type === 'locationSelected') {
+        setCurrentLat(data.lat);
+        setCurrentLng(data.lng);
+        onLocationSelect(data.lat, data.lng);
+      }
+    } catch (e) {
+      console.error('Error parsing WebView message:', e);
     }
   };
 
-  const handleLngChange = (text: string) => {
-    setLng(text);
-    const parsedLat = parseFloat(lat);
-    const parsedLng = parseFloat(text);
-    if (!isNaN(parsedLat) && !isNaN(parsedLng)) {
-      onLocationSelect(parsedLat, parsedLng);
-    }
-  };
+  // MapTiler HTML with Leaflet
+  const mapHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
+    #map { width: 100%; height: 100%; }
+    .leaflet-control-attribution { font-size: 8px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    var map = L.map('map').setView([${currentLat}, ${currentLng}], 13);
+    
+    L.tileLayer('https://api.maptiler.com/maps/openstreetmap/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}', {
+      attribution: '© MapTiler © OpenStreetMap',
+      maxZoom: 19
+    }).addTo(map);
+    
+    var marker = L.marker([${currentLat}, ${currentLng}], { draggable: true }).addTo(map);
+    
+    // Handle marker drag
+    marker.on('dragend', function(e) {
+      var pos = marker.getLatLng();
+      window.ReactNativeWebView.postMessage(JSON.stringify({
+        type: 'locationSelected',
+        lat: pos.lat,
+        lng: pos.lng
+      }));
+    });
+    
+    // Handle map click
+    map.on('click', function(e) {
+      marker.setLatLng(e.latlng);
+      window.ReactNativeWebView.postMessage(JSON.stringify({
+        type: 'locationSelected',
+        lat: e.latlng.lat,
+        lng: e.latlng.lng
+      }));
+    });
+  </script>
+</body>
+</html>
+  `;
 
   return (
-    <View style={fallbackStyles.container}>
-      <Text style={fallbackStyles.title}>{t('farmer.registration.location')}</Text>
-      <Text style={fallbackStyles.hint}>
-        Enter coordinates manually or use your current location
-      </Text>
-
-      <Button
-        mode="outlined"
-        onPress={getCurrentLocation}
-        loading={gettingLocation}
-        disabled={gettingLocation}
-        style={fallbackStyles.locationButton}
-        icon="crosshairs-gps"
-      >
-        {gettingLocation ? 'Getting Location...' : 'Use My Current Location'}
-      </Button>
-
-      <View style={fallbackStyles.inputRow}>
-        <TextInput
-          label="Latitude"
-          value={lat}
-          onChangeText={handleLatChange}
-          keyboardType="numeric"
-          style={fallbackStyles.input}
-          mode="outlined"
-        />
-        <TextInput
-          label="Longitude"
-          value={lng}
-          onChangeText={handleLngChange}
-          keyboardType="numeric"
-          style={fallbackStyles.input}
-          mode="outlined"
-        />
-      </View>
-
-      {lat && lng && !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lng)) && (
-        <Text style={fallbackStyles.coordinates}>
-          📍 {parseFloat(lat).toFixed(6)}, {parseFloat(lng).toFixed(6)}
-        </Text>
+    <View style={[styles.container, style]}>
+      {locationError && (
+        <Text style={styles.errorText}>{locationError}</Text>
       )}
-    </View>
-  );
-}
 
-const fallbackStyles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 8,
-  },
-  hint: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 16,
-  },
-  locationButton: {
-    marginBottom: 16,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  coordinates: {
-    marginTop: 12,
-    fontSize: 14,
-    color: '#2E7D32',
-    textAlign: 'center',
-  },
-});
-
-export default function MapPicker({
-  latitude,
-  longitude,
-  onLocationSelect,
-  style
-}: MapPickerProps) {
-  const [mapAvailable, setMapAvailable] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(0.0922);
-  const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number } | null>(null);
-  const [locationError, setLocationError] = useState<string | null>(null);
-
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setLocationError(t(('services.location.permissionDenied') as any));
-          return;
-        }
-
-        const location = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.High,
-        });
-
-        setCurrentLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
-
-        // Auto-set location if not already set
-        if (!latitude && !longitude) {
-          onLocationSelect(location.coords.latitude, location.coords.longitude);
-        }
-      } catch (err) {
-        setLocationError(t(('services.location.unableToGet') as any));
-        console.warn('Error getting location:', err);
-      }
-    })();
-  }, []);
-
-  // Try to load MapView dynamically to catch import errors
-  let MapView: any = null;
-  let Marker: any = null;
-
-  try {
-    const maps = require('react-native-maps');
-    MapView = maps.default;
-    Marker = maps.Marker;
-  } catch (e) {
-    console.warn('react-native-maps failed to load:', e);
-    setMapAvailable(false);
-  }
-
-  // If maps aren't available, use fallback
-  if (!mapAvailable || !MapView) {
-    return (
-      <ManualLocationInput
-        latitude={latitude}
-        longitude={longitude}
-        onLocationSelect={onLocationSelect}
-      />
-    );
-  }
-
-  const initialRegion = {
-    latitude: latitude || currentLocation?.latitude || 7.3697,
-    longitude: longitude || currentLocation?.longitude || 12.3547,
-    latitudeDelta: zoomLevel,
-    longitudeDelta: zoomLevel * (Dimensions.get('window').width / Dimensions.get('window').height),
-  };
-
-  const handleMapPress = (event: any) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate;
-    onLocationSelect(latitude, longitude);
-    if (!isExpanded) {
-      setIsExpanded(true);
-    }
-  };
-
-  return (
-    <MapErrorBoundary
-      fallback={
-        <ManualLocationInput
-          latitude={latitude}
-          longitude={longitude}
-          onLocationSelect={onLocationSelect}
-        />
-      }
-    >
-      <View style={[styles.container, style]}>
-        {locationError && (
-          <Text style={styles.errorText}>{locationError}</Text>
-        )}
-        <View style={styles.header}>
-          <Text style={styles.title}>{t('farmer.registration.location')}</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>{t('farmer.registration.location')}</Text>
+        <View style={styles.headerButtons}>
+          <IconButton
+            icon="crosshairs-gps"
+            size={20}
+            onPress={getCurrentLocation}
+            disabled={gettingLocation}
+          />
           <IconButton
             icon={isExpanded ? 'chevron-up' : 'chevron-down'}
             onPress={() => setIsExpanded(!isExpanded)}
           />
         </View>
-
-        <View style={[
-          styles.mapContainer,
-          isExpanded ? styles.mapExpanded : styles.mapCollapsed
-        ]}>
-          <View style={styles.zoomControls}>
-            <IconButton
-              icon="plus"
-              size={24}
-              onPress={() => {
-                setZoomLevel(Math.max(zoomLevel / 2, 0.001));
-              }}
-            />
-            <IconButton
-              icon="minus"
-              size={24}
-              onPress={() => {
-                setZoomLevel(Math.min(zoomLevel * 2, 50));
-              }}
-            />
-          </View>
-          <MapView
-            style={[styles.map, isExpanded ? styles.mapExpanded : styles.mapCollapsed]}
-            initialRegion={initialRegion}
-            onPress={handleMapPress}
-            onRegionChangeComplete={(region: any) => {
-              setZoomLevel(region.latitudeDelta);
-              onLocationSelect(region.latitude, region.longitude);
-            }}
-            minZoomLevel={5}
-            maxZoomLevel={20}
-          >
-            {latitude && longitude && (
-              <Marker
-                coordinate={{
-                  latitude,
-                  longitude
-                }}
-                title={t('farmer.registration.location')}
-                description={t('farmer.registration.location')}
-                draggable
-                onDragEnd={(e: any) => {
-                  const { latitude, longitude } = e.nativeEvent.coordinate;
-                  onLocationSelect(latitude, longitude);
-                }}
-              />
-            )}
-          </MapView>
-        </View>
-
-        {isExpanded && (
-          <View style={styles.helpContainer}>
-            <Text style={styles.helper}>{t('farmer.registration.location')}</Text>
-            {latitude && longitude && (
-              <Text style={styles.coordinates}>
-                {t('farmer.registration.location')}: {latitude.toFixed(6)}, {longitude.toFixed(6)}
-              </Text>
-            )}
-          </View>
-        )}
       </View>
-    </MapErrorBoundary>
+
+      <View style={[
+        styles.mapContainer,
+        isExpanded ? styles.mapExpanded : styles.mapCollapsed
+      ]}>
+        <WebView
+          ref={webViewRef}
+          source={{ html: mapHtml }}
+          style={styles.webView}
+          onMessage={handleWebViewMessage}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          scrollEnabled={false}
+          bounces={false}
+        />
+      </View>
+
+      {/* Coordinates display */}
+      <View style={styles.coordinatesContainer}>
+        <Text style={styles.coordinatesLabel}>📍 Selected Location:</Text>
+        <Text style={styles.coordinates}>
+          {currentLat.toFixed(6)}, {currentLng.toFixed(6)}
+        </Text>
+      </View>
+
+      {/* Manual coordinate input */}
+      <View style={styles.manualInputContainer}>
+        <Text style={styles.manualInputLabel}>Or enter manually:</Text>
+        <View style={styles.inputRow}>
+          <TextInput
+            label="Lat"
+            value={currentLat.toString()}
+            onChangeText={(text) => {
+              const val = parseFloat(text);
+              if (!isNaN(val)) {
+                setCurrentLat(val);
+                onLocationSelect(val, currentLng);
+              }
+            }}
+            keyboardType="numeric"
+            style={styles.input}
+            mode="outlined"
+            dense
+          />
+          <TextInput
+            label="Lng"
+            value={currentLng.toString()}
+            onChangeText={(text) => {
+              const val = parseFloat(text);
+              if (!isNaN(val)) {
+                setCurrentLng(val);
+                onLocationSelect(currentLat, val);
+              }
+            }}
+            keyboardType="numeric"
+            style={styles.input}
+            mode="outlined"
+            dense
+          />
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -354,8 +244,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 4,
     backgroundColor: '#f5f5f5',
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,
@@ -364,46 +258,55 @@ const styles = StyleSheet.create({
   mapContainer: {
     overflow: 'hidden',
   },
-  map: {
-    width: Dimensions.get('window').width - 32,
-    alignSelf: 'center',
+  webView: {
+    flex: 1,
+    backgroundColor: '#e0e0e0',
   },
   mapCollapsed: {
     height: 200,
   },
   mapExpanded: {
-    height: Dimensions.get('window').height * 0.6,
+    height: Dimensions.get('window').height * 0.5,
   },
-  helpContainer: {
-    padding: 16,
-    backgroundColor: '#f5f5f5',
+  coordinatesContainer: {
+    padding: 12,
+    backgroundColor: '#e8f5e9',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
   },
-  helper: {
+  coordinatesLabel: {
     fontSize: 14,
-    color: '#666',
-    lineHeight: 20,
+    color: '#2E7D32',
+    fontWeight: '500',
   },
   coordinates: {
-    marginTop: 8,
-    fontSize: 12,
-    color: '#666',
+    fontSize: 13,
+    color: '#1B5E20',
     fontFamily: 'monospace',
   },
-  zoomControls: {
-    position: 'absolute',
-    right: 16,
-    top: 16,
-    zIndex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 8,
-    padding: 4,
+  manualInputContainer: {
+    padding: 12,
+    backgroundColor: '#fafafa',
+  },
+  manualInputLabel: {
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 8,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  input: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   errorText: {
     color: 'red',
     padding: 8,
     textAlign: 'center',
     backgroundColor: '#ffebee',
-    marginBottom: 8,
-    borderRadius: 4,
   },
 });
