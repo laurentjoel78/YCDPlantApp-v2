@@ -109,7 +109,7 @@ class AuditService {
         requestSize,
         responseSize,
         cache,
-        userId
+        user_id: userId
       });
 
       return logEntry;
@@ -132,19 +132,19 @@ class AuditService {
 
       const where = {};
 
-      if (userId) where.userId = userId;
-      if (actionType) where.actionType = actionType;
+      if (userId) where.user_id = userId;
+      if (actionType) where.action_type = actionType;
       if (startDate || endDate) {
-        where.createdAt = {};
-        if (startDate) where.createdAt['$gte'] = new Date(startDate);
-        if (endDate) where.createdAt['$lte'] = new Date(endDate);
+        where.created_at = {};
+        if (startDate) where.created_at['$gte'] = new Date(startDate);
+        if (endDate) where.created_at['$lte'] = new Date(endDate);
       }
 
       const logs = await AuditLog.findAndCountAll({
         where,
         limit,
         offset,
-        order: [['createdAt', 'DESC']]
+        order: [['created_at', 'DESC']]
       });
 
       return logs;
