@@ -41,6 +41,17 @@
         "projectId": "47ae6fd6-45d4-408c-a463-2ce4eec47373"
       }
     },
-    "owner": "laurentjoel"
+    "owner": "laurentjoel",
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableJetifier": true,
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
   }
 }
