@@ -3,21 +3,12 @@
 const { Model, DataTypes } = require('sequelize');
 
 const initModels = (sequelize) => {
-  class AuditLog extends Model {
-    static associate(models) {
-      // Define associations
-      this.belongsTo(models.User, {
-        foreignKey: 'userId',
-        as: 'user'
-      });
-    }
-  }
+  // NOTE: AuditLog is defined in auditLog.js - not duplicated here
 
   class UserActivityLog extends Model {
     static associate(models) {
-      // Define associations
       this.belongsTo(models.User, {
-        foreignKey: 'userId',
+        foreignKey: 'user_id',
         as: 'user'
       });
     }
@@ -29,104 +20,25 @@ const initModels = (sequelize) => {
     }
   }
 
-  AuditLog.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
-    },
-    userId: {
-      type: DataTypes.UUID,
-      allowNull: true,
-      references: {
-        model: 'users',
-        key: 'id'
-      }
-    },
-    userRole: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    actionType: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    tableAffected: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    recordId: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    oldValues: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
-    },
-    newValues: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
-    },
-    ipAddress: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    userAgent: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    sessionId: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    metadata: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
-    },
-    severity: {
-      type: DataTypes.ENUM('low', 'medium', 'high', 'critical'),
-      defaultValue: 'low'
-    }
-  }, {
-    sequelize,
-    modelName: 'AuditLog',
-    tableName: 'audit_logs',
-    indexes: [
-      {
-        fields: ['userId']
-      },
-      {
-        fields: ['actionType']
-      },
-      {
-        fields: ['tableAffected']
-      },
-      {
-        fields: ['createdAt']
-      }
-    ]
-  });
-
   UserActivityLog.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    userId: {
+    user_id: {
       type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id'
-      }
+      allowNull: true,
+      field: 'user_id'
     },
-    activityType: {
+    activity_type: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
+      field: 'activity_type'
     },
     description: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     metadata: {
       type: DataTypes.JSONB,
@@ -136,33 +48,27 @@ const initModels = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    deviceInfo: {
+    device_info: {
       type: DataTypes.JSONB,
-      defaultValue: {}
+      defaultValue: {},
+      field: 'device_info'
     },
     location: {
-      type: DataTypes.GEOMETRY('POINT'),
+      type: DataTypes.JSONB,
       allowNull: true
     },
     status: {
-      type: DataTypes.ENUM('success', 'failure', 'warning'),
+      type: DataTypes.STRING,
       defaultValue: 'success'
     }
   }, {
     sequelize,
     modelName: 'UserActivityLog',
     tableName: 'user_activity_logs',
-    indexes: [
-      {
-        fields: ['userId']
-      },
-      {
-        fields: ['activityType']
-      },
-      {
-        fields: ['createdAt']
-      }
-    ]
+    underscored: true,
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   });
 
   SystemLog.init({
@@ -171,49 +77,45 @@ const initModels = (sequelize) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    logLevel: {
-      type: DataTypes.ENUM('debug', 'info', 'warn', 'error', 'critical'),
-      defaultValue: 'info'
+    log_level: {
+      type: DataTypes.STRING,
+      defaultValue: 'info',
+      field: 'log_level'
     },
     module: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     message: {
       type: DataTypes.TEXT,
-      allowNull: false
-    },
-    errorDetails: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
-    },
-    requestId: {
-      type: DataTypes.STRING,
       allowNull: true
     },
-    performanceMetrics: {
+    error_details: {
       type: DataTypes.JSONB,
-      defaultValue: {}
+      defaultValue: {},
+      field: 'error_details'
+    },
+    request_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'request_id'
+    },
+    performance_metrics: {
+      type: DataTypes.JSONB,
+      defaultValue: {},
+      field: 'performance_metrics'
     }
   }, {
     sequelize,
     modelName: 'SystemLog',
     tableName: 'system_logs',
-    indexes: [
-      {
-        fields: ['logLevel']
-      },
-      {
-        fields: ['module']
-      },
-      {
-        fields: ['createdAt']
-      }
-    ]
+    underscored: true,
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   });
 
   const models = {
-    AuditLog,
     UserActivityLog,
     SystemLog
   };
