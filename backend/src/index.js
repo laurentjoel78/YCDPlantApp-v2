@@ -49,15 +49,9 @@ async function startServer() {
     console.log('Database connection has been established successfully.');
     console.log('Environment:', process.env.NODE_ENV);
 
-    // Sync database ONLY in development - NEVER in production
-    // In production, migrations handle the schema
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('Development mode: syncing database...');
-      await db.sequelize.sync({ alter: false });
-      console.log('Database synced');
-    } else {
-      console.log('Production mode: skipping sync (using migrations)');
-    }
+    // DISABLED: Sync causes issues with column naming in production
+    // Schema is handled by migrations only
+    console.log('Database sync disabled - using migrations for schema management');
 
     // Start server and bind to all interfaces
     server.listen(PORT, '0.0.0.0', () => {
