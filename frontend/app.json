@@ -1,45 +1,46 @@
 {
-    "expo": {
-        "name": "YCD Farmer Guide",
-        "slug": "ycd-farmer-guide",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./assets/icon.png",
-        "userInterfaceStyle": "light",
-        "splash": {
-            "image": "./assets/splash.png",
-            "resizeMode": "cover",
-            "backgroundColor": "#4CAF50"
-        },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "com.ycd.farmerguide"
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/icon.png",
-                "backgroundColor": "#4CAF50"
-            },
-            "package": "com.ycd.farmerguide",
-            "permissions": [
-                "CAMERA",
-                "READ_EXTERNAL_STORAGE",
-                "WRITE_EXTERNAL_STORAGE",
-                "ACCESS_FINE_LOCATION",
-                "ACCESS_COARSE_LOCATION"
-            ]
-        },
-        "web": {
-            "favicon": "./assets/icon.png"
-        },
-        "extra": {
-            "apiUrl": "https://ycdplantapp-production.up.railway.app/api",
-            "eas": {
-                "projectId": "ycd-farmer-guide"
-            }
-        }
-    }
+  "expo": {
+    "name": "YCD Farmer Guide",
+    "slug": "ycd-farmer-guide",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#4CAF50"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ycd.farmerguide"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#4CAF50"
+      },
+      "package": "com.ycd.farmerguide",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "apiUrl": "https://ycdplantapp-production.up.railway.app/api",
+      "eas": {
+        "projectId": "47ae6fd6-45d4-408c-a463-2ce4eec47373"
+      }
+    },
+    "owner": "laurentjoel"
+  }
 }
