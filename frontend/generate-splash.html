@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YCD Splash Screen Generator</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f0f0f0; 
+        }
+        .canvas-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        canvas { 
+            border: 2px solid #333; 
+            margin: 10px 0;
+        }
+        button { 
+            background: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover { background: #45a049; }
+        h2 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>YCD Farmer Guide - Splash Screen Generator</h1>
+    <p>Click the buttons below to download the splash screen images, then save them to your <code>frontend/assets/</code> folder.</p>
+    
+    <div class="canvas-container">
+        <div>
+            <h2>Splash Screen (1284 x 2778)</h2>
+            <canvas id="splashCanvas" width="1284" height="2778"></canvas>
+            <br>
+            <button onclick="downloadSplash()">Download splash.png</button>
+        </div>
+        
+        <div>
+            <h2>Icon (1024 x 1024)</h2>
+            <canvas id="iconCanvas" width="1024" height="1024"></canvas>
+            <br>
+            <button onclick="downloadIcon()">Download icon.png</button>
+        </div>
+    </div>
+
+    <script>
+        // Colors
+        const GREEN = '#4CAF50';
+        const WHITE = '#FFFFFF';
+        
+        function drawLogo(ctx, centerX, centerY, size) {
+            // Draw white circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, size, 0, 2 * Math.PI);
+            ctx.fillStyle = WHITE;
+            ctx.fill();
+            
+            // Draw wheat/plant icon
+            ctx.fillStyle = GREEN;
+            ctx.strokeStyle = GREEN;
+            ctx.lineWidth = size * 0.06;
+            ctx.lineCap = 'round';
+            
+            // Stem
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY + size * 0.6);
+            ctx.lineTo(centerX, centerY - size * 0.3);
+            ctx.stroke();
+            
+            // Leaves/grains - draw wheat-like pattern
+            const grainSize = size * 0.15;
+            const positions = [
+                { x: -0.2, y: -0.1 },
+                { x: 0.2, y: -0.1 },
+                { x: -0.25, y: 0.1 },
+                { x: 0.25, y: 0.1 },
+                { x: -0.2, y: 0.3 },
+                { x: 0.2, y: 0.3 },
+                { x: 0, y: -0.35 }
+            ];
+            
+            positions.forEach(pos => {
+                ctx.beginPath();
+                ctx.ellipse(
+                    centerX + size * pos.x, 
+                    centerY + size * pos.y, 
+                    grainSize, 
+                    grainSize * 0.5, 
+                    pos.x < 0 ? -0.5 : 0.5, 
+                    0, 
+                    2 * Math.PI
+                );
+                ctx.fill();
+            });
+        }
+        
+        function drawText(ctx, text, centerX, y, fontSize) {
+            ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+            ctx.fillStyle = WHITE;
+            ctx.textAlign = 'center';
+            ctx.fillText(text, centerX, y);
+        }
+        
+        // Draw Splash Screen
+        function drawSplash() {
+            const canvas = document.getElementById('splashCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Fill green background
+            ctx.fillStyle = GREEN;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw logo in center
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 - 100;
+            const logoSize = 180;
+            
+            drawLogo(ctx, centerX, centerY, logoSize);
+            
+            // Draw app name
+            drawText(ctx, 'YCD Farmer Guide', centerX, centerY + logoSize + 80, 72);
+        }
+        
+        // Draw Icon
+        function drawIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Fill green background
+            ctx.fillStyle = GREEN;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw logo in center
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 - 50;
+            const logoSize = 300;
+            
+            drawLogo(ctx, centerX, centerY, logoSize);
+            
+            // Draw app name
+            drawText(ctx, 'YCD Farmer Guide', centerX, centerY + logoSize + 100, 80);
+        }
+        
+        function downloadSplash() {
+            const canvas = document.getElementById('splashCanvas');
+            const link = document.createElement('a');
+            link.download = 'splash.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const link = document.createElement('a');
+            link.download = 'icon.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Initialize
+        drawSplash();
+        drawIcon();
+    </script>
+</body>
+</html>
