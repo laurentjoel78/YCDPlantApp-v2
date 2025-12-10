@@ -5,9 +5,8 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class AuditLog extends Model {
     static associate(models) {
-      // define associations here
       AuditLog.belongsTo(models.User, {
-        foreignKey: 'userId',
+        foreignKey: 'user_id',
         as: 'user'
       });
     }
@@ -19,33 +18,40 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    userId: {
+    user_id: {
       type: DataTypes.UUID,
-      allowNull: true
+      allowNull: true,
+      field: 'user_id'
     },
-    userRole: {
+    user_role: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
+      field: 'user_role'
     },
-    actionType: {
+    action_type: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
+      field: 'action_type'
     },
-    actionDescription: {
+    action_description: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true,
+      field: 'action_description'
     },
-    ipAddress: {
+    ip_address: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      field: 'ip_address'
     },
-    userAgent: {
+    user_agent: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      field: 'user_agent'
     },
-    deviceInfo: {
+    device_info: {
       type: DataTypes.JSONB,
-      allowNull: true
+      allowNull: true,
+      field: 'device_info'
     },
     location: {
       type: DataTypes.JSONB,
@@ -55,29 +61,34 @@ module.exports = (sequelize) => {
       type: DataTypes.JSONB,
       allowNull: true
     },
-    tableName: {
+    table_name: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      field: 'table_name'
     },
-    recordId: {
+    record_id: {
       type: DataTypes.UUID,
-      allowNull: true
+      allowNull: true,
+      field: 'record_id'
     },
-    oldValues: {
+    old_values: {
       type: DataTypes.JSONB,
-      allowNull: true
+      allowNull: true,
+      field: 'old_values'
     },
-    newValues: {
+    new_values: {
       type: DataTypes.JSONB,
-      allowNull: true
+      allowNull: true,
+      field: 'new_values'
     },
     status: {
       type: DataTypes.STRING,
       allowNull: true
     },
-    sessionId: {
+    session_id: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      field: 'session_id'
     }
   }, {
     sequelize,
@@ -85,6 +96,8 @@ module.exports = (sequelize) => {
     tableName: 'audit_logs',
     underscored: true,
     timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
     indexes: [
       {
         fields: ['user_id']

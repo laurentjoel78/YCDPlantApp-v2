@@ -25,34 +25,37 @@ class AuditService {
       const ip = req?.ip || req?.connection?.remoteAddress;
       const geo = ip ? geoip.lookup(ip) : null;
 
+      // Use snake_case field names to match the model
       const logEntry = await AuditLog.create({
-        userId,
-        userRole,
-        actionType,
-        actionDescription,
-        ipAddress: ip,
-        userAgent: req?.headers?.['user-agent'],
-        deviceInfo: this.parseDeviceInfo(req?.headers?.['user-agent']),
+        user_id: userId,
+        user_role: userRole,
+        action_type: actionType,
+        action_description: actionDescription || `${actionType} action`,
+        ip_address: ip,
+        user_agent: req?.headers?.['user-agent'],
+        device_info: this.parseDeviceInfo(req?.headers?.['user-agent']),
         location: geo ? {
           country: geo.country,
           region: geo.region,
           city: geo.city,
-          ll: geo.ll // latitude/longitude
+          ll: geo.ll
         } : null,
         metadata,
-        tableName,
-        recordId,
-        oldValues,
-        newValues,
-        sessionId: req?.sessionID
+        table_name: tableName,
+        record_id: recordId,
+        old_values: oldValues,
+        new_values: newValues,
+        session_id: req?.sessionID
       });
 
       return logEntry;
     } catch (error) {
       console.error('Error creating audit log:', error);
-      throw error;
+      // Don't throw - audit logging should not break main functionality
+      return null;
     }
   }
+
 
   async logSystemEvent(data) {
     try {
