@@ -47,11 +47,16 @@ async function startServer() {
     // Test database connection
     await db.sequelize.authenticate();
     console.log('Database connection has been established successfully.');
+    console.log('Environment:', process.env.NODE_ENV);
 
-    // Sync database (in development)
-    if (process.env.NODE_ENV === 'development') {
+    // Sync database ONLY in development - NEVER in production
+    // In production, migrations handle the schema
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Development mode: syncing database...');
       await db.sequelize.sync({ alter: false });
       console.log('Database synced');
+    } else {
+      console.log('Production mode: skipping sync (using migrations)');
     }
 
     // Start server and bind to all interfaces

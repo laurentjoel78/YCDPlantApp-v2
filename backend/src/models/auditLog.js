@@ -14,71 +14,71 @@ module.exports = (sequelize) => {
   }
 
   AuditLog.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  userId: {
-    type: DataTypes.UUID,
-    allowNull: true
-  },
-  userRole: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  actionType: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  actionDescription: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  },
-  ipAddress: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  userAgent: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  deviceInfo: {
-    type: DataTypes.JSONB,
-    allowNull: true
-  },
-  location: {
-    type: DataTypes.JSONB,
-    allowNull: true
-  },
-  metadata: {
-    type: DataTypes.JSONB,
-    allowNull: true
-  },
-  tableName: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  recordId: {
-    type: DataTypes.UUID,
-    allowNull: true
-  },
-  oldValues: {
-    type: DataTypes.JSONB,
-    allowNull: true
-  },
-  newValues: {
-    type: DataTypes.JSONB,
-    allowNull: true
-  },
-  status: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  sessionId: {
-    type: DataTypes.STRING,
-    allowNull: true
-  }
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: true
+    },
+    userRole: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    actionType: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    actionDescription: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    ipAddress: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    userAgent: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    deviceInfo: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    location: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    metadata: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    tableName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    recordId: {
+      type: DataTypes.UUID,
+      allowNull: true
+    },
+    oldValues: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    newValues: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    sessionId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'AuditLog',
@@ -87,10 +87,10 @@ module.exports = (sequelize) => {
     timestamps: true,
     indexes: [
       {
-        fields: ['userId']
+        fields: ['user_id']
       },
       {
-        fields: ['actionType']
+        fields: ['action_type']
       },
       {
         fields: ['created_at']
