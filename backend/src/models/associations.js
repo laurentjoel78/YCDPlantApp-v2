@@ -37,7 +37,8 @@ module.exports = function defineAssociations(models) {
     ForumMember,
     ForumMessage,
     Cart,
-    CartItem
+    CartItem,
+    VoiceRecording
   } = models;
 
   // User associations
@@ -166,6 +167,10 @@ module.exports = function defineAssociations(models) {
   // LanguagePreference associations
   LanguagePreference.belongsTo(User, { foreignKey: 'user_id' });
   LanguagePreference.belongsTo(LanguagePack, { foreignKey: 'language_pack_id' });
+
+  // VoiceRecording associations
+  VoiceRecording.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+  User.hasMany(VoiceRecording, { foreignKey: 'userId', as: 'voiceRecordings' });
 
   // Consultation associations
   Consultation.belongsTo(Expert, { foreignKey: 'expert_id' });

@@ -87,8 +87,9 @@ module.exports = {
         allowNull: false
       },
       location: {
-        type: DataTypes.GEOMETRY('POINT'),
-        allowNull: false
+        type: DataTypes.JSONB,
+        allowNull: true,
+        comment: 'GeoJSON format: {type: Point, coordinates: [lng, lat]}'
       },
       size: {
         type: DataTypes.FLOAT
@@ -117,8 +118,9 @@ module.exports = {
         allowNull: false
       },
       location: {
-        type: DataTypes.GEOMETRY('POINT'),
-        allowNull: false
+        type: DataTypes.JSONB,
+        allowNull: true,
+        comment: 'GeoJSON format: {type: Point, coordinates: [lng, lat]}'
       },
       description: {
         type: DataTypes.TEXT

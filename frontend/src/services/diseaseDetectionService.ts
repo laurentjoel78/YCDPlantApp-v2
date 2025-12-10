@@ -1,5 +1,4 @@
-import { BASE_URL } from './api';
-import { getStoredToken } from '../utils/authStorage';
+import { api } from './api';
 
 export interface DetectionResult {
   disease: string;
@@ -22,24 +21,16 @@ export async function analyzePlantDisease(imageUri: string): Promise<DetectionRe
   } as any);
 
   try {
-    const token = await getStoredToken();
+    const response = await api.guidance.identifyDisease(formData);
 
-    const response = await fetch(`${BASE_URL}/disease-detection/detect`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${token}`
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to analyze plant disease: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
+    // The backend response is flattened (check diseaseDetectionController.js line 90)
+    // { success: true, disease: ..., confidence: ..., description: ..., treatment: ... }
+    return {
+      disease: response.disease,
+      confidence: response.confidence,
+      description: response.description,
+      treatment: response.treatment
+    };
   } catch (error) {
     console.error('Error analyzing plant disease:', error);
     throw new Error('Failed to analyze plant disease');

@@ -4,16 +4,27 @@ import i18n from '../i18n';
 // Simple API layer with swappable base URL and mock fallbacks
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
+import Constants from 'expo-constants';
+
 // Default to the backend server port used by the project (3000). When running on a device/emulator,
 // set EXPO_PUBLIC_API_URL to your machine's LAN IP (e.g. http://192.168.1.10:3000).
 // The backend mounts routes under /api, so ensure the base URL includes that prefix.
 function makeBaseUrl() {
-    // For development on device/emulator, default to localhost so Metro/web works out of the box.
-    // If running on a physical device set EXPO_PUBLIC_API_URL to your machine's LAN IP (e.g. http://192.168.1.10:3000).
-    const defaultUrl = 'http://localhost:3000';
+    // Priority:
+    // 1. EXPO_PUBLIC_API_URL (Environment variable, best for EAS Build secrets)
+    // 2. Constants.expoConfig.extra.apiUrl (from app.json "extra" section)
+    // 3. Fallback for local Android emulator (http://10.0.2.2:3000)
 
-    // const raw = process.env.EXPO_PUBLIC_API_URL || defaultUrl;
-    const raw = 'http://10.0.2.2:3000'; // Android emulator address (use 'http://localhost:3000' for iOS/web)
+    // Note: We use 10.0.2.2 as default fallback assuming Android Emulator.
+    // For iOS simulator, it should be localhost.
+    const defaultDevUrl = 'http://10.0.2.2:3000';
+
+    const raw = process.env.EXPO_PUBLIC_API_URL ||
+        Constants.expoConfig?.extra?.apiUrl ||
+        defaultDevUrl;
+
+    console.log('[api] Configured API URL source:', raw);
+
     // remove trailing slash
     const trimmed = raw.replace(/\/$/, '');
     // append /api if not present
@@ -80,17 +91,82 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
 
 // Types
 export interface User {
-    // ... (keep types the same) ...
+    id: string;
+    name: string; // Combined from firstName and lastName
+    email: string;
+    role: string;
+    firstName?: string;
+    lastName?: string;
+    first_name?: string;  // Backend returns snake_case
+    last_name?: string;   // Backend returns snake_case
+    phoneNumber?: string;
+    phone_number?: string; // Backend returns snake_case
+    region?: string;
+    profileImage?: string;
+    profile_image_url?: string; // Backend returns snake_case
+    approvalStatus?: string;
+    approval_status?: string;  // Backend returns snake_case
+    emailVerified?: boolean;
+    email_verified?: boolean;  // Backend returns snake_case
+    farms?: Array<{
+        id: string;
+        name: string;
+        location_lat: number;
+        location_lng: number;
+    }>;
 }
 
-// ...
+export interface UpdateProfileRequest {
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+    region?: string;
+    profileImage?: string;
+}
 
 // Public endpoints aligned with the project spec
 export const api = {
-    // ...
+    auth: {
+        login: (email: string, password: string) => request<{ token: string; user: User }>(`/auth/login`, { method: 'POST', body: JSON.stringify({ email, password }) }),
+        register: (payload: any) => request<{ token: string; user: User }>(`/auth/register`, { method: 'POST', body: JSON.stringify(payload) }),
+        profile: (token: string) => request<{ user: User }>(`/auth/me`, { headers: { Authorization: `Bearer ${token}` } }),
+        logout: (token: string) => request<{ message?: string }>(`/auth/logout`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } }),
+        updateProfile: async (data: UpdateProfileRequest | FormData) => {
+            // Read token from AsyncStorage to include Authorization header
+            const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+            const token = await AsyncStorage.getItem('token');
+
+            if (data instanceof FormData) {
+                return request<{ user: User }>(`/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        // Content-Type is automatically set by fetch for FormData
+                    },
+                    body: data
+                });
+            }
+
+            // Map camelCase keys used in the frontend to snake_case expected by the backend
+            const payload: Record<string, any> = {};
+            if (data.firstName !== undefined) payload.first_name = data.firstName;
+            if (data.lastName !== undefined) payload.last_name = data.lastName;
+            if (data.phoneNumber !== undefined) payload.phone_number = data.phoneNumber;
+            if (data.region !== undefined) payload.region = data.region;
+            if (data.profileImage !== undefined) payload.profile_image_url = data.profileImage;
+
+            return request<{ user: User }>(`/auth/profile`, {
+                method: 'PUT',
+                headers: { Authorization: `Bearer ${token}` },
+                body: JSON.stringify(payload)
+            });
+        },
+        requestPasswordReset: (email: string) => request<{ message: string }>(`/auth/forgot-password`, { method: 'POST', body: JSON.stringify({ email }) }),
+        resetPassword: (token: string, password: string) => request<{ message: string }>(`/auth/reset-password`, { method: 'POST', body: JSON.stringify({ token, password }) }),
+    },
     guidance: {
         crops: () => request<{ crops: any[] }>(`/crops`),
-        identifyDisease: (formData: FormData) => request<{ success: boolean; data: any }>(`/crops/identify-disease`, { method: 'POST', body: formData }),
+        identifyDisease: (formData: FormData) => request<{ success: boolean; disease: string; confidence: number; description: string; treatment: string }>(`/disease-detection/detect`, { method: 'POST', body: formData }),
         seasonal: (month: string) => request<{ crops: any[] }>(`/crops/seasonal?month=${encodeURIComponent(month)}`),
     },
     chatbot: {

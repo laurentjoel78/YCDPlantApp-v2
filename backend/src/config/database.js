@@ -4,6 +4,7 @@ const dbLogger = require('../utils/dbLogger');
 
 module.exports = {
   development: {
+    use_env_variable: 'DATABASE_URL',
     username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME || 'ycd_farmer_guide_dev',
@@ -20,6 +21,7 @@ module.exports = {
     benchmark: true
   },
   test: {
+    use_env_variable: 'DATABASE_URL',
     username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME || 'ycd_farmer_guide_test',
@@ -27,9 +29,16 @@ module.exports = {
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
     logging: dbLogger.logQuery.bind(dbLogger),
-    benchmark: true
+    benchmark: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   },
   production: {
+    use_env_variable: 'DATABASE_URL',
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -37,6 +46,12 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: 'postgres',
     logging: dbLogger.logQuery.bind(dbLogger),
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
     pool: {
       max: 10,
       min: 2,
