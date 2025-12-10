@@ -1,52 +1,33 @@
-import { useState, useEffect } from 'react';
-import Voice, { 
-    SpeechResultsEvent,
-    SpeechErrorEvent,
-} from '@react-native-voice/voice';
+import { useState } from 'react';
+import { Alert } from 'react-native';
+
+// Stub implementation - voice recognition temporarily disabled
+// TODO: Re-enable when @react-native-voice/voice is updated for AndroidX compatibility
 
 export const useVoiceRecognition = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [results, setResults] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const onSpeechResults = (e: SpeechResultsEvent) => {
-            setResults(e.value ?? []);
-        };
-
-        const onSpeechError = (e: SpeechErrorEvent) => {
-            setError(e.error?.message ?? 'Erreur inconnue');
-            setIsRecording(false);
-        };
-
-        Voice.onSpeechResults = onSpeechResults;
-        Voice.onSpeechError = onSpeechError;
-
-        return () => {
-            Voice.destroy().then(Voice.removeAllListeners);
-        };
-    }, []);
-
     const startRecording = async () => {
-        try {
-            setError(null);
-            setResults([]);
-            await Voice.start('fr-FR'); // French language
-            setIsRecording(true);
-        } catch (e) {
-            setError('Erreur lors du démarrage de l\'enregistrement');
-            console.error(e);
-        }
+        Alert.alert(
+            'Voice Recognition',
+            'Voice recognition is coming soon! This feature will be available in a future update.',
+            [{ text: 'OK' }]
+        );
+        // Simulate a brief recording state for UX
+        setIsRecording(true);
+        setError(null);
+        setResults([]);
+
+        setTimeout(() => {
+            setIsRecording(false);
+            setResults(['Voice recognition coming soon']);
+        }, 1000);
     };
 
     const stopRecording = async () => {
-        try {
-            await Voice.stop();
-            setIsRecording(false);
-        } catch (e) {
-            setError('Erreur lors de l\'arrêt de l\'enregistrement');
-            console.error(e);
-        }
+        setIsRecording(false);
     };
 
     return {
