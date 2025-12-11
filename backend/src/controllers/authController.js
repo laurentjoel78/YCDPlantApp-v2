@@ -72,6 +72,7 @@ const register = async (req, res) => {
     const requiredFields = ['email', 'password', 'first_name', 'role'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
     if (missingFields.length > 0) {
+      console.log('Registration failed - Missing required fields:', missingFields);
       return res.status(400).json({
         error: 'Missing required fields',
         missingFields
@@ -83,6 +84,7 @@ const register = async (req, res) => {
       const requiredFarmerFields = ['farm_size_hectares', 'crops_grown', 'farming_experience_years'];
       const missingFarmerFields = requiredFarmerFields.filter(field => !req.body[field]);
       if (missingFarmerFields.length > 0) {
+        console.log('Registration failed - Missing farmer fields:', missingFarmerFields);
         return res.status(400).json({
           error: 'Missing required farmer information',
           missingFields: missingFarmerFields
@@ -95,8 +97,10 @@ const register = async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
+      console.log('Registration failed - Email already exists:', email);
       return res.status(400).json({ error: 'Email already registered' });
     }
+
 
     // Generate verification token
     const verificationToken = crypto.randomBytes(32).toString('hex');
