@@ -17,12 +17,16 @@ const createValidationMiddleware = (validations) => {
       value: err.value
     }));
 
+    // Log validation errors for debugging
+    console.log('Validation failed:', req.path, JSON.stringify(validationErrors, null, 2));
+
     return res.status(400).json({
       error: 'Validation error',
       details: validationErrors
     });
   };
 };
+
 
 // Registration validation rules
 const registrationValidation = createValidationMiddleware([
