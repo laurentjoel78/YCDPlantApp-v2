@@ -32,21 +32,44 @@ class EmailService {
   }
 
   initializeTransporter() {
+    // Use Resend SMTP settings
+    const host = process.env.EMAIL_HOST || 'smtp.resend.com';
+    const port = parseInt(process.env.EMAIL_PORT || '465', 10);
+    const user = process.env.EMAIL_USER || 'resend';
+    const pass = process.env.EMAIL_PASSWORD || process.env.RESEND_API_KEY;
+
+    if (!pass) {
+      console.warn('⚠️ No EMAIL_PASSWORD or RESEND_API_KEY set - emails will fail');
+      this.transporter = null;
+      return;
+    }
+
+    console.log(`📧 Email configured: ${host}:${port} (user: ${user})`);
+
     this.transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      secure: process.env.EMAIL_SECURE === 'true',
+      host,
+      port,
+      secure: port === 465, // true for 465, false for other ports
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
+        user,
+        pass,
       },
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
   }
 
   async sendEmail(to, subject, html) {
+    if (!this.transporter) {
+      console.warn('Email not sent - transporter not configured');
+      return null;
+    }
+
     try {
+      const from = process.env.EMAIL_FROM || 'noreply@ycd.com';
       const info = await this.transporter.sendMail({
-        from: `"YCD Farmer Guide" <${process.env.EMAIL_FROM}>`,
+        from: `"YCD Farmer Guide" <${from}>`,
         to,
         subject,
         html,
@@ -54,10 +77,12 @@ class EmailService {
       console.log('Email sent: %s', info.messageId);
       return info;
     } catch (error) {
-      console.error('Error sending email:', error);
-      throw error;
+      console.error('Error sending email:', error.message);
+      // Don't throw - emails should not block core functionality
+      return null;
     }
   }
+
 
   async sendVerificationEmail(user, verificationToken) {
     const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
