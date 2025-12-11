@@ -259,17 +259,24 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    if (!user.email_verified) {
-      return res.status(401).json({ error: 'Email not verified' });
+    // For farmers: Check approval status first
+    // Approved farmers can bypass email verification
+    if (user.role === 'farmer') {
+      if (user.approval_status !== 'approved') {
+        return res.status(401).json({ error: 'Account pending approval' });
+      }
+      // Approved farmers don't need email verification
+    } else {
+      // Non-farmers still need email verification
+      if (!user.email_verified) {
+        return res.status(401).json({ error: 'Email not verified' });
+      }
     }
 
     if (!user.is_active) {
       return res.status(401).json({ error: 'Account is inactive' });
     }
 
-    if (user.role === 'farmer' && user.approval_status !== 'approved') {
-      return res.status(401).json({ error: 'Account pending approval' });
-    }
 
     if (!user.password_hash) {
       return res.status(401).json({ error: 'Invalid credentials' });
