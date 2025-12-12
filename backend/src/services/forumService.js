@@ -65,22 +65,27 @@ class ForumService {
       where.category = category;
     }
 
-    // Region filter - normalize by removing hyphens and comparing case-insensitively
+    // Region filter - normalize by removing spaces, hyphens and comparing case-insensitively
     if (region) {
-      const normalizedRegion = region.replace(/-/g, '').toLowerCase();
+      // Remove spaces, hyphens, trim, and lowercase for flexible matching
+      const normalizedRegion = region.replace(/[\s-]/g, '').toLowerCase().trim();
       where[Op.and] = where[Op.and] || [];
       where[Op.and].push(
         Sequelize.where(
           Sequelize.fn('LOWER',
             Sequelize.fn('REPLACE',
-              Sequelize.fn('jsonb_extract_path_text', Sequelize.col('location'), 'region'),
-              '-', ''
+              Sequelize.fn('REPLACE',
+                Sequelize.fn('jsonb_extract_path_text', Sequelize.col('location'), 'region'),
+                '-', ''
+              ),
+              ' ', ''
             )
           ),
           { [Op.like]: `%${normalizedRegion}%` }
         )
       );
     }
+
 
     const { count, rows } = await ForumTopic.findAndCountAll({
       where,
