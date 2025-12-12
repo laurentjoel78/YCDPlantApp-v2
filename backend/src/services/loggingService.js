@@ -1,10 +1,27 @@
-const { AuditLog, UserActivityLog, SystemLog } = require('../models/loggingModels');
 const { v4: uuidv4 } = require('uuid');
+
+// Lazy load models to avoid circular dependencies
+let AuditLog, UserActivityLog, SystemLog;
+
+const getModels = () => {
+  if (!AuditLog || !UserActivityLog || !SystemLog) {
+    try {
+      const models = require('../models');
+      AuditLog = models.AuditLog;
+      UserActivityLog = models.UserActivityLog;
+      SystemLog = models.SystemLog;
+    } catch (e) {
+      console.warn('LoggingService: Could not load models', e.message);
+    }
+  }
+  return { AuditLog, UserActivityLog, SystemLog };
+};
 
 class LoggingService {
   constructor() {
     this.systemContext = {};
   }
+
 
   setSystemContext(context) {
     this.systemContext = {
@@ -28,6 +45,8 @@ class LoggingService {
     severity = 'low'
   }) {
     try {
+      const { AuditLog } = getModels();
+      if (!AuditLog) return null;
       const log = await AuditLog.create({
         userId,
         userRole,
@@ -86,6 +105,8 @@ class LoggingService {
     status = 'success'
   }) {
     try {
+      const { UserActivityLog } = getModels();
+      if (!UserActivityLog) return null;
       return await UserActivityLog.create({
         userId,
         activityType,
@@ -122,6 +143,8 @@ class LoggingService {
     performanceMetrics = {}
   }) {
     try {
+      const { SystemLog } = getModels();
+      if (!SystemLog) return null;
       return await SystemLog.create({
         logLevel,
         module,
