@@ -26,16 +26,23 @@ class ExpertService {
       const tempPassword = crypto.randomBytes(8).toString('hex');
       const password_hash = await bcrypt.hash(tempPassword, 10);
 
+      // Trim whitespace from string fields
+      const trimmedEmail = email?.trim();
+      const trimmedFirstName = firstName?.trim();
+      const trimmedLastName = lastName?.trim();
+      const trimmedPhone = phone?.trim();
+
       // Create user account for expert
       const user = await User.create({
-        email,
-        first_name: firstName,
-        last_name: lastName,
-        phone_number: phone,
+        email: trimmedEmail,
+        first_name: trimmedFirstName,
+        last_name: trimmedLastName,
+        phone_number: trimmedPhone,
         role: 'expert',
         password_hash,
         created_by_admin_id: adminId
       });
+
 
       // Create expert profile
       const expert = await Expert.create({
