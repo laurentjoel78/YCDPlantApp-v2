@@ -110,12 +110,19 @@ export default function ForumChatScreen() {
         // Subscribe to real-time forum messages
         const unsubscribe = subscribe('FORUM_MESSAGE', (data: any) => {
             if (data.message) {
-                setMessages(prev => [...prev, data.message]);
+                // Check if message already exists to prevent duplicates
+                // (sender receives their own message back via socket)
+                setMessages(prev => {
+                    const exists = prev.some(m => m.id === data.message.id);
+                    if (exists) return prev;
+                    return [...prev, data.message];
+                });
                 setTimeout(() => {
                     flatListRef.current?.scrollToEnd({ animated: true });
                 }, 100);
             }
         });
+
 
         return () => {
             leaveRoom(`forum_${forumId}`);
