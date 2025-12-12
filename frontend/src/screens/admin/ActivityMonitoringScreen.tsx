@@ -7,12 +7,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ActivityLog {
     id: string;
-    userId: string;
-    userRole: string;
-    actionType: string;
-    actionDescription: string;
-    createdAt: string;
-    ipAddress: string;
+    userId?: string;
+    user_id?: string;
+    userRole?: string;
+    user_role?: string;
+    actionType?: string;
+    action_type?: string;
+    actionDescription?: string;
+    action_description?: string;
+    createdAt?: string;
+    created_at?: string;
+    ipAddress?: string;
+    ip_address?: string;
     location?: {
         country?: string;
         city?: string;
@@ -23,11 +29,17 @@ interface ActivityLog {
         browser?: string;
         isMobile?: boolean;
     };
+    device_info?: {
+        os?: string;
+        browser?: string;
+        is_mobile?: boolean;
+    };
     metadata?: {
         duration?: number;
         statusCode?: number;
     };
 }
+
 
 const ActivityMonitoringScreen = () => {
     const { token } = useAuth();
@@ -76,64 +88,78 @@ const ActivityMonitoringScreen = () => {
     const filteredActivities = activities.filter(activity => {
         if (!search) return true;
         const searchLower = search.toLowerCase();
-        const description = (activity.actionDescription || '').toLowerCase();
-        const userId = (activity.userId || '').toLowerCase();
-        const actionType = (activity.actionType || '').toLowerCase();
+        const description = (activity.actionDescription || activity.action_description || '').toLowerCase();
+        const usrId = (activity.userId || activity.user_id || '').toLowerCase();
+        const actType = (activity.actionType || activity.action_type || '').toLowerCase();
         return (
             description.includes(searchLower) ||
-            userId.includes(searchLower) ||
-            actionType.includes(searchLower)
+            usrId.includes(searchLower) ||
+            actType.includes(searchLower)
         );
     });
 
-    const renderActivity = ({ item }: { item: ActivityLog }) => (
-        <Card style={styles.card}>
-            <Card.Content>
-                <View style={styles.activityHeader}>
-                    <View style={styles.headerLeft}>
-                        <Chip
-                            icon="account"
-                            style={[styles.actionChip, { backgroundColor: getActionColor(item.actionType) }]}
-                            textStyle={styles.chipText}
-                        >
-                            {item.actionType}
-                        </Chip>
-                        <Text style={styles.role}>{item.userRole}</Text>
+
+    const renderActivity = ({ item }: { item: ActivityLog }) => {
+        // Handle both camelCase and snake_case field names
+        const actionType = item.actionType || item.action_type || '';
+        const userRole = item.userRole || item.user_role || '';
+        const createdAt = item.createdAt || item.created_at;
+        const actionDescription = item.actionDescription || item.action_description || '';
+        const userId = item.userId || item.user_id || '';
+        const ipAddress = item.ipAddress || item.ip_address || '';
+        const deviceInfo = item.deviceInfo || item.device_info;
+
+        return (
+            <Card style={styles.card}>
+                <Card.Content>
+                    <View style={styles.activityHeader}>
+                        <View style={styles.headerLeft}>
+                            <Chip
+                                icon="account"
+                                style={[styles.actionChip, { backgroundColor: getActionColor(actionType) }]}
+                                textStyle={styles.chipText}
+                            >
+                                {actionType || 'Unknown'}
+                            </Chip>
+                            <Text style={styles.role}>{userRole || 'Unknown'}</Text>
+                        </View>
+                        <Text style={styles.timestamp}>
+                            {createdAt ? new Date(createdAt).toLocaleString() : 'Unknown'}
+                        </Text>
                     </View>
-                    <Text style={styles.timestamp}>
-                        {item.createdAt ? new Date(item.createdAt).toLocaleString() : 'Unknown'}
-                    </Text>
-                </View>
 
-                <Text style={styles.description}>{item.actionDescription}</Text>
+                    <Text style={styles.description}>{actionDescription || 'No description'}</Text>
 
-                <View style={styles.meta}>
-                    <Text style={styles.metaText}>
-                        👤 User: {item.userId ? item.userId.substring(0, 8) + '...' : 'System'}
-                    </Text>
-                    {item.location?.city && (
+                    <View style={styles.meta}>
                         <Text style={styles.metaText}>
-                            📍 {item.location.city}, {item.location.country || 'Unknown'}
+                            👤 User: {userId ? userId.substring(0, 8) + '...' : 'System'}
                         </Text>
-                    )}
-                    {item.deviceInfo && (
+                        {item.location?.city && (
+                            <Text style={styles.metaText}>
+                                📍 {item.location.city}, {item.location.country || 'Unknown'}
+                            </Text>
+                        )}
+
+                        {deviceInfo && (
+                            <Text style={styles.metaText}>
+                                🖥️ {deviceInfo.os || 'Unknown OS'} - {deviceInfo.browser || 'Unknown Browser'}
+                                {(deviceInfo as any).isMobile || (deviceInfo as any).is_mobile ? ' (Mobile)' : ''}
+                            </Text>
+                        )}
+
                         <Text style={styles.metaText}>
-                            🖥️ {item.deviceInfo.os || 'Unknown OS'} - {item.deviceInfo.browser || 'Unknown Browser'}
-                            {item.deviceInfo.isMobile ? ' (Mobile)' : ''}
+                            🌐 {ipAddress || 'Unknown IP'}
                         </Text>
-                    )}
-                    <Text style={styles.metaText}>
-                        🌐 {item.ipAddress}
-                    </Text>
-                    {item.metadata?.duration && (
-                        <Text style={styles.metaText}>
-                            ⏱️ {item.metadata.duration}ms
-                        </Text>
-                    )}
-                </View>
-            </Card.Content>
-        </Card>
-    );
+                        {item.metadata?.duration && (
+                            <Text style={styles.metaText}>
+                                ⏱️ {item.metadata.duration}ms
+                            </Text>
+                        )}
+                    </View>
+                </Card.Content>
+            </Card>
+        );
+    };
 
     if (loading && !refreshing) {
         return (
