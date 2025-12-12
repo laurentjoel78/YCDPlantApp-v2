@@ -64,7 +64,8 @@ const ActivityMonitoringScreen = () => {
         fetchActivities();
     };
 
-    const getActionColor = (actionType: string) => {
+    const getActionColor = (actionType: string | undefined) => {
+        if (!actionType) return '#757575';
         if (actionType.includes('LOGIN')) return '#4CAF50';
         if (actionType.includes('DELETE')) return '#F44336';
         if (actionType.includes('BLOCK')) return '#FF9800';
@@ -75,10 +76,13 @@ const ActivityMonitoringScreen = () => {
     const filteredActivities = activities.filter(activity => {
         if (!search) return true;
         const searchLower = search.toLowerCase();
+        const description = (activity.actionDescription || '').toLowerCase();
+        const userId = (activity.userId || '').toLowerCase();
+        const actionType = (activity.actionType || '').toLowerCase();
         return (
-            activity.actionDescription.toLowerCase().includes(searchLower) ||
-            activity.userId.toLowerCase().includes(searchLower) ||
-            activity.actionType.toLowerCase().includes(searchLower)
+            description.includes(searchLower) ||
+            userId.includes(searchLower) ||
+            actionType.includes(searchLower)
         );
     });
 
