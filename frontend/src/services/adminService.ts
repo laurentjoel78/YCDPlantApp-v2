@@ -145,7 +145,10 @@ class AdminService {
 
     // Create expert with image (FormData)
     async createExpertWithImage(token: string, formData: FormData) {
-        const response = await fetch('http://10.0.2.2:3000/api/experts', {
+        // Import API_BASE_URL to use production URL
+        const { API_BASE_URL } = await import('../config/constants');
+
+        const response = await fetch(`${API_BASE_URL}/experts`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
