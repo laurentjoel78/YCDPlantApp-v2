@@ -27,11 +27,11 @@ class ExpertController {
       // Handle profile image upload if present
       if (req.files && req.files.profileImage && req.files.profileImage[0]) {
         try {
-          const { uploadFile } = require('../services/uploadService');
-          const fs = require('fs').promises;
+          const { uploadImage } = require('../services/uploadService');
 
           const file = req.files.profileImage[0];
-          const result = await uploadFile(file.path, 'ycd_profiles');
+          // Use uploadImage with buffer (memory storage)
+          const result = await uploadImage(file.buffer, 'ycd_profiles');
 
           // Update expert and user with image URL
           const { User, Expert } = require('../models');
@@ -48,9 +48,6 @@ class ExpertController {
             { where: { id: expert.id } }
           );
 
-          // Clean up local file
-          await fs.unlink(file.path).catch(console.error);
-
           // Add image to response
           expert.profileImage = result.secure_url;
           if (expert.user) expert.user.profile_image_url = result.secure_url;
@@ -60,18 +57,19 @@ class ExpertController {
         }
       }
 
+
       // Handle certifications upload if present (Array of files)
       if (req.files && req.files.certifications) {
         try {
-          const { uploadFile } = require('../services/uploadService');
-          const fs = require('fs').promises;
+          const { uploadImage } = require('../services/uploadService');
 
           const certUrls = [];
           for (const file of req.files.certifications) {
-            const result = await uploadFile(file.path, 'ycd_certifications');
+            // Use uploadImage with buffer (memory storage)
+            const result = await uploadImage(file.buffer, 'ycd_certifications');
             certUrls.push(result.secure_url);
-            await fs.unlink(file.path).catch(console.error);
           }
+
 
           // Update expert certifications
           // We need to merge with existing or set new

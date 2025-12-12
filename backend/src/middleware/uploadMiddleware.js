@@ -1,28 +1,8 @@
 const multer = require('multer');
-const path = require('path');
-const crypto = require('crypto');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    let uploadPath = 'uploads/';
-
-    // Set specific folders based on file type
-    if (file.fieldname === 'certifications') {
-      uploadPath += 'certifications/';
-    } else if (file.fieldname === 'profileImage') {
-      uploadPath += 'profiles/';
-    } else if (file.fieldname === 'images') {
-      uploadPath += 'consultations/';
-    }
-
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    // Generate unique filename
-    const uniqueSuffix = crypto.randomBytes(16).toString('hex');
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+// Use memory storage for cloud deployments (Railway, Heroku, etc.)
+// Files are stored as buffers which can be uploaded directly to Cloudinary
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   // Allow images and documents for certifications

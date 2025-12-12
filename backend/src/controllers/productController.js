@@ -22,12 +22,11 @@ exports.createProduct = async (req, res) => {
     // Only attempt file upload if files are present
     if (req.files && req.files.length > 0) {
       try {
-        const { uploadFile } = require('../services/uploadService');
-        const fs = require('fs').promises;
+        const { uploadImage } = require('../services/uploadService');
 
         const uploadPromises = req.files.map(async file => {
-          const result = await uploadFile(file.path, 'ycd_products');
-          await fs.unlink(file.path).catch(console.error);
+          // Use uploadImage with buffer (memory storage)
+          const result = await uploadImage(file.buffer, 'ycd_products');
           return result;
         });
 
@@ -41,6 +40,7 @@ exports.createProduct = async (req, res) => {
       // Handle URL-based images passed in body
       imageUrls = Array.isArray(req.body.images) ? req.body.images : [req.body.images];
     }
+
     // Note: Products can be created without images - imageUrls will be empty array
 
 

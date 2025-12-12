@@ -69,9 +69,18 @@ class ExpertService {
       return expert;
     } catch (error) {
       console.error('Error creating expert:', error);
+
+      // Handle duplicate email error
+      if (error.name === 'SequelizeUniqueConstraintError' && error.fields?.email) {
+        const duplicateError = new Error(`An account with email "${error.fields.email}" already exists`);
+        duplicateError.statusCode = 409;
+        throw duplicateError;
+      }
+
       throw error;
     }
   }
+
 
   async getExpertApplications(filters = {}) {
     try {
