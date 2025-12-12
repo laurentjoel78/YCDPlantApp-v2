@@ -82,6 +82,7 @@ module.exports = (sequelize) => {
     sequelize,
     modelName: 'Order',
     tableName: 'orders',
+    underscored: true,
     timestamps: true,
     indexes: [
       {
