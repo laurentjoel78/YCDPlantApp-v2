@@ -13,15 +13,14 @@ function makeBaseUrl() {
     // Priority:
     // 1. EXPO_PUBLIC_API_URL (Environment variable, best for EAS Build secrets)
     // 2. Constants.expoConfig.extra.apiUrl (from app.json "extra" section)
-    // 3. Fallback for local Android emulator (http://10.0.2.2:3000)
+    // 3. Fallback to production URL
 
-    // Note: We use 10.0.2.2 as default fallback assuming Android Emulator.
-    // For iOS simulator, it should be localhost.
-    const defaultDevUrl = 'http://10.0.2.2:3000';
+    // Production Railway URL as default
+    const defaultUrl = 'https://ycdplantapp-production.up.railway.app';
 
     const raw = process.env.EXPO_PUBLIC_API_URL ||
         Constants.expoConfig?.extra?.apiUrl ||
-        defaultDevUrl;
+        defaultUrl;
 
     console.log('[api] Configured API URL source:', raw);
 
@@ -31,6 +30,7 @@ function makeBaseUrl() {
     if (/\/api$/.test(trimmed)) return trimmed;
     return `${trimmed}/api`;
 }
+
 
 export const BASE_URL = makeBaseUrl();
 // Log the effective base URL to help debug device connectivity
