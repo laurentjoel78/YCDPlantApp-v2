@@ -35,12 +35,16 @@ export interface Consultation {
 export class ExpertService {
   static async getExperts(): Promise<any[]> {
     try {
-      const response = await fetch('http://10.0.2.2:3000/api/experts', {
+      // Import API_BASE_URL dynamically to use production URL
+      const { API_BASE_URL } = await import('../config/constants');
+
+      const response = await fetch(`${API_BASE_URL}/experts`, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': 'true'
         }
       });
+
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
