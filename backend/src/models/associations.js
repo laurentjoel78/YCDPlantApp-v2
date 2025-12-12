@@ -114,13 +114,12 @@ module.exports = function defineAssociations(models) {
   Product.belongsTo(Farm, { foreignKey: 'farm_id' });
   Product.belongsTo(Crop, { foreignKey: 'crop_id' });
   Product.belongsTo(Market, { foreignKey: 'market_id' });
-  Product.hasMany(Order, { foreignKey: 'product_id' });
+  // Note: Product.hasMany(Order) removed - orders use OrderItems, not direct product_id
 
   // Order associations
   Order.belongsTo(User, { as: 'buyer', foreignKey: 'buyer_id' });
   Order.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
-  Order.belongsTo(Product, { foreignKey: 'product_id' });
-  Order.belongsTo(Market, { foreignKey: 'market_id' });
+  // Note: Order.belongsTo(Product/Market) removed - orders use OrderItems for products
   Order.hasMany(Transaction, { foreignKey: 'order_id' });
 
   // Transaction associations
