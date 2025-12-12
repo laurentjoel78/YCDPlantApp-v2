@@ -18,21 +18,31 @@ exports.createProduct = async (req, res) => {
     }
 
     let imageUrls = [];
+
+    // Only attempt file upload if files are present
     if (req.files && req.files.length > 0) {
-      const { uploadFile } = require('../services/uploadService');
-      const fs = require('fs').promises;
+      try {
+        const { uploadFile } = require('../services/uploadService');
+        const fs = require('fs').promises;
 
-      const uploadPromises = req.files.map(async file => {
-        const result = await uploadFile(file.path, 'ycd_products');
-        await fs.unlink(file.path).catch(console.error);
-        return result;
-      });
+        const uploadPromises = req.files.map(async file => {
+          const result = await uploadFile(file.path, 'ycd_products');
+          await fs.unlink(file.path).catch(console.error);
+          return result;
+        });
 
-      const uploadResults = await Promise.all(uploadPromises);
-      imageUrls = uploadResults.map(result => result.secure_url);
+        const uploadResults = await Promise.all(uploadPromises);
+        imageUrls = uploadResults.map(result => result.secure_url);
+      } catch (uploadError) {
+        console.error('Image upload failed:', uploadError);
+        // Continue without images if upload fails
+      }
     } else if (req.body.images) {
+      // Handle URL-based images passed in body
       imageUrls = Array.isArray(req.body.images) ? req.body.images : [req.body.images];
     }
+    // Note: Products can be created without images - imageUrls will be empty array
+
 
     const productData = {
       seller_id: req.user.id,
