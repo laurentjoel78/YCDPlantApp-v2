@@ -101,7 +101,7 @@ const ActivityMonitoringScreen = () => {
                         <Text style={styles.role}>{item.userRole}</Text>
                     </View>
                     <Text style={styles.timestamp}>
-                        {new Date(item.createdAt).toLocaleString()}
+                        {item.createdAt ? new Date(item.createdAt).toLocaleString() : 'Unknown'}
                     </Text>
                 </View>
 

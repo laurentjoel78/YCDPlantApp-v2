@@ -1,6 +1,6 @@
 // API Configuration
-export const API_BASE_URL = 'http://192.168.56.1:3000/api';
-export const SOCKET_URL = 'http://192.168.56.1:3000';
+export const API_BASE_URL = 'https://ycdplantapp-production.up.railway.app/api';
+export const SOCKET_URL = 'https://ycdplantapp-production.up.railway.app';
 
 // Theme Configuration
 export const DEFAULT_THEME = 'light';
