@@ -40,6 +40,7 @@ import ForumManagementScreen from '../screens/admin/ForumManagementScreen';
 import CreateForumScreen from '../screens/admin/CreateForumScreen';
 import AddProductScreen from '../screens/admin/AddProductScreen';
 import ActivityMonitoringScreen from '../screens/admin/ActivityMonitoringScreen';
+import UserManagementScreen from '../screens/admin/UserManagementScreen';
 
 // E-commerce screens
 import CartScreen from '../screens/CartScreen';
@@ -79,6 +80,7 @@ function AdminStack() {
       <Stack.Screen name="AdminDashboard" component={AdminDashboardScreen} options={{ title: 'Admin Dashboard' }} />
       <Stack.Screen name="ProductManagement" component={ProductManagementScreen} options={{ title: 'Products' }} />
       <Stack.Screen name="UserApprovals" component={UserApprovalsScreen} options={{ title: 'User Approvals' }} />
+      <Stack.Screen name="UserManagement" component={UserManagementScreen} options={{ title: 'User Management' }} />
       <Stack.Screen name="AddEditProduct" component={AddEditProductScreen} options={{ title: 'Product Form' }} />
       <Stack.Screen name="AddProduct" component={AddProductScreen} options={{ title: 'Add Product' }} />
       <Stack.Screen name="ExpertManagement" component={ExpertManagementScreen} options={{ title: 'Manage Experts' }} />

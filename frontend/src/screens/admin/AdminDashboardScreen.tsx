@@ -160,6 +160,12 @@ export default function AdminDashboardScreen({ navigation }: any) {
                             onPress={() => navigation.navigate('UserApprovals')}
                         />
                         <ActionButton
+                            icon="account-group"
+                            label="User Management"
+                            onPress={() => navigation.navigate('UserManagement')}
+                        />
+
+                        <ActionButton
                             icon="format-list-bulleted"
                             label="Products"
                             onPress={() => navigation.navigate('ProductManagement')}

@@ -10,8 +10,12 @@ router.use(auth, requireAdmin);
 router.post('/experts', adminController.createExpert);
 router.get('/experts/applications', adminController.getExpertApplications);
 router.put('/experts/:expertId/review', adminController.reviewExpertApplication);
+router.delete('/experts/:expertId', adminController.deleteExpert);
+
 
 // User Management (Block/Delete)
+router.get('/users', adminController.getAllUsers);
+
 router.put('/users/:userId/block', adminController.blockUser);
 router.put('/users/:userId/unblock', adminController.unblockUser);
 router.delete('/users/:userId', adminController.deleteUser);

@@ -42,32 +42,33 @@ module.exports = function defineAssociations(models) {
   } = models;
 
   // User associations
-  User.hasMany(Advisory, { as: 'farmerAdvisories', foreignKey: 'farmer_id' });
-  User.hasMany(Advisory, { as: 'expertAdvisories', foreignKey: 'expert_id' });
-  User.hasMany(AdvisoryResponse, { foreignKey: 'user_id' });
-  User.hasMany(Notification, { foreignKey: 'user_id' });
-  User.hasMany(Product, { as: 'products', foreignKey: 'seller_id' });
-  User.hasMany(Order, { as: 'buyerOrders', foreignKey: 'buyer_id' });
-  User.hasMany(Order, { as: 'sellerOrders', foreignKey: 'seller_id' });
-  User.hasMany(Farm, { as: 'farms', foreignKey: 'farmer_id' });
-  User.hasMany(MarketReview, { foreignKey: 'user_id', as: 'marketReviews' });
-  User.hasOne(Expert, { foreignKey: 'user_id', as: 'expertProfile' });
+  User.hasMany(Advisory, { as: 'farmerAdvisories', foreignKey: 'farmer_id', onDelete: 'CASCADE' });
+  User.hasMany(Advisory, { as: 'expertAdvisories', foreignKey: 'expert_id', onDelete: 'CASCADE' });
+  User.hasMany(AdvisoryResponse, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+  User.hasMany(Notification, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+  User.hasMany(Product, { as: 'products', foreignKey: 'seller_id', onDelete: 'CASCADE' });
+  User.hasMany(Order, { as: 'buyerOrders', foreignKey: 'buyer_id', onDelete: 'SET NULL' }); // Preserve orders for seller
+  User.hasMany(Order, { as: 'sellerOrders', foreignKey: 'seller_id', onDelete: 'SET NULL' }); // Preserve orders for buyer
+  User.hasMany(Farm, { as: 'farms', foreignKey: 'farmer_id', onDelete: 'CASCADE' });
+  User.hasMany(MarketReview, { foreignKey: 'user_id', as: 'marketReviews', onDelete: 'CASCADE' });
+  User.hasOne(Expert, { foreignKey: 'user_id', as: 'expertProfile', onDelete: 'CASCADE' });
+
 
   // Farm associations
   Farm.belongsTo(User, { as: 'farmer', foreignKey: 'farmer_id' });
-  Farm.hasMany(FarmCrop, { as: 'crops', foreignKey: 'farm_id' });
+  Farm.hasMany(FarmCrop, { as: 'crops', foreignKey: 'farm_id', onDelete: 'CASCADE' });
   FarmCrop.belongsTo(Farm, { as: 'farm', foreignKey: 'farm_id' });
   FarmCrop.belongsTo(Crop, { as: 'crop', foreignKey: 'crop_id' });
-  Farm.hasMany(FarmGuideline, { as: 'guidelines', foreignKey: 'farm_id' });
+  Farm.hasMany(FarmGuideline, { as: 'guidelines', foreignKey: 'farm_id', onDelete: 'CASCADE' });
   FarmGuideline.belongsTo(Farm, { as: 'farm', foreignKey: 'farm_id' });
   FarmGuideline.belongsTo(GuidanceTemplate, { as: 'template', foreignKey: 'template_id' });
-  GuidanceTemplate.hasMany(FarmGuideline, { as: 'farmGuidelines', foreignKey: 'template_id' });
-  Farm.hasMany(Advisory, { foreignKey: 'farm_id' });
+  GuidanceTemplate.hasMany(FarmGuideline, { as: 'farmGuidelines', foreignKey: 'template_id', onDelete: 'CASCADE' });
+  Farm.hasMany(Advisory, { foreignKey: 'farm_id', onDelete: 'CASCADE' });
   Farm.belongsToMany(Crop, { through: FarmCrop, foreignKey: 'farm_id' });
-  Farm.hasMany(Product, { foreignKey: 'farm_id' });
+  Farm.hasMany(Product, { foreignKey: 'farm_id', onDelete: 'CASCADE' });
 
   // Crop associations
-  Crop.hasMany(Advisory, { foreignKey: 'crop_id' });
+  Crop.hasMany(Advisory, { foreignKey: 'crop_id', onDelete: 'CASCADE' });
   Crop.belongsToMany(Farm, { through: FarmCrop, foreignKey: 'crop_id' });
   Crop.belongsToMany(Market, {
     through: MarketCrop,
@@ -75,14 +76,14 @@ module.exports = function defineAssociations(models) {
     otherKey: 'market_id',
     as: 'markets'
   });
-  Crop.hasMany(Product, { foreignKey: 'crop_id' });
+  Crop.hasMany(Product, { foreignKey: 'crop_id', onDelete: 'RESTRICT' }); // Don't delete crop if products exist, or SET NULL
 
   // Advisory associations
   Advisory.belongsTo(User, { as: 'farmer', foreignKey: 'farmer_id' });
   Advisory.belongsTo(User, { as: 'expert', foreignKey: 'expert_id' });
   Advisory.belongsTo(Farm, { foreignKey: 'farm_id' });
   Advisory.belongsTo(Crop, { foreignKey: 'crop_id' });
-  Advisory.hasMany(AdvisoryResponse, { foreignKey: 'advisory_id' });
+  Advisory.hasMany(AdvisoryResponse, { foreignKey: 'advisory_id', onDelete: 'CASCADE' });
 
   // AdvisoryResponse associations
   AdvisoryResponse.belongsTo(Advisory, { foreignKey: 'advisory_id' });
@@ -92,14 +93,14 @@ module.exports = function defineAssociations(models) {
   Notification.belongsTo(User, { foreignKey: 'user_id' });
 
   // Market associations
-  Market.hasMany(Product, { foreignKey: 'market_id' });
+  Market.hasMany(Product, { foreignKey: 'market_id', onDelete: 'SET NULL' }); // Products can exist without market?
   Market.belongsToMany(Crop, {
     through: MarketCrop,
     foreignKey: 'market_id',
     otherKey: 'crop_id',
     as: 'acceptedCrops'
   });
-  Market.hasMany(MarketReview, { foreignKey: 'market_id', as: 'reviews' });
+  Market.hasMany(MarketReview, { foreignKey: 'market_id', as: 'reviews', onDelete: 'CASCADE' });
 
   // MarketCrop associations (join table)
   MarketCrop.belongsTo(Market, { foreignKey: 'market_id' });
@@ -115,6 +116,7 @@ module.exports = function defineAssociations(models) {
   Product.belongsTo(Crop, { foreignKey: 'crop_id' });
   Product.belongsTo(Market, { foreignKey: 'market_id' });
   // Note: Product.hasMany(Order) removed - orders use OrderItems, not direct product_id
+
 
   // Order associations
   Order.belongsTo(User, { as: 'buyer', foreignKey: 'buyer_id' });
@@ -196,7 +198,7 @@ module.exports = function defineAssociations(models) {
   WeatherData.belongsTo(Farm, { foreignKey: 'farm_id' });
 
   // Forum associations
-  ForumTopic.hasMany(ForumPost, { foreignKey: 'topic_id', as: 'posts' });
+  ForumTopic.hasMany(ForumPost, { foreignKey: 'topic_id', as: 'posts', onDelete: 'CASCADE' });
   ForumTopic.belongsTo(User, { as: 'creator', foreignKey: 'created_by_id' });
   ForumPost.belongsTo(ForumTopic, { foreignKey: 'topic_id', as: 'topic' });
   ForumPost.belongsTo(User, { as: 'author', foreignKey: 'author_id' });
@@ -206,22 +208,22 @@ module.exports = function defineAssociations(models) {
   // Forum Member associations
   ForumMember.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
   ForumMember.belongsTo(ForumTopic, { foreignKey: 'forum_id', as: 'forum' });
-  User.hasMany(ForumMember, { foreignKey: 'user_id' });
-  ForumTopic.hasMany(ForumMember, { foreignKey: 'forum_id', as: 'members' });
+  User.hasMany(ForumMember, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+  ForumTopic.hasMany(ForumMember, { foreignKey: 'forum_id', as: 'members', onDelete: 'CASCADE' });
 
   // Forum Message associations (for chat)
   ForumMessage.belongsTo(User, { foreignKey: 'user_id', as: 'sender' });
   ForumMessage.belongsTo(ForumTopic, { foreignKey: 'forum_id', as: 'forum' });
-  ForumTopic.hasMany(ForumMessage, { foreignKey: 'forum_id', as: 'messages' });
-  User.hasMany(ForumMessage, { foreignKey: 'user_id', as: 'forumMessages' });
+  ForumTopic.hasMany(ForumMessage, { foreignKey: 'forum_id', as: 'messages', onDelete: 'CASCADE' });
+  User.hasMany(ForumMessage, { foreignKey: 'user_id', as: 'forumMessages', onDelete: 'CASCADE' });
 
   // Cart associations
   Cart.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
   Cart.hasMany(CartItem, { foreignKey: 'cart_id', as: 'items', onDelete: 'CASCADE' });
-  User.hasMany(Cart, { foreignKey: 'user_id', as: 'carts' });
+  User.hasMany(Cart, { foreignKey: 'user_id', as: 'carts', onDelete: 'CASCADE' });
 
   // CartItem associations
   CartItem.belongsTo(Cart, { foreignKey: 'cart_id', as: 'cart' });
   CartItem.belongsTo(Product, { foreignKey: 'product_id', as: 'product' });
-  Product.hasMany(CartItem, { foreignKey: 'product_id', as: 'cartItems' });
+  Product.hasMany(CartItem, { foreignKey: 'product_id', as: 'cartItems', onDelete: 'CASCADE' });
 };

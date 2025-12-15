@@ -196,7 +196,10 @@
       "sendError": "Échec de l'envoi du message",
       "joinError": "Échec de l'adhésion au forum",
       "today": "Aujourd'hui",
-      "yesterday": "Hier"
+      "yesterday": "Hier",
+      "leaveTitle": "Quitter le Forum",
+      "leaveConfirm": "Êtes-vous sûr de vouloir quitter ce forum ?",
+      "leave": "Quitter le Forum"
     }
   },
   "date": {

@@ -134,14 +134,46 @@ class AdminService {
         });
     }
 
+    // Delete expert
+    async deleteExpert(token: string, expertId: string) {
+        return await request<any>(`/admin/experts/${expertId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        });
+    }
+
+    // Delete product
+    async deleteProduct(token: string, productId: string) {
+        return await request<any>(`/products/${productId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        });
+    }
+
     // Create expert
     async createExpert(token: string, expertData: any) {
+
         return await request<any>('/admin/experts', {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` },
             body: JSON.stringify(expertData)
         });
     }
+
+    // Get all users
+    async getUsers(token: string, params?: { limit?: number; offset?: number; search?: string; role?: string }) {
+        const queryParams = new URLSearchParams();
+        if (params?.limit) queryParams.append('limit', params.limit.toString());
+        if (params?.offset) queryParams.append('offset', params.offset.toString());
+        if (params?.search) queryParams.append('search', params.search);
+        if (params?.role) queryParams.append('role', params.role);
+
+        const response = await request<{ success: boolean; data: { rows: any[]; count: number } }>(`/admin/users?${queryParams.toString()}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    }
+
 
     // Create expert with image (FormData)
     async createExpertWithImage(token: string, formData: FormData) {

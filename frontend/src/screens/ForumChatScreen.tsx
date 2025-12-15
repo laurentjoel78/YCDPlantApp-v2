@@ -13,6 +13,7 @@ import {
     Alert,
     Image
 } from 'react-native';
+import { Menu, Divider } from 'react-native-paper';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -60,6 +61,7 @@ export default function ForumChatScreen() {
     const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [joining, setJoining] = useState(false);
+    const [menuVisible, setMenuVisible] = useState(false);
 
     const flatListRef = useRef<FlatList>(null);
     const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -170,6 +172,33 @@ export default function ForumChatScreen() {
         }
     };
 
+    const handleLeaveForum = async () => {
+        setMenuVisible(false);
+        if (!forum?.isMember) return;
+
+        Alert.alert(
+            t('forum.chat.leaveTitle') || 'Leave Forum',
+            t('forum.chat.leaveConfirm') || 'Are you sure you want to leave this forum?',
+            [
+                { text: t('common.cancel') || 'Cancel', style: 'cancel' },
+                {
+                    text: t('forum.chat.leave') || 'Leave',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            // Don't use full screen loading, just optimistic update or specific loading
+                            await forumService.leaveForum(forumId);
+                            setForum(prev => prev ? { ...prev, isMember: false, memberCount: Math.max(0, prev.memberCount - 1) } : null);
+                            Alert.alert('Success', 'You have left the forum');
+                        } catch (err: any) {
+                            Alert.alert('Error', err.message || 'Failed to leave forum');
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
     const formatTime = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -262,9 +291,20 @@ export default function ForumChatScreen() {
                         {t('forum.chat.members', { count: forum?.memberCount || 0 })}
                     </Text>
                 </View>
-                <TouchableOpacity style={styles.headerAction}>
-                    <Icon name="dots-vertical" size={24} color="#333" />
-                </TouchableOpacity>
+
+                {forum?.isMember && (
+                    <Menu
+                        visible={menuVisible}
+                        onDismiss={() => setMenuVisible(false)}
+                        anchor={
+                            <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.headerAction}>
+                                <Icon name="dots-vertical" size={24} color="#333" />
+                            </TouchableOpacity>
+                        }
+                    >
+                        <Menu.Item onPress={handleLeaveForum} title={t('forum.chat.leave') || "Leave Forum"} leadingIcon="exit-to-app" />
+                    </Menu>
+                )}
             </View>
 
             {/* Join Banner (if not a member) */}
@@ -398,6 +438,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#666',
         marginTop: 2,
+
     },
     headerAction: {
         padding: 8,

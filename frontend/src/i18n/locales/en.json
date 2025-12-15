@@ -196,7 +196,10 @@
       "sendError": "Failed to send message",
       "joinError": "Failed to join forum",
       "today": "Today",
-      "yesterday": "Yesterday"
+      "yesterday": "Yesterday",
+      "leaveTitle": "Leave Forum",
+      "leaveConfirm": "Are you sure you want to leave this forum?",
+      "leave": "Leave Forum"
     }
   },
   "date": {

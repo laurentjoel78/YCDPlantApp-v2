@@ -53,12 +53,12 @@ const ExpertManagementScreen = () => {
         return () => unsubscribers.forEach(unsub => unsub());
     }, [subscribe, fetchExperts]);
 
-    const handleDeleteExpert = (userId: string) => {
+    const handleDeleteExpert = (expertId: string) => {
         if (!token) return;
 
         Alert.alert(
-            'Delete Expert',
-            'Are you sure you want to delete this expert account? This action cannot be undone.',
+            'Delete Expert Profile',
+            'Are you sure you want to remove this expert profile? The user account will remain active as a regular user.',
             [
                 { text: 'Cancel', style: 'cancel' },
                 {
@@ -66,8 +66,8 @@ const ExpertManagementScreen = () => {
                     style: 'destructive',
                     onPress: async () => {
                         try {
-                            await adminService.deleteUser(token, userId);
-                            Alert.alert('Success', 'Expert deleted successfully');
+                            await adminService.deleteExpert(token, expertId);
+                            Alert.alert('Success', 'Expert profile deleted successfully');
                             fetchExperts();
                         } catch (error) {
                             console.error('Error deleting expert:', error);
@@ -78,6 +78,7 @@ const ExpertManagementScreen = () => {
             ]
         );
     };
+
 
     const handleBlockExpert = (userId: string) => {
         if (!token) return;

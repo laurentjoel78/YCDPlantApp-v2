@@ -374,6 +374,76 @@ exports.unblockUser = asyncHandler(async (req, res) => {
   });
 });
 
+exports.getAllUsers = asyncHandler(async (req, res) => {
+  const { User } = require('../models');
+  const { Op } = require('sequelize');
+
+  if (!req.user.isAdmin) {
+    const error = new Error('Only admins can view all users'); error.statusCode = 403; throw error;
+  }
+
+  const { limit = 20, offset = 0, search, role } = req.query;
+  const where = {};
+
+  if (role && role !== 'all') where.role = role;
+
+  if (search) {
+    where[Op.or] = [
+      { email: { [Op.iLike]: `%${search}%` } },
+      { first_name: { [Op.iLike]: `%${search}%` } },
+      { last_name: { [Op.iLike]: `%${search}%` } }
+    ];
+  }
+
+  const users = await User.findAndCountAll({
+    where,
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+    order: [['created_at', 'DESC']],
+    attributes: { exclude: ['password_hash'] }
+  });
+
+  res.json({
+    success: true,
+    data: users
+  });
+});
+
+
+exports.deleteExpert = asyncHandler(async (req, res) => {
+  const { Expert } = require('../models');
+
+  if (!req.user.isAdmin) {
+    const error = new Error('Only admins can delete experts'); error.statusCode = 403; throw error;
+  }
+
+  const { expertId } = req.params;
+
+  const expert = await Expert.findByPk(expertId);
+  if (!expert) {
+    const error = new Error('Expert not found'); error.statusCode = 404; throw error;
+  }
+
+  await expert.destroy();
+
+  // Log activity
+  await auditService.logUserAction({
+    userId: req.user.id,
+    userRole: req.user.role,
+    actionType: 'ADMIN_EXPERT_DELETE',
+    actionDescription: `Admin deleted expert profile ${expertId}`,
+    req,
+    tableName: 'experts',
+    recordId: expertId
+  });
+
+  res.json({
+    success: true,
+    message: 'Expert profile deleted successfully'
+  });
+});
+
+
 exports.deleteUser = asyncHandler(async (req, res) => {
   const { User } = require('../models');
 
