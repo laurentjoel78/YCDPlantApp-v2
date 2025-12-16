@@ -104,6 +104,18 @@ class ExpertController {
       res.status(201).json(expert);
     } catch (error) {
       console.error('Error in createExpert:', error);
+
+      if (error.name === 'SequelizeValidationError') {
+        return res.status(400).json({
+          error: 'Validation failed',
+          details: error.errors?.map(e => e.message) || error.message
+        });
+      }
+
+      if (error.statusCode) {
+        return res.status(error.statusCode).json({ error: error.message });
+      }
+
       res.status(500).json({ error: 'Failed to create expert' });
     }
   }
