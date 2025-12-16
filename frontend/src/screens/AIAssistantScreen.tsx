@@ -11,28 +11,30 @@ import { Text, TextInput, ActivityIndicator, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ChatService, Message } from '../services/chatService';
 import { api } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 export default function AIAssistantScreen() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedActions, setSuggestedActions] = useState<string[]>([]);
+  const { t } = useTranslation();
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Add initial greeting message
   useEffect(() => {
     const welcomeMessage = ChatService.createMessage(
-      "Hello! I'm your AI farming assistant. How can I help you today?",
+      t('expert.chat.welcome', "Hello! I'm your AI farming assistant. How can I help you today?"),
       'ai'
     );
     setMessages([welcomeMessage]);
     setSuggestedActions([
-      "How's the weather today?",
-      "Check my crops for diseases",
-      "Best farming practices",
-      "Market prices"
+      t('chat.suggestions.weather', "How's the weather today?"),
+      t('chat.suggestions.disease', "Check my crops for diseases"),
+      t('chat.suggestions.practices', "Best farming practices"),
+      t('chat.suggestions.prices', "Market prices")
     ]);
-  }, []);
+  }, [t]);
 
   const scrollToBottom = () => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -49,6 +51,7 @@ export default function AIAssistantScreen() {
 
     try {
       // Use the real backend API
+      // TODO: Pass current language code to API if needed (e.g. i18n.language)
       const response = await api.chatbot.sendMessage(inputText.trim(), 'en');
       const aiMessage = ChatService.createMessage(response.data.text, 'ai');
       setMessages(prev => [...prev, aiMessage]);
@@ -56,7 +59,7 @@ export default function AIAssistantScreen() {
     } catch (error) {
       console.error('Chatbot error:', error);
       const errorMessage = ChatService.createMessage(
-        'Sorry, I encountered an error connecting to the AI. Please try again.',
+        t('expert.chat.error', 'Sorry, I encountered an error connecting to the AI. Please try again.'),
         'ai'
       );
       setMessages(prev => [...prev, errorMessage]);
@@ -118,11 +121,10 @@ export default function AIAssistantScreen() {
         {isLoading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="small" color="#2D5016" />
-            <Text style={styles.loadingText}>AI is thinking...</Text>
+            <Text style={styles.loadingText}>{t('common.loading', 'AI is thinking...')}</Text>
           </View>
         )}
       </ScrollView>
-
       {suggestedActions.length > 0 && !isLoading && (
         <ScrollView
           horizontal
@@ -147,7 +149,7 @@ export default function AIAssistantScreen() {
         <TextInput
           value={inputText}
           onChangeText={setInputText}
-          placeholder="Type your message..."
+          placeholder={t('forum.chat.placeholder', "Type your message...")}
           style={styles.input}
           multiline
           maxLength={500}

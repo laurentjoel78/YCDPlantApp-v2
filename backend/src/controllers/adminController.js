@@ -410,100 +410,124 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
 });
 
 
-exports.deleteExpert = asyncHandler(async (req, res) => {
+exports.deleteExpert = async (req, res) => {
   const { Expert } = require('../models');
 
-  if (!req.user.isAdmin) {
-    const error = new Error('Only admins can delete experts'); error.statusCode = 403; throw error;
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ error: 'Only admins can delete experts' });
+    }
+
+    const { expertId } = req.params;
+
+    // Validate if expertId is provided
+    if (!expertId) {
+      return res.status(400).json({ error: 'Expert ID is required' });
+    }
+
+    const expert = await Expert.findByPk(expertId);
+    if (!expert) {
+      console.log(`Expert with ID ${expertId} not found during deletion attempt.`);
+      return res.status(404).json({ error: 'Expert not found' });
+    }
+
+    await expert.destroy();
+
+    // Log activity
+    try {
+      await auditService.logUserAction({
+        userId: req.user.id,
+        userRole: req.user.role,
+        actionType: 'ADMIN_EXPERT_DELETE',
+        actionDescription: `Admin deleted expert profile ${expertId}`,
+        req,
+        tableName: 'experts',
+        recordId: expertId
+      });
+    } catch (logError) {
+      console.error('Failed to log expert deletion:', logError);
+      // Continue execution, do not fail the request
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Expert profile deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error in deleteExpert:', error);
+    // Ensure we don't send headers twice if we already sent 404
+    if (!res.headersSent) {
+      return res.status(500).json({ error: 'Failed to delete expert' });
+    }
   }
-
-  const { expertId } = req.params;
-
-  const expert = await Expert.findByPk(expertId);
-  if (!expert) {
-    const error = new Error('Expert not found'); error.statusCode = 404; throw error;
-  }
-
-  await expert.destroy();
-
-  // Log activity
-  await auditService.logUserAction({
-    userId: req.user.id,
-    userRole: req.user.role,
-    actionType: 'ADMIN_EXPERT_DELETE',
-    actionDescription: `Admin deleted expert profile ${expertId}`,
-    req,
-    tableName: 'experts',
-    recordId: expertId
-  });
-
-  res.json({
-    success: true,
-    message: 'Expert profile deleted successfully'
-  });
-});
+};
 
 
-exports.deleteUser = asyncHandler(async (req, res) => {
+exports.deleteUser = async (req, res) => {
   const { User } = require('../models');
 
-  if (!req.user.isAdmin) {
-    const error = new Error('Only admins can delete users'); error.statusCode = 403; throw error;
-  }
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ error: 'Only admins can delete users' });
+    }
 
-  const { userId } = req.params;
-  const { permanent = false } = req.body;
+    const { userId } = req.params;
+    const { permanent = false } = req.body;
 
-  const user = await User.findByPk(userId);
-  if (!user) {
-    const error = new Error('User not found'); error.statusCode = 404; throw error;
-  }
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-  // Prevent self-deletion
-  if (user.id === req.user.id) {
-    const error = new Error('Cannot delete your own account'); error.statusCode = 400; throw error;
-  }
+    // Prevent self-deletion
+    if (user.id === req.user.id) {
+      return res.status(400).json({ error: 'Cannot delete your own account' });
+    }
 
-  // Log before deletion for audit trail
-  await auditService.logUserAction({
-    userId: req.user.id,
-    userRole: req.user.role,
-    actionType: permanent ? 'ADMIN_USER_DELETE_PERMANENT' : 'ADMIN_USER_DELETE_SOFT',
-    actionDescription: `Admin deleted user ${user.email}`,
-    req,
-    tableName: 'users',
-    recordId: userId,
-    metadata: {
-      targetUserId: userId,
-      userEmail: user.email,
-      permanent,
-      userData: {
-        name: `${user.first_name} ${user.last_name}`,
-        role: user.role,
-        createdAt: user.created_at
+    // Log before deletion for audit trail
+    await auditService.logUserAction({
+      userId: req.user.id,
+      userRole: req.user.role,
+      actionType: permanent ? 'ADMIN_USER_DELETE_PERMANENT' : 'ADMIN_USER_DELETE_SOFT',
+      actionDescription: `Admin deleted user ${user.email}`,
+      req,
+      tableName: 'users',
+      recordId: userId,
+      metadata: {
+        targetUserId: userId,
+        userEmail: user.email,
+        permanent,
+        userData: {
+          name: `${user.first_name} ${user.last_name}`,
+          role: user.role,
+          createdAt: user.created_at
+        } // Preserve basic info in log since record will be gone/anonymized
       }
-    }
-  });
-
-  if (permanent) {
-    await user.destroy({ force: true });
-  } else {
-    await user.update({
-      is_active: false,
-      email: `deleted_${user.id}_${user.email}` // Prevent email conflicts
     });
-  }
 
-  res.json({
-    success: true,
-    message: permanent ? 'User permanently deleted' : 'User deleted successfully',
-    data: {
-      userId: user.id,
-      email: user.email,
-      deletedPermanently: permanent
+    if (permanent) {
+      await user.destroy({ force: true });
+    } else {
+      await user.update({
+        is_active: false,
+        email: `deleted_${user.id}_${user.email}` // Prevent email conflicts
+      });
     }
-  });
-});
+
+    res.json({
+      success: true,
+      message: permanent ? 'User permanently deleted' : 'User deleted successfully',
+      data: {
+        userId: user.id,
+        email: user.email,
+        deletedPermanently: permanent
+      }
+    });
+  } catch (error) {
+    console.error('Error in deleteUser:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+};
 
 // Activity Monitoring Controllers
 exports.getUserActivityLogs = asyncHandler(async (req, res) => {

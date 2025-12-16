@@ -155,9 +155,15 @@
     },
     "chat": {
       "welcome": "Hello! I'm the YCD Assistant. How can I help with your agricultural consultation?",
-      "acknowledge": "I understand your request. I'll find a suitable expert...",
-      "title": "YCD Virtual Assistant"
-    }
+      "acknowledge": "I understand your request. I'll find a suitable expert..."
+    },
+    "yearsExp": "years exp.",
+    "rating": "Rating",
+    "years": "Years",
+    "perHour": "/ hour",
+    "languages": "Languages",
+    "startConsultation": "Start Consultation",
+    "searchPlaceholder": "Search experts..."
   },
   "detection": {
     "title": "Plant Disease Detection",
@@ -178,7 +184,10 @@
     "fetchError": "Failed to load suggestions: {{message}}",
     "recommended": "Recommended",
     "nearbyMarkets": "Nearby Markets",
-    "buy": "Buy"
+    "buy": "Buy",
+    "noData": "No suggestions available right now.",
+    "none": "No active advisories for your farm at the moment.",
+    "noMarkets": "No nearby market data available."
   },
   "forum": {
     "chat": {
@@ -295,10 +304,15 @@
         "veryGood": "😊 Very Good",
         "excellent": "🤩 Excellent",
         "feedback": "Additional Feedback (Optional)",
-        "feedbackPlaceholder": "Share your thoughts...",
-        "submit": "Submit Rating",
-        "thankYou": "Thank you for your rating!"
+        "feedbackPlaceholder": "Share your thoughts..."
       }
     }
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "subtitle": "Find quality agricultural products",
+    "searchPlaceholder": "Search products...",
+    "detailsComingSoon": "Product details view will be available in the next update.",
+    "noProducts": "No products found matching your search."
   }
 }

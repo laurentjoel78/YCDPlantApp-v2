@@ -155,9 +155,15 @@
     },
     "chat": {
       "welcome": "Bonjour! Je suis YCD Assistant. Comment puis-je vous aider avec votre consultation agricole?",
-      "acknowledge": "Je comprends votre demande. Je vais chercher un expert approprié...",
-      "title": "Assistant Virtuel YCD"
-    }
+      "acknowledge": "Je comprends votre demande. Je vais chercher un expert approprié..."
+    },
+    "yearsExp": "ans d'exp.",
+    "rating": "Note",
+    "years": "Années",
+    "perHour": "/ heure",
+    "languages": "Langues",
+    "startConsultation": "Démarrer consultation",
+    "searchPlaceholder": "Rechercher experts..."
   },
   "detection": {
     "title": "Détection des maladies des plantes",
@@ -178,7 +184,10 @@
     "fetchError": "Échec du chargement des suggestions: {{message}}",
     "recommended": "Recommandé",
     "nearbyMarkets": "Marchés à proximité",
-    "buy": "Acheter"
+    "buy": "Acheter",
+    "noData": "Aucune suggestion disponible pour le moment.",
+    "none": "Aucun conseil actif pour votre ferme en ce moment.",
+    "noMarkets": "Aucune donnée sur les marchés à proximité."
   },
   "forum": {
     "chat": {

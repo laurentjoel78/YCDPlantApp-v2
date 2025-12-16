@@ -10,6 +10,7 @@ import { categories } from '../data/marketplace';
 import { useSocket } from '../context/SocketContext';
 import { cacheService, CACHE_KEYS } from '../services/cacheService';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const MarketplaceScreen: React.FC = () => {
   const { colors } = useTheme();
@@ -21,6 +22,7 @@ const MarketplaceScreen: React.FC = () => {
   const [products, setProducts] = useState<any[]>(cachedProducts || []);
   const [loading, setLoading] = useState(!cachedProducts); // Only show loading if no cache
   const [refreshing, setRefreshing] = useState(false);
+  const { t } = useTranslation();
 
   const loadProducts = useCallback(async (forceLoading = false) => {
     try {
@@ -191,10 +193,10 @@ const MarketplaceScreen: React.FC = () => {
 
   const renderHeader = useCallback(() => (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Marketplace</Text>
-      <Text style={styles.headerSubtitle}>Find quality agricultural products</Text>
+      <Text style={styles.headerTitle}>{t('marketplace.title', 'Marketplace')}</Text>
+      <Text style={styles.headerSubtitle}>{t('marketplace.subtitle', 'Find quality agricultural products')}</Text>
     </View>
-  ), [styles]);
+  ), [styles, t]);
 
   if (loading && !refreshing) {
     return (
@@ -215,7 +217,7 @@ const MarketplaceScreen: React.FC = () => {
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search products..."
+          placeholder={t('marketplace.searchPlaceholder', 'Search products...')}
         />
       </View>
 
@@ -269,7 +271,7 @@ const MarketplaceScreen: React.FC = () => {
                   name: product.seller ? `${product.seller.first_name} ${product.seller.last_name}` : 'Unknown Seller',
                   rating: 0
                 }}
-                onPress={() => Alert.alert('Coming Soon', 'Product details view will be available in the next update.')}
+                onPress={() => Alert.alert(t('common.comingSoon'), t('marketplace.detailsComingSoon', 'Product details view will be available in the next update.'))}
                 onAddToCart={handleAddToCart}
                 style={{ width: '45%', marginBottom: 16 }}
               />
@@ -278,7 +280,7 @@ const MarketplaceScreen: React.FC = () => {
         ) : (
           <View style={styles.emptyState}>
             <Text style={styles.emptyStateText}>
-              No products found matching your search.
+              {t('marketplace.noProducts', 'No products found matching your search.')}
             </Text>
           </View>
         )}

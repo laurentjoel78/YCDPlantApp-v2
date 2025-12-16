@@ -22,6 +22,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Expert, ExpertService } from '../services/expertService';
 import { useNavigation, NavigationProp, useNavigationState, useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
+import { useTranslation } from 'react-i18next';
 
 export default function ExpertAdvisoryScreen() {
   const [experts, setExperts] = useState<Expert[]>([]);
@@ -32,6 +33,7 @@ export default function ExpertAdvisoryScreen() {
   const [filter, setFilter] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const navigationState = useNavigationState(state => state);
+  const { t } = useTranslation();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -136,7 +138,7 @@ export default function ExpertAdvisoryScreen() {
               <MaterialCommunityIcons name="star" size={16} color="#F59E0B" />
               <Text style={styles.rating}>{expert.rating}</Text>
               <Text style={styles.experience}>
-                {expert.experience} years exp.
+                {expert.experience} {t('expert.yearsExp', 'years exp.')}
               </Text>
             </View>
           </View>
@@ -179,7 +181,7 @@ export default function ExpertAdvisoryScreen() {
               <View style={styles.statItem}>
                 <MaterialCommunityIcons name="star" size={20} color="#F59E0B" />
                 <Text style={styles.statValue}>{selectedExpert.rating}</Text>
-                <Text style={styles.statLabel}>Rating</Text>
+                <Text style={styles.statLabel}>{t('expert.rating', 'Rating')}</Text>
               </View>
               <View style={styles.statItem}>
                 <MaterialCommunityIcons
@@ -190,7 +192,7 @@ export default function ExpertAdvisoryScreen() {
                 <Text style={styles.statValue}>
                   {selectedExpert.experience}
                 </Text>
-                <Text style={styles.statLabel}>Years</Text>
+                <Text style={styles.statLabel}>{t('expert.years', 'Years')}</Text>
               </View>
               <View style={styles.statItem}>
                 <MaterialCommunityIcons
@@ -201,14 +203,14 @@ export default function ExpertAdvisoryScreen() {
                 <Text style={styles.statValue}>
                   ${selectedExpert.consultationPrice}
                 </Text>
-                <Text style={styles.statLabel}>/ hour</Text>
+                <Text style={styles.statLabel}>{t('expert.perHour', '/ hour')}</Text>
               </View>
             </View>
 
-            <Text style={styles.sectionTitle}>About</Text>
+            <Text style={styles.sectionTitle}>{t('profile.about', 'About')}</Text>
             <Text style={styles.modalBio}>{selectedExpert.bio}</Text>
 
-            <Text style={styles.sectionTitle}>Languages</Text>
+            <Text style={styles.sectionTitle}>{t('expert.languages', 'Languages')}</Text>
             <View style={styles.languageContainer}>
               {selectedExpert.languages.map((language, index) => (
                 <Chip key={index} style={styles.languageChip}>
@@ -226,7 +228,7 @@ export default function ExpertAdvisoryScreen() {
               style={styles.consultButton}
               disabled={selectedExpert.availability === 'offline'}
             >
-              Start Consultation
+              {t('expert.startConsultation', 'Start Consultation')}
             </Button>
           </ScrollView>
         )}
@@ -238,7 +240,7 @@ export default function ExpertAdvisoryScreen() {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#2D5016" />
-        <Text style={styles.loadingText}>Loading experts...</Text>
+        <Text style={styles.loadingText}>{t('common.loading', 'Loading experts...')}</Text>
       </View>
     );
   }
@@ -246,7 +248,7 @@ export default function ExpertAdvisoryScreen() {
   return (
     <View style={styles.container}>
       <Searchbar
-        placeholder="Search experts..."
+        placeholder={t('expert.searchPlaceholder', 'Search experts...')}
         onChangeText={handleSearch}
         value={searchQuery}
         style={styles.searchBar}
@@ -262,7 +264,7 @@ export default function ExpertAdvisoryScreen() {
           onPress={() => handleFilter(null)}
           style={styles.filterChip}
         >
-          All
+          {t('common.all', 'All')}
         </Chip>
         {Array.from(new Set(experts.map(e => e.specialization))).map(
           (specialization, index) => (
