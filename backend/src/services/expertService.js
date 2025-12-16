@@ -21,6 +21,8 @@ class ExpertService {
       location
     } = data;
 
+    const transaction = await sequelize.transaction();
+
     try {
       // Generate a temporary password for the expert
       const tempPassword = crypto.randomBytes(8).toString('hex');
@@ -32,6 +34,26 @@ class ExpertService {
       const trimmedLastName = lastName?.trim();
       const trimmedPhone = phone?.trim();
 
+      // Helper to ensure array fields are arrays
+      const parseArray = (input) => {
+        if (!input) return [];
+        if (Array.isArray(input)) return input;
+        if (typeof input === 'string') {
+          // Try parsing JSON first
+          try {
+            const parsed = JSON.parse(input);
+            if (Array.isArray(parsed)) return parsed;
+          } catch (e) {
+            // Not JSON, fall back to comma split
+            return input.split(',').map(s => s.trim()).filter(Boolean);
+          }
+        }
+        return [input]; // Single value fallback
+      };
+
+      const finalSpecializations = parseArray(specializations);
+      const finalLanguages = languages ? parseArray(languages) : ['French', 'English']; // Default if missing
+
       // Create user account for expert
       const user = await User.create({
         email: trimmedEmail,
@@ -41,17 +63,17 @@ class ExpertService {
         role: 'expert',
         password_hash,
         created_by_admin_id: adminId
-      });
+      }, { transaction });
 
 
       // Create expert profile
       const expert = await Expert.create({
         userId: user.id,
-        specializations,
+        specializations: finalSpecializations,
         certifications,
         experience,
         bio,
-        languages,
+        languages: finalLanguages,
         hourlyRate,
         location,
         createdByAdminId: adminId,
@@ -59,7 +81,7 @@ class ExpertService {
         profileVisible: true,
         approvedByAdminId: adminId,
         approvedAt: new Date()
-      });
+      }, { transaction });
 
       // Log expert creation
       await auditService.logUserAction({
@@ -71,10 +93,13 @@ class ExpertService {
           expertId: expert.id,
           expertEmail: email
         }
-      });
+      }); // Audit logs usually don't need to be in the same transaction for data integrity, but typically are safe to be outside or inside. keeping outside or independent is fine, but for strictness let's leave it as is (it might not support transaction arg).
+
+      await transaction.commit();
 
       return expert;
     } catch (error) {
+      await transaction.rollback();
       console.error('Error creating expert:', error);
 
       // Handle duplicate email error
