@@ -167,7 +167,7 @@ class ConsultationController {
       // Create consultation
       const consultation = await Consultation.create({
         farmerId: userId,
-        expertId: expertProfile.id, // MUST be the Expert Profile ID (DB constraint)
+        expertId: expertUser.id, // Correct: Use User ID, not Expert Profile ID
         farmId: finalFarmId,
         cropId: finalCropId,
         problemDescription: problemDescription,
