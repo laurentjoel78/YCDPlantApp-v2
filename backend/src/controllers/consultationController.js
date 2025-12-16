@@ -123,7 +123,10 @@ class ConsultationController {
           const newFarm = await Farm.create({
             farmer_id: userId,
             name: 'My Default Farm',
-            location: { lat: 0, lng: 0 },
+            location_lat: 0.0,
+            location_lng: 0.0,
+            address: 'Default Address',
+            region: 'Default Region',
             size: 1.0,
             unit: 'hectares'
           }, { transaction });

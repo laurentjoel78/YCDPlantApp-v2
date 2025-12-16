@@ -6,6 +6,7 @@ import { adminService } from '../../services/adminService';
 import { useAuth } from '../../hooks/useAuth';
 import { useSocket } from '../../context/SocketContext';
 import { cacheService, CACHE_KEYS } from '../../services/cacheService';
+import { getImageUrl } from '../../utils/imageUtils';
 
 const ExpertManagementScreen = () => {
     const navigation = useNavigation();
@@ -118,11 +119,19 @@ const ExpertManagementScreen = () => {
                 <Card.Content>
                     <View style={styles.header}>
                         <View style={styles.userInfo}>
-                            <Avatar.Text
-                                size={40}
-                                label={initials}
-                                style={styles.avatar}
-                            />
+                            {item?.user?.profile_image_url ? (
+                                <Avatar.Image
+                                    size={40}
+                                    source={getImageUrl(item.user.profile_image_url)}
+                                    style={styles.avatar}
+                                />
+                            ) : (
+                                <Avatar.Text
+                                    size={40}
+                                    label={initials}
+                                    style={styles.avatar}
+                                />
+                            )}
                             <View>
                                 <Text variant="titleMedium">{firstName} {lastName}</Text>
                                 <Text variant="bodySmall" style={styles.email}>{email}</Text>

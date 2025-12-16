@@ -157,10 +157,18 @@ class ForumService {
     }
 
     const existingMember = await ForumMember.findOne({
-      where: { userId, forumId }
+      where: { userId, forumId },
+      paranoid: false
     });
 
     if (existingMember) {
+      if (existingMember.deletedAt) {
+        // Restore soft-deleted member
+        await existingMember.restore();
+        existingMember.joinedAt = new Date(); // Update join time
+        await existingMember.save();
+        return existingMember;
+      }
       throw new Error('User is already a member of this forum');
     }
 

@@ -79,8 +79,8 @@ exports.checkout = async (req, res) => {
             status: 'pending',
             payment_status: 'pending',
             payment_method: paymentMethod,
-            shipping_address: `${deliveryAddress.address}, ${deliveryAddress.city}, ${deliveryAddress.region}`,
-            delivery_address: JSON.stringify(deliveryAddress),
+            shipping_address: deliveryAddress, // Store as JSON object
+            // delivery_address removed as it's not in the model
             metadata: {
                 subtotal: totals.subtotal,
                 deliveryFee: totals.deliveryFee,

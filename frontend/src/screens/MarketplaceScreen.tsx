@@ -180,9 +180,9 @@ const MarketplaceScreen: React.FC = () => {
     const desc = (product.description || '').toString();
     const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       desc.toLowerCase().includes(searchQuery.toLowerCase());
-    const productCategory = product.category || 'general';
+    const productCategory = (product.category || 'general').toLowerCase();
     const matchesCategory = selectedCategory === 'all' || productCategory === selectedCategory;
-    return matchesSearch && matchesCategory;
+    return matchesCategory && matchesSearch;
   });
 
   const formatCurrency = (amount: number) => {

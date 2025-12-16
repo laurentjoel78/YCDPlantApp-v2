@@ -6,6 +6,7 @@ import { productService } from '../../services/productService';
 import { useAuth } from '../../hooks/useAuth';
 import { useSocket } from '../../context/SocketContext';
 import { cacheService, CACHE_KEYS } from '../../services/cacheService';
+import { getImageUrl } from '../../utils/imageUtils';
 
 const ProductManagementScreen = () => {
     const navigation = useNavigation();
@@ -81,7 +82,7 @@ const ProductManagementScreen = () => {
                 <View style={styles.header}>
                     <View style={styles.imageContainer}>
                         {item.images && item.images.length > 0 ? (
-                            <Image source={{ uri: item.images[0] }} style={styles.productImage} />
+                            <Image source={getImageUrl(item.images[0])} style={styles.productImage} />
                         ) : (
                             <View style={[styles.productImage, styles.placeholderImage]}>
                                 <Text variant="labelSmall">No Image</Text>

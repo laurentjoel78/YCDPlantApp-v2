@@ -151,6 +151,8 @@ export default function AIAssistantScreen() {
           style={styles.input}
           multiline
           maxLength={500}
+          textColor="#000000"
+          placeholderTextColor="#666666"
         />
         <TouchableOpacity
           onPress={handleSend}

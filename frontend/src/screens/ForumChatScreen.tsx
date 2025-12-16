@@ -145,7 +145,12 @@ export default function ForumChatScreen() {
         try {
             const response = await api.forums.sendMessage(forumId, newMessage.trim());
             if (response.success && response.data) {
-                setMessages(prev => [...prev, response.data]);
+                const messageData = response.data;
+                setMessages(prev => {
+                    const exists = prev.some(m => m.id === messageData.id);
+                    if (exists) return prev;
+                    return [...prev, messageData];
+                });
                 setNewMessage('');
                 // Scroll to bottom
                 setTimeout(() => {
