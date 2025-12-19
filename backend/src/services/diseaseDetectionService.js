@@ -37,32 +37,38 @@ class DiseaseDetectionService {
       const base64Image = imageBuffer.toString('base64');
       const imageUrl = `data:image/jpeg;base64,${base64Image}`;
 
-      // Groq LLaVA model for vision
-      const prompt = `You are an expert agricultural pathologist specializing in crop diseases in Cameroon and tropical Africa.
+      // Groq LLaVA/Llama3 vision model
+      const prompt = `You are an expert agricultural pathologist specializing in crop diseases in Africa, particularly Cameroon.
+
+IMAGE ANALYSIS GUIDELINES:
+1. BACKGROUND NOISE: The image might be taken in a busy field or courtyard. Ignore weeds, tools, or distant trees.
+2. MULTIPLE PLANTS: If there are many plants (like a clearing or garden), focus on the plant that is most prominent or appears to have symptoms.
+3. DISTANCE: For wide shots of fields, identify general crop health or patterns of yellowing/wilting.
 
 Analyze this plant image and provide your assessment in JSON format:
 
 {
-  "disease": "Disease name or 'Healthy' if no disease detected",
+  "disease": "Disease name, 'Healthy', or 'Check another plant'",
   "confidence": 0.0-1.0,
-  "description": "Brief description of symptoms visible",
-  "treatment": "Treatment recommendations for farmers in Cameroon",
-  "severity": "mild|moderate|severe",
-  "prevention": "Prevention tips"
+  "description": "Short description of symptoms. Mention if multiple crops are visible.",
+  "treatment": "Specific treatment steps for farmers in Cameroon",
+  "severity": "mild|moderate|severe|na",
+  "prevention": "Prevention tips for the whole plot"
 }
 
-Common diseases in Cameroon:
-- Cocoa: Black Pod, Swollen Shoot
+Common diseases to check for:
+- Plantain/Banana: Black Sigatoka, Fusarium Wilt
 - Cassava: Mosaic Virus, Bacterial Blight
-- Maize: Streak Virus, Leaf Blight
-- Plantain: Black Sigatoka
+- Tomato: Blight, Leaf Curl
+- Cocoa: Black Pod
+- Maize: Streak Virus
 
 Return ONLY valid JSON.`;
 
       logger.debug('Calling Groq Vision API');
 
       const completion = await this.groq.chat.completions.create({
-        model: "meta-llama/llama-4-scout-17b-16e-instruct", // Groq's Llama 4 Scout vision model
+        model: "llama-3.2-11b-vision-preview", // Official Groq Vision model
         messages: [
           {
             role: "user",
@@ -80,7 +86,7 @@ Return ONLY valid JSON.`;
             ]
           }
         ],
-        temperature: 0.7,
+        temperature: 0.2, // Lower temperature for more consistent JSON
         max_tokens: 1000
       });
 
@@ -90,15 +96,27 @@ Return ONLY valid JSON.`;
       // Parse JSON response
       let detectionResult;
       try {
-        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+        // More robust JSON extraction (handles markdown blocks)
+        const jsonBlock = responseText.includes('```json')
+          ? responseText.split('```json')[1].split('```')[0]
+          : responseText.includes('```')
+            ? responseText.split('```')[1].split('```')[0]
+            : responseText;
+
+        const jsonMatch = jsonBlock.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           detectionResult = JSON.parse(jsonMatch[0]);
         } else {
           throw new Error('No JSON found in response');
         }
       } catch (parseError) {
-        logger.warn('Failed to parse response as JSON, using fallback');
-        detectionResult = this._parseFallback(responseText, logger);
+        logger.warn('Failed to parse response as JSON, trying direct cleanup');
+        try {
+          const cleanText = responseText.replace(/^[^{]*/, '').replace(/[^}]*$/, '');
+          detectionResult = JSON.parse(cleanText);
+        } catch (e) {
+          detectionResult = this._parseFallback(responseText, logger);
+        }
       }
 
       // Enrich with database information
