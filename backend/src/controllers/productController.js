@@ -209,6 +209,9 @@ exports.deleteProduct = async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
+    const { CartItem } = require('../models');
+    await CartItem.destroy({ where: { product_id: req.params.productId } });
+
     await product.destroy();
 
     await auditService.logUserAction({

@@ -189,7 +189,7 @@ export default function FarmerRegistrationForm({ onSubmit, loading }: FarmerRegi
               style={styles.soilTypeButton}
               labelStyle={styles.buttonLabel}
             >
-              {t(('farmer.registration.soil.' + type.toLowerCase()) as any)}
+              {t(('farmer.registration.soil.' + (type || '').toLowerCase()) as any)}
             </Button>
           ))}
         </View>
@@ -247,7 +247,7 @@ export default function FarmerRegistrationForm({ onSubmit, loading }: FarmerRegi
               style={styles.cropButton}
               compact
             >
-              {t(('farmer.registration.crops.' + crop.toLowerCase()) as any)}
+              {t(('farmer.registration.crops.' + (crop || '').toLowerCase()) as any)}
             </Button>
           ))}
         </View>

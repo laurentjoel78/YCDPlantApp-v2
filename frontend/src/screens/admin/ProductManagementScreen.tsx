@@ -146,8 +146,8 @@ const ProductManagementScreen = () => {
     );
 
     const filteredProducts = products.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.description?.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesSearch = (p.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (p.description || '').toLowerCase().includes(searchQuery.toLowerCase());
         const matchesCategory = categoryFilter ? p.category === categoryFilter : true;
         return matchesSearch && matchesCategory;
     });

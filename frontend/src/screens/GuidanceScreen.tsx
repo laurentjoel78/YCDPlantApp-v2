@@ -17,10 +17,10 @@ const GuidanceScreen = () => {
   };
 
   const filteredSections = guidanceContent.filter(section =>
-    section.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    section.subsections.some(sub =>
-      sub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sub.description.toLowerCase().includes(searchQuery.toLowerCase())
+    (section.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    section.subsections?.some(sub =>
+      (sub.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (sub.description || '').toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 

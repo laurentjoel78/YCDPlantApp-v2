@@ -24,7 +24,7 @@ export default function NewForumPostScreen({ route, navigation }: NewForumPostSc
 
     const addTag = () => {
         if (tagInput.trim() && tags.length < 5) {
-            setTags([...tags, tagInput.trim().toLowerCase()]);
+            setTags([...tags, (tagInput || '').trim().toLowerCase()]);
             setTagInput('');
         }
     };

@@ -21,6 +21,12 @@ class MarketDiscoveryService {
      * @returns {Promise<Array>} List of formatted market objects
      */
     async findNearbyMarkets(lat, lng, radiusKm = 50, cropFilter = []) {
+        // Check for invalid coordinates
+        if (lat === 0 && lng === 0) {
+            console.warn('marketDiscoveryService: received 0,0 coordinates, skipping OSM query');
+            return await this.fetchFromDatabase(lat, lng, radiusKm);
+        }
+
         try {
             // Check cache first
             const cacheKey = `markets_${lat}_${lng}_${radiusKm}`;
@@ -67,10 +73,9 @@ class MarketDiscoveryService {
             const radiusMeters = radiusKm * 1000;
 
             // Enhanced query to find various types of markets and agricultural points
-            // Enhanced query to find various types of markets and agricultural points
-            // Increased timeout to 90 seconds to avoid 504 errors on large areas
+            // Reduced timeout to 30 seconds to avoid 504 errors on large areas
             const query = `
-                [out:json][timeout:90];
+                [out:json][timeout:30];
                 (
                   node["amenity"="marketplace"](around:${radiusMeters},${lat},${lng});
                   way["amenity"="marketplace"](around:${radiusMeters},${lat},${lng});
@@ -88,7 +93,7 @@ class MarketDiscoveryService {
 
             const response = await axios.post(OVERPASS_URL, `data=${encodeURIComponent(query)}`, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                timeout: 100000 // 100 second client-side timeout
+                timeout: 45000 // 45 second client-side timeout
             });
 
             if (!response.data || !response.data.elements) {
@@ -146,7 +151,7 @@ class MarketDiscoveryService {
             const { Op } = require('sequelize');
 
             // Calculate bounding box for efficient query
-            const latDelta = radiusKm / 111; // Rough conversion: 1 degree lat â‰ˆ 111 km
+            const latDelta = radiusKm / 111; // Rough conversion: 1 degree lat ≈ 111 km
             const lngDelta = radiusKm / (111 * Math.cos(lat * Math.PI / 180));
 
             const markets = await Market.findAll({
@@ -237,7 +242,7 @@ class MarketDiscoveryService {
             // Check if market accepts any of the filtered crops
             return cropFilter.some(crop =>
                 market.accepts_crops.some(acceptedCrop =>
-                    acceptedCrop.toLowerCase().includes(crop.toLowerCase())
+                    (acceptedCrop || '').toLowerCase().includes((crop || '').toLowerCase())
                 )
             );
         });

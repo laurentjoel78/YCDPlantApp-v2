@@ -102,7 +102,7 @@ export const getWeather = async (coords: LocationCoords): Promise<WeatherData> =
 };
 
 export const getWeatherIcon = (condition: string): string => {
-  const cond = condition.toLowerCase();
+  const cond = (condition || '').toLowerCase();
 
   if (cond.includes('clear') || cond.includes('sun')) return 'weather-sunny';
   if (cond.includes('cloud')) return 'weather-cloudy';
