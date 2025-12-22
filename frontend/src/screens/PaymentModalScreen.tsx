@@ -58,6 +58,15 @@ export default function PaymentModalScreen() {
             return;
         }
 
+        // Check if we have a valid payment reference
+        if (!payment?.reference) {
+            console.error('No payment reference available');
+            setVerifying(false);
+            // Navigate to orders - the order was likely created but payment reference is missing
+            navigation.replace('Orders');
+            return;
+        }
+
         setVerifying(true);
         try {
             let response;
