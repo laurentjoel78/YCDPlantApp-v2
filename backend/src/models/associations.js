@@ -38,7 +38,8 @@ module.exports = function defineAssociations(models) {
     ForumMessage,
     Cart,
     CartItem,
-    VoiceRecording
+    VoiceRecording,
+    OrderItem
   } = models;
 
   // User associations
@@ -116,6 +117,7 @@ module.exports = function defineAssociations(models) {
   Product.belongsTo(Crop, { foreignKey: 'crop_id' });
   Product.belongsTo(Market, { foreignKey: 'market_id' });
   // Note: Product.hasMany(Order) removed - orders use OrderItems, not direct product_id
+  Product.hasMany(OrderItem, { foreignKey: 'product_id', as: 'orderItems', onDelete: 'RESTRICT' });
 
 
   // Order associations
@@ -123,6 +125,11 @@ module.exports = function defineAssociations(models) {
   Order.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
   // Note: Order.belongsTo(Product/Market) removed - orders use OrderItems for products
   Order.hasMany(Transaction, { foreignKey: 'order_id' });
+  Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'items', onDelete: 'CASCADE' });
+
+  // OrderItem associations
+  OrderItem.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
+  OrderItem.belongsTo(Product, { foreignKey: 'product_id', as: 'product' });
 
   // Transaction associations
   Transaction.belongsTo(Order, { foreignKey: 'order_id' });

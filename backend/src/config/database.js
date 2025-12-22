@@ -2,9 +2,8 @@ require('dotenv').config();
 
 const dbLogger = require('../utils/dbLogger');
 
-module.exports = {
+const config = {
   development: {
-    use_env_variable: 'DATABASE_URL',
     username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME || 'ycd_farmer_guide_dev',
@@ -21,7 +20,6 @@ module.exports = {
     benchmark: true
   },
   test: {
-    use_env_variable: 'DATABASE_URL',
     username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME || 'ycd_farmer_guide_test',
@@ -38,7 +36,6 @@ module.exports = {
     }
   },
   production: {
-    use_env_variable: 'DATABASE_URL',
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -60,3 +57,12 @@ module.exports = {
     }
   }
 };
+
+// Add use_env_variable if valid DATABASE_URL exists
+if (process.env.DATABASE_URL) {
+  config.development.use_env_variable = 'DATABASE_URL';
+  config.test.use_env_variable = 'DATABASE_URL';
+  config.production.use_env_variable = 'DATABASE_URL';
+}
+
+module.exports = config;

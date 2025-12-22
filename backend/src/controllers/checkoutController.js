@@ -13,9 +13,9 @@ exports.checkout = async (req, res) => {
     try {
         const userId = req.user.id;
         const { deliveryAddress, paymentMethod, phoneNumber } = req.body;
-        const { Cart, CartItem, Order, Product } = db;
+        const { Cart, CartItem, Order, Product, OrderItem } = db;
 
-        // Validate input
+        // Validate basic input
         if (!deliveryAddress || !deliveryAddress.address || !deliveryAddress.city || !deliveryAddress.region) {
             await transaction.rollback();
             return res.status(400).json({ error: 'Complete delivery address required' });
@@ -25,6 +25,15 @@ exports.checkout = async (req, res) => {
             await transaction.rollback();
             return res.status(400).json({ error: 'Payment method required' });
         }
+
+        // Ensure Delivery Address is valid JSONB format
+        const cleanDeliveryAddress = {
+            address: deliveryAddress.address,
+            city: deliveryAddress.city,
+            region: deliveryAddress.region,
+            postalCode: deliveryAddress.postalCode || '',
+            country: 'Cameroon'
+        };
 
         // Get active cart with items
         const cart = await Cart.findOne({
@@ -45,8 +54,11 @@ exports.checkout = async (req, res) => {
             return res.status(400).json({ error: 'Cart is empty' });
         }
 
-        // Validate stock for all items (if fields exist)
+        // Validate stock and Check for Multiple Sellers
+        const sellerIds = new Set();
+
         for (const item of cart.items) {
+            // Product Availability Check
             if (item.product.status && item.product.status !== 'active') {
                 await transaction.rollback();
                 return res.status(400).json({
@@ -62,14 +74,23 @@ exports.checkout = async (req, res) => {
                     requested: item.quantity
                 });
             }
+
+            sellerIds.add(item.product.seller_id);
         }
+
+        // Enforce Single Seller Rule
+        if (sellerIds.size > 1) {
+            await transaction.rollback();
+            return res.status(400).json({
+                error: 'Checkout failed: items from multiple sellers',
+                details: 'Please purchase items from one seller at a time. Remove items from other sellers and try again.'
+            });
+        }
+
+        const sellerId = [...sellerIds][0]; // safe because size > 0
 
         // Calculate totals
         const totals = await cart.calculateTotal();
-
-        // Get seller from first item
-        const firstProduct = cart.items[0].product;
-        const sellerId = firstProduct.seller_id;
 
         // Create order
         const order = await Order.create({
@@ -79,8 +100,9 @@ exports.checkout = async (req, res) => {
             status: 'pending',
             payment_status: 'pending',
             payment_method: paymentMethod,
-            shipping_address: deliveryAddress, // Store as JSON object
-            // delivery_address removed as it's not in the model
+            shipping_address: cleanDeliveryAddress,
+            // Initialize payment_reference to null or unique placeholder to avoid unique constraint violation if any
+            // payment_reference: null,
             metadata: {
                 subtotal: totals.subtotal,
                 deliveryFee: totals.deliveryFee,
@@ -88,8 +110,15 @@ exports.checkout = async (req, res) => {
             }
         }, { transaction });
 
-        // Note: OrderItem model doesn't exist, so we skip creating order items
-        // The order table has all necessary information
+        // Create Order Items (Persistence!)
+        const orderItemsData = cart.items.map(item => ({
+            order_id: order.id,
+            product_id: item.product.id,
+            quantity: item.quantity,
+            price_at_purchase: item.product.price
+        }));
+
+        await OrderItem.bulkCreate(orderItemsData, { transaction });
 
         // Initiate payment (if not cash on delivery)
         let paymentResult;
@@ -108,18 +137,21 @@ exports.checkout = async (req, res) => {
                 });
 
                 await order.update({
-                    payment_reference: paymentResult.paymentReference
+                    payment_reference: paymentResult.paymentReference || paymentResult.reference // Handle different provider responses (use snake_case in DB?)
+                    // The model uses 'payment_reference'
                 }, { transaction });
 
             } catch (paymentError) {
                 await transaction.rollback();
                 console.error('[Checkout] Payment initiation failed:', paymentError);
-                console.error('[Checkout] Payment error stack:', paymentError.stack);
                 return res.status(500).json({
                     error: 'Payment initiation failed',
                     details: paymentError.message
                 });
             }
+        } else {
+            // Generate a placeholder ref for COD or leave null
+            // payment_reference in model allows null? YES.
         }
 
         // Mark cart as checked out
@@ -154,10 +186,11 @@ exports.checkout = async (req, res) => {
                     total: totals.total,
                     status: order.status,
                     paymentStatus: order.payment_status,
-                    paymentReference: paymentResult?.payment_reference || null // Fix: use snake_case
+                    paymentReference: order.payment_reference,
+                    items: orderItemsData // Return items so frontend can see them immediately if needed
                 },
                 payment: paymentResult ? {
-                    reference: paymentResult.payment_reference, // Fix: use snake_case
+                    reference: paymentResult.reference || paymentResult.paymentReference,
                     status: paymentResult.status,
                     instructions: paymentResult.instructions || null
                 } : {
@@ -168,8 +201,17 @@ exports.checkout = async (req, res) => {
         });
 
     } catch (error) {
-        await transaction.rollback();
+        if (transaction) await transaction.rollback();
         console.error('Checkout error:', error);
+
+        // Handle Sequelize Validation Errors gracefully
+        if (error.name === 'SequelizeValidationError') {
+            return res.status(400).json({
+                error: 'Validation Error',
+                details: error.errors.map(e => e.message).join(', ')
+            });
+        }
+
         res.status(500).json({
             error: 'Checkout failed',
             details: error.message
@@ -259,6 +301,15 @@ exports.getOrders = async (req, res) => {
 
         const orders = await Order.findAll({
             where,
+            include: [{
+                model: db.OrderItem,
+                as: 'items',
+                include: [{
+                    model: db.Product,
+                    as: 'product',
+                    attributes: ['id', 'name', 'images']
+                }]
+            }],
             order: [['createdAt', 'DESC']]
         });
 
@@ -286,7 +337,15 @@ exports.getOrderDetails = async (req, res) => {
             where: {
                 id: orderId,
                 buyer_id: userId
-            }
+            },
+            include: [{
+                model: db.OrderItem,
+                as: 'items',
+                include: [{
+                    model: db.Product,
+                    as: 'product'
+                }]
+            }]
         });
 
         if (!order) {
