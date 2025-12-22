@@ -48,21 +48,22 @@ class LoggingService {
       const { AuditLog } = getModels();
       if (!AuditLog) return null;
       const log = await AuditLog.create({
-        userId,
-        userRole,
-        actionType,
-        tableAffected,
-        recordId,
-        oldValues,
-        newValues,
-        ipAddress,
-        userAgent,
-        sessionId,
+        user_id: userId,
+        user_role: userRole,
+        action_type: actionType,
+        table_name: tableAffected,
+        record_id: recordId,
+        old_values: oldValues,
+        new_values: newValues,
+        ip_address: ipAddress,
+        user_agent: userAgent,
+        session_id: sessionId,
         metadata: {
           ...metadata,
-          systemContext: this.systemContext
+          systemContext: this.systemContext,
+          severity
         },
-        severity
+        status: severity === 'success' ? 'success' : 'pending'
       });
 
       // For critical severity, also create a system log
