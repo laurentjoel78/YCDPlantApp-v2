@@ -68,7 +68,7 @@ Return ONLY valid JSON.`;
       logger.debug('Calling Groq Vision API');
 
       const completion = await this.groq.chat.completions.create({
-        model: "llama-3.2-11b-vision-preview", // Official Groq Vision model
+        model: "meta-llama/llama-4-scout-17b-16e-instruct", // Verified working model
         messages: [
           {
             role: "user",

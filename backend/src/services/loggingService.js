@@ -146,15 +146,18 @@ class LoggingService {
       const { SystemLog } = getModels();
       if (!SystemLog) return null;
       return await SystemLog.create({
-        logLevel,
-        module,
+        level: logLevel || 'info',
+        category: module || 'System',
+        source: 'Backend',
         message,
-        errorDetails: {
+        details: {
           ...errorDetails,
-          systemContext: this.systemContext
+          systemContext: this.systemContext,
+          performanceMetrics
         },
+        environment: process.env.NODE_ENV || 'development',
         requestId,
-        performanceMetrics
+        timestamp: new Date()
       });
     } catch (error) {
       console.error('Failed to create system log:', error);
