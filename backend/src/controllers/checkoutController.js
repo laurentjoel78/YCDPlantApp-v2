@@ -190,8 +190,10 @@ exports.checkout = async (req, res) => {
                     items: orderItemsData // Return items so frontend can see them immediately if needed
                 },
                 payment: paymentResult ? {
-                    reference: paymentResult.reference || paymentResult.paymentReference,
-                    status: paymentResult.status,
+                    // paymentService.initiatePayment returns a Sequelize Transaction model instance
+                    // The payment reference field is 'payment_reference' (snake_case)
+                    reference: paymentResult.payment_reference || paymentResult.reference || paymentResult.paymentReference,
+                    status: paymentResult.payment_status || paymentResult.status,
                     instructions: paymentResult.instructions || null
                 } : {
                     method: 'cash_on_delivery',
