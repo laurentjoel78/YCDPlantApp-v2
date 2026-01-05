@@ -513,7 +513,7 @@ class ConsultationController {
       // 3. Find and Update the Expert Profile
       // consultation.expertId is the User ID. We need the Expert profile for that User.
       const expertProfile = await Expert.findOne({
-        where: { userId: consultation.expertId }
+        where: { user_id: consultation.expertId }
       });
 
       if (expertProfile) {

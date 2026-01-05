@@ -268,7 +268,7 @@ class PaymentService {
     // Get sender's wallet
     const senderWallet = await Wallet.findOne({
       where: {
-        userId: senderId,
+        user_id: senderId,
         status: 'active'
       },
       lock: true,
@@ -281,10 +281,13 @@ class PaymentService {
 
     // Get or create receiver's wallet
     const [receiverWallet] = await Wallet.findOrCreate({
-      where: { userId: receiverId },
+      where: { user_id: receiverId },
       defaults: {
+        user_id: receiverId,
         status: 'active',
-        balance: 0
+        balance: 0,
+        wallet_type: 'seller', // Default to seller for payment receivers
+        currency: 'XAF'
       },
       transaction
     });
@@ -297,8 +300,8 @@ class PaymentService {
 
     // Update last transaction time
     await Promise.all([
-      senderWallet.update({ lastTransactionAt: new Date() }, { transaction }),
-      receiverWallet.update({ lastTransactionAt: new Date() }, { transaction })
+      senderWallet.update({ last_transaction_date: new Date() }, { transaction }),
+      receiverWallet.update({ last_transaction_date: new Date() }, { transaction })
     ]);
 
     return {
