@@ -50,13 +50,13 @@ module.exports = function defineAssociations(models) {
   User.hasMany(Product, { as: 'products', foreignKey: 'seller_id', onDelete: 'CASCADE' });
   User.hasMany(Order, { as: 'buyerOrders', foreignKey: 'buyer_id', onDelete: 'SET NULL' }); // Preserve orders for seller
   User.hasMany(Order, { as: 'sellerOrders', foreignKey: 'seller_id', onDelete: 'SET NULL' }); // Preserve orders for buyer
-  User.hasMany(Farm, { as: 'farms', foreignKey: 'farmer_id', onDelete: 'CASCADE' });
+  User.hasMany(Farm, { as: 'farms', foreignKey: 'user_id', onDelete: 'CASCADE' });
   User.hasMany(MarketReview, { foreignKey: 'user_id', as: 'marketReviews', onDelete: 'CASCADE' });
   User.hasOne(Expert, { foreignKey: 'user_id', as: 'expertProfile', onDelete: 'CASCADE' });
 
 
   // Farm associations
-  Farm.belongsTo(User, { as: 'farmer', foreignKey: 'farmer_id' });
+  Farm.belongsTo(User, { as: 'farmer', foreignKey: 'user_id' });
   Farm.hasMany(FarmCrop, { as: 'crops', foreignKey: 'farm_id', onDelete: 'CASCADE' });
   FarmCrop.belongsTo(Farm, { as: 'farm', foreignKey: 'farm_id' });
   FarmCrop.belongsTo(Crop, { as: 'crop', foreignKey: 'crop_id' });
