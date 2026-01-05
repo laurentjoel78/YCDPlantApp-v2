@@ -72,6 +72,30 @@ module.exports = (sequelize) => {
     metadata: {
       type: DataTypes.JSONB,
       defaultValue: {}
+    },
+    farm_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Farms',
+        key: 'id'
+      }
+    },
+    crop_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'crops',
+        key: 'id'
+      }
+    },
+    market_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Markets',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
