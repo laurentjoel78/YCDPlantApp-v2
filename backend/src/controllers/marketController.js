@@ -78,7 +78,7 @@ exports.getNearbyMarkets = async (req, res) => {
     const farm = await Farm.findOne({
       where: {
         id: farmId,
-        farmer_id: req.user.id, // Ensure farm belongs to requesting user
+        user_id: req.user.id, // Ensure farm belongs to requesting user
         is_active: true
       }
     });
@@ -277,7 +277,7 @@ exports.getMarketRecommendations = async (req, res) => {
     const farm = await Farm.findOne({
       where: {
         id: farmId,
-        farmer_id: req.user.id,
+        user_id: req.user.id,
         is_active: true
       },
       include: [

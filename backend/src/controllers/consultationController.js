@@ -115,13 +115,13 @@ class ConsultationController {
       // 3. Handle missing Farm ID (Frontend doesn't send it yet)
       let finalFarmId = farmId;
       if (!finalFarmId) {
-        const userFarm = await Farm.findOne({ where: { farmer_id: userId } });
+        const userFarm = await Farm.findOne({ where: { user_id: userId } });
         if (userFarm) {
           finalFarmId = userFarm.id;
         } else {
           // Create a default farm if none exists
           const newFarm = await Farm.create({
-            farmer_id: userId,
+            user_id: userId,
             name: 'My Default Farm',
             location_lat: 0.0,
             location_lng: 0.0,

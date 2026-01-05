@@ -12,7 +12,7 @@ const getFarmerFarms = async (req, res) => {
 
     const farms = await Farm.findAll({
       where: {
-        farmer_id: req.user.id,
+        user_id: req.user.id,
         is_active: true
       },
       include: [{
@@ -46,7 +46,7 @@ const getFarm = async (req, res) => {
     const farm = await Farm.findOne({
       where: {
         id: farmId,
-        farmer_id: req.user.id,
+        user_id: req.user.id,
         is_active: true
       },
       include: [{
@@ -97,7 +97,7 @@ const createFarm = async (req, res) => {
     const logger = (req && req.log) ? req.log : console;
 
     const farm = await Farm.create({
-      farmer_id: req.user.id,
+      user_id: req.user.id,
       name,
       description,
       location_lat,
@@ -148,7 +148,7 @@ const updateFarm = async (req, res) => {
     const farm = await Farm.findOne({
       where: {
         id: farmId,
-        farmer_id: req.user.id,
+        user_id: req.user.id,
         is_active: true
       }
     });
@@ -231,7 +231,7 @@ const deleteFarm = async (req, res) => {
     const farm = await Farm.findOne({
       where: {
         id: farmId,
-        farmer_id: req.user.id,
+        user_id: req.user.id,
         is_active: true
       }
     });
@@ -276,7 +276,7 @@ const addCropToFarm = async (req, res) => {
     const farm = await Farm.findOne({
       where: {
         id: farmId,
-        farmer_id: req.user.id,
+        user_id: req.user.id,
         is_active: true
       }
     });

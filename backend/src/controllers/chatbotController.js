@@ -35,7 +35,7 @@ class ChatbotController {
     let farmId = requestedFarmId;
     if (!farmId) {
       const { Farm } = require('../models');
-      const farm = await Farm.findOne({ where: { farmer_id: userId } });
+      const farm = await Farm.findOne({ where: { user_id: userId } });
       if (farm) {
         farmId = farm.id;
       }

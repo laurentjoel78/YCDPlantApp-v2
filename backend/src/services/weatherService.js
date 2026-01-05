@@ -462,7 +462,7 @@ class WeatherService {
 
         // Send notification to farmer
         await sendNotification({
-          user_id: farm.farmer_id,
+          user_id: farm.user_id,
           type: 'weather_alert',
           title: `${icon} Weather Alert: ${alert.event}`,
           message: alert.description,
@@ -477,7 +477,7 @@ class WeatherService {
 
         logger.debug('Weather alert notification sent to farmer', {
           farmId: farm.id,
-          farmerId: farm.farmer_id,
+          farmerId: farm.user_id,
           alertType,
           event: alert.event
         });
@@ -713,7 +713,7 @@ class WeatherService {
 
           // Send notification for medium or high risks
           await sendNotification({
-            user_id: farm.farmer_id,
+            user_id: farm.user_id,
             type: 'crop_weather_alert',
             title: `🌱 Weather Impact Alert for ${crop.name}`,
             message: impact.recommendation,
@@ -727,7 +727,7 @@ class WeatherService {
           logger.debug('Weather impact notification sent', {
             farmId,
             cropId: crop.id,
-            farmerId: farm.farmer_id,
+            farmerId: farm.user_id,
             riskLevel: impact.risk_level
           });
         }

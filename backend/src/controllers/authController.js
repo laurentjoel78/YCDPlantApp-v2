@@ -155,7 +155,7 @@ const register = async (req, res) => {
       const farmSize = farm_size_hectares || null;
 
       const createdFarm = await Farm.create({
-        farmer_id: user.id,
+        user_id: user.id,
         name: farm_name,
         description: `Farm owned by ${first_name}`,
         location_lat: farmLocationLat,

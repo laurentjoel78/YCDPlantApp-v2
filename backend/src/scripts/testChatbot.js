@@ -26,7 +26,7 @@ async function testChatbot() {
         }
 
         if (!farmId) {
-            const farm = await Farm.findOne({ where: { farmer_id: userId } });
+            const farm = await Farm.findOne({ where: { user_id: userId } });
             if (farm) {
                 farmId = farm.id;
                 console.log(`Using found farm: ${farm.name} (${farmId})`);
