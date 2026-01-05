@@ -49,8 +49,7 @@ module.exports = (sequelize) => {
         modelName: 'MarketCrop',
         tableName: 'MarketCrops',
         timestamps: true,
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
+        underscored: true,
         indexes: [
             {
                 unique: true,

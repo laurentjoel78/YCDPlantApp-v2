@@ -60,8 +60,7 @@ module.exports = (sequelize) => {
   modelName: 'AdvisoryResponse',
   tableName: 'advisory_responses',
   timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at'
+  underscored: true
   });
 
   return AdvisoryResponse;

@@ -64,6 +64,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     timestamps: true,
+    underscored: true,
     tableName: 'language_preferences'
   });
 

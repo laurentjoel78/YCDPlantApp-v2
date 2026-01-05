@@ -92,8 +92,7 @@ module.exports = (sequelize) => {
     modelName: 'Farm',
     tableName: 'Farms',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
+    underscored: true
   });
 
   return Farm;

@@ -70,6 +70,7 @@ module.exports = (sequelize) => {
     modelName: 'Notification',
     tableName: 'Notifications',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         fields: ['user_id']

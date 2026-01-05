@@ -200,8 +200,7 @@ module.exports = (sequelize) => {
     modelName: 'Transaction',
     tableName: 'Transactions',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    underscored: true,
     paranoid: true,
     indexes: [
       {

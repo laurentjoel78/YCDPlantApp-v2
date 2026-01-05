@@ -163,8 +163,7 @@ module.exports = (sequelize) => {
     modelName: 'User',
     tableName: 'Users',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    underscored: true,
     hooks: {
       beforeSave: async (user) => {
         if (user.changed('password_hash')) {

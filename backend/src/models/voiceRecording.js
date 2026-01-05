@@ -66,6 +66,7 @@ module.exports = (sequelize) => {
         modelName: 'VoiceRecording',
         tableName: 'VoiceRecordings',
         timestamps: true,
+        underscored: true,
         paranoid: true,
         indexes: [
             {

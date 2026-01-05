@@ -63,8 +63,6 @@ module.exports = (sequelize) => {
         tableName: 'order_items',
         underscored: true,
         timestamps: true,
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
         indexes: [
             {
                 fields: ['order_id']

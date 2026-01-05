@@ -86,8 +86,7 @@ module.exports = (sequelize) => {
   modelName: 'Advisory',
   tableName: 'Advisories',
   timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at'
+  underscored: true
   });
 
   return Advisory;

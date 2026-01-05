@@ -164,8 +164,7 @@ module.exports = (sequelize) => {
     modelName: 'Wallet',
     tableName: 'Wallets',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    underscored: true,
     paranoid: true,
     indexes: [
       {

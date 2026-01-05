@@ -62,6 +62,8 @@ module.exports = (sequelize) => {
     sequelize,
     modelName: 'PriceHistory',
     tableName: 'price_histories',
+    timestamps: true,
+    underscored: true,
     indexes: [
       {
         fields: ['productId', 'recordedAt']

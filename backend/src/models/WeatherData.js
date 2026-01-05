@@ -65,6 +65,7 @@ module.exports = (sequelize) => {
     modelName: 'WeatherData',
     tableName: 'WeatherData',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         fields: ['farm_id']

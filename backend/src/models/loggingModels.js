@@ -66,9 +66,7 @@ const initModels = (sequelize) => {
     modelName: 'UserActivityLog',
     tableName: 'user_activity_logs',
     underscored: true,
-    timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
+    timestamps: true
   });
 
   SystemLog.init({
@@ -110,9 +108,7 @@ const initModels = (sequelize) => {
     modelName: 'SystemLog',
     tableName: 'SystemLogs',
     underscored: true,
-    timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
+    timestamps: true
   });
 
   const models = {

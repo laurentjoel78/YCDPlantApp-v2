@@ -69,8 +69,7 @@ module.exports = (sequelize) => {
         modelName: 'CartItem',
         tableName: 'cart_items',
         timestamps: true,
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
+        underscored: true,
         indexes: [
             {
                 fields: ['cart_id']

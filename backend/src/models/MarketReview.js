@@ -84,8 +84,7 @@ module.exports = (sequelize) => {
         modelName: 'MarketReview',
         tableName: 'MarketReviews',
         timestamps: true,
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
+        underscored: true,
         indexes: [
             {
                 fields: ['market_id']

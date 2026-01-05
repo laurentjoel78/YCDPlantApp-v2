@@ -40,6 +40,7 @@ module.exports = (sequelize) => {
     modelName: 'Translation',
     tableName: 'translations',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         fields: ['key', 'locale'],

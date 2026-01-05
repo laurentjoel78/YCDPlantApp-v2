@@ -28,6 +28,10 @@ try {
         min: 2,
         acquire: 30000,
         idle: 10000
+      },
+      define: {
+        underscored: true,
+        underscoredAll: true
       }
     });
     console.log('Using DATABASE_URL for connection');
@@ -46,6 +50,10 @@ try {
           min: 0,
           acquire: 30000,
           idle: 10000
+        },
+        define: {
+          underscored: true,
+          underscoredAll: true
         }
       }
     );

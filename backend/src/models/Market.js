@@ -107,8 +107,7 @@ module.exports = (sequelize) => {
     modelName: 'Market',
     tableName: 'Markets',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    underscored: true,
     indexes: [
       {
         fields: ['location_lat', 'location_lng']

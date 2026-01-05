@@ -125,8 +125,7 @@ module.exports = (sequelize) => {
     modelName: 'VoiceCommand',
     tableName: 'voice_commands',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    underscored: true,
     paranoid: true,
     indexes: [
       {

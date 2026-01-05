@@ -51,8 +51,7 @@ module.exports = (sequelize) => {
     modelName: 'FarmGuideline',
     tableName: 'FarmGuidelines',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
+    underscored: true
   });
 
   return FarmGuideline;
