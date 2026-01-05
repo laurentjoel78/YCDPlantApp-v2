@@ -50,6 +50,20 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
+    wallet_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Wallets',
+        key: 'id'
+      }
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'payment',
+      comment: 'Legacy type column - use transaction_type instead'
+    },
     order_id: {
       type: DataTypes.UUID,
       allowNull: true,

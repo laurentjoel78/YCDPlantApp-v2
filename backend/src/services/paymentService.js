@@ -38,6 +38,7 @@ class PaymentService {
         payee_id: receiverId,
         amount,
         net_amount: amount, // Same as amount for now (no fees)
+        type: 'payment', // Legacy column
         transaction_type: 'payment',
         payment_method: paymentMethodMap[paymentMethod] || 'cash_on_delivery',
         description,
@@ -170,13 +171,14 @@ class PaymentService {
       // Create release transaction
       const releaseTx = await Transaction.create({
         type: 'payment',
-        senderId: null, // From escrow
-        receiverId: escrowAccount.metadata.receiverId,
+        transaction_type: 'payment',
+        payer_id: null, // From escrow
+        payee_id: escrowAccount.metadata.receiverId,
         amount: escrowAccount.amount,
         status: 'completed',
-        paymentMethod: 'wallet',
+        payment_method: 'wallet',
         description: `Escrow release for ${escrowId}`,
-        metadata: {
+        transaction_metadata: {
           escrowId,
           releasedBy
         }

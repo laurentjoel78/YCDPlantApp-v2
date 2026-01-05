@@ -8,6 +8,8 @@ class TransactionService {
         order_id: order.id,
         amount: order.total_price,
         currency: order.currency,
+        type: 'payment',
+        transaction_type: 'payment',
         payment_method: paymentMethod,
         payment_status: 'pending',
         payment_details: this.getPaymentDetails(paymentMethod)
