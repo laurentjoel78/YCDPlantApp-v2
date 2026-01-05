@@ -9,7 +9,9 @@
     "test": "node src/scripts/setupTestDb.js && jest --detectOpenHandles",
     "create-db": "node src/scripts/createDatabase.js",
     "migrate": "sequelize-cli db:migrate",
-    "migrate:undo": "sequelize-cli db:migrate:undo"
+    "migrate:undo": "sequelize-cli db:migrate:undo",
+    "validate": "node scripts/validate-schema-consistency.js",
+    "predeploy": "npm run validate"
   },
   "dependencies": {
     "@google-cloud/speech": "^7.2.0",
