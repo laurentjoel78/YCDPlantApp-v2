@@ -162,7 +162,7 @@ module.exports = function defineAssociations(models) {
   EscrowAccount.hasMany(Transaction, { foreignKey: 'escrow_account_id' });
 
   // AuditLog associations
-  AuditLog.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+  AuditLog.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
   // VoiceCommand associations
   VoiceCommand.belongsTo(User, { foreignKey: 'user_id', as: 'user' });

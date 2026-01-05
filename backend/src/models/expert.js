@@ -29,11 +29,6 @@ module.exports = (sequelize) => {
         as: 'approvedByAdmin',
         onDelete: 'SET NULL'
       });
-      Expert.hasMany(models.AuditLog, {
-        foreignKey: 'expert_id',
-        as: 'auditLogs',
-        onDelete: 'CASCADE'
-      });
       Expert.hasMany(models.ExpertReview, {
         foreignKey: 'expert_id',
         as: 'reviews',

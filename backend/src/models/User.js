@@ -33,12 +33,12 @@ module.exports = (sequelize) => {
       });
 
       this.hasMany(models.AuditLog, {
-        foreignKey: 'userId',
+        foreignKey: 'user_id',
         as: 'auditLogs'
       });
 
       this.hasMany(models.UserActivityLog, {
-        foreignKey: 'userId',
+        foreignKey: 'user_id',
         as: 'activityLogs'
       });
 
