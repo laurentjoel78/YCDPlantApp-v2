@@ -246,6 +246,8 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     const logger = (req && req.log) ? req.log : console;
 
+    console.log(`[LOGIN] Attempting login for email: ${email}`);
+
     const user = await User.findOne({
       where: { email },
       include: [{
@@ -256,34 +258,44 @@ const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      console.log(`[LOGIN] User not found: ${email}`);
+      return res.status(401).json({ error: 'Invalid credentials - user not found' });
     }
+
+    console.log(`[LOGIN] User found: ${email}, role: ${user.role}, email_verified: ${user.email_verified}, is_active: ${user.is_active}, approval_status: ${user.approval_status}`);
 
     // For farmers: Check approval status first
     // Approved farmers can bypass email verification
     if (user.role === 'farmer') {
       if (user.approval_status !== 'approved') {
+        console.log(`[LOGIN] Farmer account pending approval: ${email}`);
         return res.status(401).json({ error: 'Account pending approval' });
       }
       // Approved farmers don't need email verification
     } else {
-      // Non-farmers still need email verification
-      if (!user.email_verified) {
+      // Non-farmers still need email verification (except admin)
+      if (user.role !== 'admin' && !user.email_verified) {
+        console.log(`[LOGIN] Email not verified: ${email}`);
         return res.status(401).json({ error: 'Email not verified' });
       }
     }
 
     if (!user.is_active) {
+      console.log(`[LOGIN] Account inactive: ${email}`);
       return res.status(401).json({ error: 'Account is inactive' });
     }
 
 
     if (!user.password_hash) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      console.log(`[LOGIN] No password hash found: ${email}`);
+      return res.status(401).json({ error: 'Invalid credentials - no password set' });
     }
 
     const isValid = await bcrypt.compare(password, user.password_hash);
+    console.log(`[LOGIN] Password validation result for ${email}: ${isValid}`);
+    
     if (!isValid) {
+      console.log(`[LOGIN] Invalid password for: ${email}`);
       // Log failed login attempt
       await auditService.logUserAction({
         userId: user.id,
@@ -310,6 +322,8 @@ const login = async (req, res) => {
 
     const token = generateToken(user);
 
+    console.log(`[LOGIN] Login successful for: ${email}, role: ${user.role}`);
+
     res.json({
       message: 'Login successful',
       token,
@@ -327,8 +341,10 @@ const login = async (req, res) => {
     });
   } catch (error) {
     const logger = (req && req.log) ? req.log : console;
-    logger.error('Login error', { error: error.message });
-    res.status(500).json({ error: 'Error during login' });
+    console.error('[LOGIN] Error during login:', error);
+    console.error('[LOGIN] Error stack:', error.stack);
+    logger.error('Login error', { error: error.message, stack: error.stack });
+    res.status(500).json({ error: 'Error during login', details: error.message });
   }
 };
 

@@ -3,19 +3,21 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash('mkounga10', salt);
+    const salt = await bcrypt.genSalt(12);
+    const passwordHash = await bcrypt.hash('Admin@123', salt);
     const userId = uuidv4();
 
     // Create admin user
     await queryInterface.bulkInsert('Users', [{
       id: userId,
-      email: 'laurentjoel52@gmail.com',
+      email: 'admin@ycd.com',
       password_hash: passwordHash,
       first_name: 'System',
       last_name: 'Administrator',
       role: 'admin',
       email_verified: true,
+      is_active: true,
+      approval_status: 'approved',
       created_at: new Date(),
       updated_at: new Date()
     }]);
@@ -33,7 +35,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('Users', {
-      email: 'laurentjoel52@gmail.com'
+      email: 'admin@ycd.com'
     });
   }
 };
