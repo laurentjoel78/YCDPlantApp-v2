@@ -11,6 +11,12 @@ const config = {
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
     logging: dbLogger.logQuery.bind(dbLogger),
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
     pool: {
       max: 5,
       min: 0,
