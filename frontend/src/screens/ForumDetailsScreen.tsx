@@ -156,9 +156,11 @@ export default function ForumDetailsScreen() {
     const isMember = forum.isMember || false;
     const sortedPosts = [...posts].sort((a, b) => {
         if (sortBy === 'recent') {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            const dateA = new Date((a as any).created_at || a.createdAt).getTime();
+            const dateB = new Date((b as any).created_at || b.createdAt).getTime();
+            return dateB - dateA;
         } else {
-            return b.likesCount - a.likesCount;
+            return ((b as any).likes_count || b.likesCount || 0) - ((a as any).likes_count || a.likesCount || 0);
         }
     });
 

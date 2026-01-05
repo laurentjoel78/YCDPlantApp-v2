@@ -28,7 +28,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                     </View>
                 </View>
                 <Text style={styles.date}>
-                    {new Date(post.createdAt).toLocaleDateString('fr-FR')}
+                    {new Date((post as any).created_at || post.createdAt).toLocaleDateString('fr-FR')}
                 </Text>
             </View>
 

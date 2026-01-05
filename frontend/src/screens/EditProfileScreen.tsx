@@ -20,11 +20,13 @@ const EditProfileScreen: React.FC = () => {
   const { colors } = useTheme();
   const navigation = useNavigation();
   const { user, setUser } = useApp();
-  const [firstName, setFirstName] = useState(user?.firstName || '');
-  const [lastName, setLastName] = useState(user?.lastName || '');
-  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
+  // Handle both snake_case (from API) and camelCase (from type) with type casting
+  const userData = user as any;
+  const [firstName, setFirstName] = useState(userData?.first_name || user?.firstName || '');
+  const [lastName, setLastName] = useState(userData?.last_name || user?.lastName || '');
+  const [phoneNumber, setPhoneNumber] = useState(userData?.phone_number || user?.phoneNumber || '');
   const [region, setRegion] = useState(user?.region || '');
-  const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
+  const [profileImage, setProfileImage] = useState<string | null>(userData?.profile_image || user?.profileImage || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -137,7 +137,7 @@ export default function NearbyTopics() {
                     <View style={styles.topicFooter}>
                       <Text style={[styles.metadata, { color: colors.textSecondary }]}>
                         By {topic.author?.name || 'Unknown'} • {
-                          new Date(topic.createdAt).toLocaleDateString()
+                          new Date((topic as any).created_at || topic.createdAt).toLocaleDateString()
                         }
                       </Text>
                       <View style={styles.stats}>

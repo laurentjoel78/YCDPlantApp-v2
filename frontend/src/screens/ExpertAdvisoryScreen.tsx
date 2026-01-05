@@ -222,8 +222,11 @@ export default function ExpertAdvisoryScreen() {
             <Button
               mode="contained"
               onPress={() => {
+                const expertToConsult = selectedExpert;
                 setSelectedExpert(null);
-                handleStartConsultation(selectedExpert);
+                if (expertToConsult) {
+                  handleStartConsultation(expertToConsult);
+                }
               }}
               style={styles.consultButton}
               disabled={selectedExpert.availability === 'offline'}

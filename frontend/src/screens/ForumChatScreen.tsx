@@ -226,25 +226,26 @@ export default function ForumChatScreen() {
 
     const renderMessage = ({ item, index }: { item: ChatMessage; index: number }) => {
         const isOwnMessage = item.sender?.id === user?.id;
-        const showDateHeader = index === 0 ||
-            formatDate(item.createdAt) !== formatDate(messages[index - 1]?.createdAt);
+        const itemDate = item.created_at || item.createdAt;
+        const prevDate = messages[index - 1]?.created_at || messages[index - 1]?.createdAt;
+        const showDateHeader = index === 0 || formatDate(itemDate) !== formatDate(prevDate);
 
         return (
             <View>
                 {showDateHeader && (
                     <View style={styles.dateHeader}>
-                        <Text style={styles.dateHeaderText}>{formatDate(item.createdAt)}</Text>
+                        <Text style={styles.dateHeaderText}>{formatDate(itemDate)}</Text>
                     </View>
                 )}
                 <View style={[styles.messageContainer, isOwnMessage && styles.ownMessageContainer]}>
                     {!isOwnMessage && (
                         <View style={styles.avatarContainer}>
-                            {item.sender?.profile_image_url ? (
-                                <Image source={{ uri: item.sender.profile_image_url }} style={styles.avatar} />
+                            {(item.sender?.profile_image_url || item.sender?.profile_image) ? (
+                                <Image source={{ uri: item.sender.profile_image_url || item.sender.profile_image }} style={styles.avatar} />
                             ) : (
                                 <View style={[styles.avatar, styles.defaultAvatar]}>
                                     <Text style={styles.avatarText}>
-                                        {(item.sender?.first_name?.[0] || '?').toUpperCase()}
+                                        {((item.sender?.first_name || item.sender?.firstName)?.[0] || '?').toUpperCase()}
                                     </Text>
                                 </View>
                             )}
@@ -253,14 +254,14 @@ export default function ForumChatScreen() {
                     <View style={[styles.messageBubble, isOwnMessage ? styles.ownBubble : styles.otherBubble]}>
                         {!isOwnMessage && (
                             <Text style={styles.senderName}>
-                                {item.sender?.first_name} {item.sender?.last_name}
+                                {item.sender?.first_name || item.sender?.firstName} {item.sender?.last_name || item.sender?.lastName}
                             </Text>
                         )}
                         <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>
                             {item.content}
                         </Text>
                         <Text style={[styles.messageTime, isOwnMessage && styles.ownMessageTime]}>
-                            {formatTime(item.createdAt)}
+                            {formatTime(itemDate)}
                         </Text>
                     </View>
                 </View>

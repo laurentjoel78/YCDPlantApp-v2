@@ -34,7 +34,9 @@ export default function ExpertBookingModal({
     const [paymentMethod, setPaymentMethod] = useState<'mtn' | 'orange'>('mtn');
     const [phoneNumber, setPhoneNumber] = useState('');
 
-    const totalCost = (expert.hourlyRate / 60) * duration;
+    // Handle both snake_case and camelCase from API
+    const hourlyRate = expert.hourly_rate || expert.hourlyRate || 0;
+    const totalCost = (hourlyRate / 60) * duration;
 
     const handleBooking = async () => {
         if (!scheduledDate || !problemDescription.trim() || !phoneNumber.trim()) {
