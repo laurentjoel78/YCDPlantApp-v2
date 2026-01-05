@@ -108,21 +108,27 @@ const ExpertManagementScreen = () => {
     };
 
     const renderExpertCard = ({ item }: { item: any }) => {
-        // Safely get user info with fallbacks
-        const firstName = item?.user?.firstName || '';
-        const lastName = item?.user?.lastName || '';
+        // Safely get user info with fallbacks (backend returns snake_case)
+        const firstName = item?.user?.first_name || item?.user?.firstName || '';
+        const lastName = item?.user?.last_name || item?.user?.lastName || '';
         const email = item?.user?.email || '';
+        const profileImage = item?.user?.profile_image || item?.user?.profile_image_url || null;
         const initials = `${firstName[0] || '?'}${lastName[0] || '?'}`;
+        
+        // Expert fields (backend returns snake_case)
+        const hourlyRate = item?.hourly_rate || item?.hourlyRate || 0;
+        const experience = item?.years_of_experience || item?.experience || 0;
+        const specializations = item?.specializations || [];
 
         return (
             <Card style={styles.card}>
                 <Card.Content>
                     <View style={styles.header}>
                         <View style={styles.userInfo}>
-                            {item?.user?.profile_image_url ? (
+                            {profileImage ? (
                                 <Avatar.Image
                                     size={40}
-                                    source={getImageUrl(item.user.profile_image_url)}
+                                    source={getImageUrl(profileImage)}
                                     style={styles.avatar}
                                 />
                             ) : (
@@ -150,7 +156,7 @@ const ExpertManagementScreen = () => {
                             <Menu.Item
                                 onPress={() => {
                                     setMenuVisible(null);
-                                    handleBlockExpert(item.userId);
+                                    handleBlockExpert(item.user_id || item.userId);
                                 }}
                                 title="Block Account"
                                 leadingIcon="block-helper"
@@ -159,7 +165,7 @@ const ExpertManagementScreen = () => {
                             <Menu.Item
                                 onPress={() => {
                                     setMenuVisible(null);
-                                    handleDeleteExpert(item.userId);
+                                    handleDeleteExpert(item.id);
                                 }}
                                 title="Delete Account"
                                 leadingIcon="delete"
@@ -171,16 +177,16 @@ const ExpertManagementScreen = () => {
                     <View style={styles.details}>
                         <View style={styles.row}>
                             <Text variant="bodyMedium" style={styles.label}>Rate:</Text>
-                            <Text variant="bodyMedium">${item.hourlyRate}/hr</Text>
+                            <Text variant="bodyMedium">${hourlyRate}/hr</Text>
                         </View>
                         <View style={styles.row}>
                             <Text variant="bodyMedium" style={styles.label}>Experience:</Text>
-                            <Text variant="bodyMedium">{item.experience} years</Text>
+                            <Text variant="bodyMedium">{experience} years</Text>
                         </View>
                     </View>
 
                     <View style={styles.chips}>
-                        {item.specializations.map((spec: string, index: number) => (
+                        {specializations.map((spec: string, index: number) => (
                             <Chip key={index} style={styles.chip} compact>{spec}</Chip>
                         ))}
                     </View>
