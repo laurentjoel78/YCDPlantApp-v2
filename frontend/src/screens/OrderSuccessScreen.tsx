@@ -74,7 +74,9 @@ export default function OrderSuccessScreen() {
                     </View>
                     <View style={styles.detailRow}>
                         <Text style={styles.detailLabel}>Total Amount:</Text>
-                        <Text style={styles.detailValue}>{Number(order.total).toLocaleString('en-US')} XAF</Text>
+                        <Text style={styles.detailValue}>
+                            {Number(order.total || order.total_amount || order.totalAmount || 0).toLocaleString('en-US')} XAF
+                        </Text>
                     </View>
                     <View style={styles.detailRow}>
                         <Text style={styles.detailLabel}>Status:</Text>
