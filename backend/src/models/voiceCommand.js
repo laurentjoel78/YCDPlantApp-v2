@@ -151,13 +151,13 @@ module.exports = (sequelize) => {
       afterCreate: async (voiceCommand, options) => {
         // Log voice command creation
         await sequelize.models.AuditLog.create({
-          userId: voiceCommand.user_id,
-          userRole: 'user',
-          actionType: 'VOICE_COMMAND_CREATED',
-          actionDescription: `New voice command recorded: ${voiceCommand.intent}`,
-          tableName: 'voice_commands',
-          recordId: voiceCommand.id,
-          newValues: voiceCommand.toJSON()
+          user_id: voiceCommand.user_id,
+          user_role: 'user',
+          action_type: 'VOICE_COMMAND_CREATED',
+          action_description: `New voice command recorded: ${voiceCommand.intent}`,
+          table_name: 'voice_commands',
+          record_id: voiceCommand.id,
+          new_values: voiceCommand.toJSON()
         }, { transaction: options.transaction });
       }
     }

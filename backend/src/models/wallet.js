@@ -187,13 +187,13 @@ module.exports = (sequelize) => {
       afterCreate: async (wallet, options) => {
         // Log wallet creation
         await sequelize.models.AuditLog.create({
-          userId: wallet.user_id,
-          userRole: options.userRole || 'system',
-          actionType: 'WALLET_CREATED',
-          actionDescription: `New ${wallet.wallet_type} wallet created`,
-          tableName: 'wallets',
-          recordId: wallet.id,
-          newValues: wallet.toJSON()
+          user_id: wallet.user_id,
+          user_role: options.userRole || 'system',
+          action_type: 'WALLET_CREATED',
+          action_description: `New ${wallet.wallet_type} wallet created`,
+          table_name: 'wallets',
+          record_id: wallet.id,
+          new_values: wallet.toJSON()
         }, { transaction: options.transaction });
       },
       beforeUpdate: async (wallet) => {
@@ -214,14 +214,14 @@ module.exports = (sequelize) => {
 
           // Log the changes
           await sequelize.models.AuditLog.create({
-            userId: options.userId,
-            userRole: options.userRole || 'system',
-            actionType: 'WALLET_UPDATED',
-            actionDescription: `Wallet ${wallet.id} updated`,
-            tableName: 'wallets',
-            recordId: wallet.id,
-            oldValues,
-            newValues
+            user_id: options.userId,
+            user_role: options.userRole || 'system',
+            action_type: 'WALLET_UPDATED',
+            action_description: `Wallet ${wallet.id} updated`,
+            table_name: 'wallets',
+            record_id: wallet.id,
+            old_values: oldValues,
+            new_values: newValues
           }, { transaction: options.transaction });
         }
       }

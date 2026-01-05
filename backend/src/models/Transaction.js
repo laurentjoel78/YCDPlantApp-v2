@@ -250,13 +250,13 @@ module.exports = (sequelize) => {
       afterCreate: async (transaction, options) => {
         // Log the transaction creation
         await sequelize.models.AuditLog.create({
-          userId: transaction.processed_by || transaction.payer_id,
-          userRole: options.userRole || 'system',
-          actionType: 'TRANSACTION_CREATED',
-          actionDescription: `New ${transaction.transaction_type} transaction created`,
-          tableName: 'transactions',
-          recordId: transaction.id,
-          newValues: transaction.toJSON()
+          user_id: transaction.processed_by || transaction.payer_id,
+          user_role: options.userRole || 'system',
+          action_type: 'TRANSACTION_CREATED',
+          action_description: `New ${transaction.transaction_type} transaction created`,
+          table_name: 'transactions',
+          record_id: transaction.id,
+          new_values: transaction.toJSON()
         }, { transaction: options.transaction });
       }
     }

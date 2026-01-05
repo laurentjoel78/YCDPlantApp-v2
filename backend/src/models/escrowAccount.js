@@ -217,13 +217,13 @@ module.exports = (sequelize) => {
       afterCreate: async (escrow, options) => {
         // Log escrow account creation
         await sequelize.models.AuditLog.create({
-          userId: escrow.buyer_id,
-          userRole: 'user',
-          actionType: 'ESCROW_CREATED',
-          actionDescription: `New escrow account created for order ${escrow.order_id}`,
-          tableName: 'escrow_accounts',
-          recordId: escrow.id,
-          newValues: escrow.toJSON()
+          user_id: escrow.buyer_id,
+          user_role: 'user',
+          action_type: 'ESCROW_CREATED',
+          action_description: `New escrow account created for order ${escrow.order_id}`,
+          table_name: 'escrow_accounts',
+          record_id: escrow.id,
+          new_values: escrow.toJSON()
         }, { transaction: options.transaction });
       },
       beforeUpdate: async (escrow) => {
@@ -235,14 +235,14 @@ module.exports = (sequelize) => {
         if (escrow.changed('status')) {
           // Log status change
           await sequelize.models.AuditLog.create({
-            userId: options.userId,
-            userRole: options.userRole || 'system',
-            actionType: 'ESCROW_STATUS_CHANGED',
-            actionDescription: `Escrow status changed to ${escrow.status}`,
-            tableName: 'escrow_accounts',
-            recordId: escrow.id,
-            oldValues: { status: escrow.previous('status') },
-            newValues: { status: escrow.status }
+            user_id: options.userId,
+            user_role: options.userRole || 'system',
+            action_type: 'ESCROW_STATUS_CHANGED',
+            action_description: `Escrow status changed to ${escrow.status}`,
+            table_name: 'escrow_accounts',
+            record_id: escrow.id,
+            old_values: { status: escrow.previous('status') },
+            new_values: { status: escrow.status }
           }, { transaction: options.transaction });
         }
       }
