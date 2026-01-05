@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations
       Farm.belongsTo(models.User, {
-        foreignKey: 'farmer_id',
+        foreignKey: 'user_id',
         as: 'farmer'
       });
       Farm.hasMany(models.FarmCrop, {
@@ -25,11 +25,11 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    farmer_id: {
+    user_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'users',
+        model: 'Users',
         key: 'id'
       }
     },
