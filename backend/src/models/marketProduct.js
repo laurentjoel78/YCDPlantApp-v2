@@ -73,7 +73,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'MarketProduct',
-    tableName: 'market_products',
+    tableName: 'MarketProducts',
     indexes: [
       {
         fields: ['marketId']

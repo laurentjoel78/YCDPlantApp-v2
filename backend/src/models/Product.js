@@ -76,7 +76,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Product',
-    tableName: 'products',
+    tableName: 'Products',
     timestamps: true,
     indexes: [
       {

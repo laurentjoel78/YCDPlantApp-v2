@@ -68,7 +68,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Notification',
-    tableName: 'notifications',
+    tableName: 'Notifications',
     timestamps: true,
     indexes: [
       {

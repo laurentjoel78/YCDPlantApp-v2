@@ -63,7 +63,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'WeatherData',
-    tableName: 'weather_data',
+    tableName: 'WeatherData',
     timestamps: true,
     indexes: [
       {

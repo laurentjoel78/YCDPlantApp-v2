@@ -162,7 +162,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Wallet',
-    tableName: 'wallets',
+    tableName: 'Wallets',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',

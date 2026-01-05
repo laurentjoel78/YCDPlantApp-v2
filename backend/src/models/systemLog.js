@@ -64,7 +64,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'SystemLog',
-    tableName: 'system_logs',
+    tableName: 'SystemLogs',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',

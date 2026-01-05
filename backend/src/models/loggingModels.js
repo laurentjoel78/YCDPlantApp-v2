@@ -108,7 +108,7 @@ const initModels = (sequelize) => {
   }, {
     sequelize,
     modelName: 'SystemLog',
-    tableName: 'system_logs',
+    tableName: 'SystemLogs',
     underscored: true,
     timestamps: true,
     createdAt: 'created_at',

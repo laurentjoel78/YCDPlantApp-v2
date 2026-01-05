@@ -90,7 +90,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Farm',
-    tableName: 'farms',
+    tableName: 'Farms',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at'
