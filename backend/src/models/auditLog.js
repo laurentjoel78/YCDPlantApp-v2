@@ -20,38 +20,34 @@ module.exports = (sequelize) => {
     },
     user_id: {
       type: DataTypes.UUID,
-      allowNull: true,
-      field: 'user_id'
+      allowNull: true
     },
     user_role: {
       type: DataTypes.STRING,
-      allowNull: true,
-      field: 'user_role'
+      allowNull: false,
+      defaultValue: 'system'
     },
     action_type: {
       type: DataTypes.STRING,
-      allowNull: true,
-      field: 'action_type'
+      allowNull: false,
+      defaultValue: 'unknown'
     },
     action_description: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'action_description'
+      allowNull: false,
+      defaultValue: 'No description'
     },
     ip_address: {
       type: DataTypes.STRING,
-      allowNull: true,
-      field: 'ip_address'
+      allowNull: true
     },
     user_agent: {
       type: DataTypes.STRING,
-      allowNull: true,
-      field: 'user_agent'
+      allowNull: true
     },
     device_info: {
       type: DataTypes.JSONB,
-      allowNull: true,
-      field: 'device_info'
+      allowNull: true
     },
     location: {
       type: DataTypes.JSONB,
@@ -63,23 +59,19 @@ module.exports = (sequelize) => {
     },
     table_name: {
       type: DataTypes.STRING,
-      allowNull: true,
-      field: 'table_name'
+      allowNull: true
     },
     record_id: {
       type: DataTypes.UUID,
-      allowNull: true,
-      field: 'record_id'
+      allowNull: true
     },
     old_values: {
       type: DataTypes.JSONB,
-      allowNull: true,
-      field: 'old_values'
+      allowNull: true
     },
     new_values: {
       type: DataTypes.JSONB,
-      allowNull: true,
-      field: 'new_values'
+      allowNull: true
     },
     status: {
       type: DataTypes.STRING,
@@ -87,8 +79,7 @@ module.exports = (sequelize) => {
     },
     session_id: {
       type: DataTypes.STRING,
-      allowNull: true,
-      field: 'session_id'
+      allowNull: true
     }
   }, {
     sequelize,
