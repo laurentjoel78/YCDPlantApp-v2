@@ -57,7 +57,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     images: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSONB,
       defaultValue: []
     },
     market_name: {
@@ -66,7 +66,7 @@ module.exports = (sequelize) => {
       comment: 'Name of the market where the product can be found'
     },
     status: {
-      type: DataTypes.ENUM('active', 'inactive', 'out_of_stock'),
+      type: DataTypes.STRING,
       defaultValue: 'active'
     },
     metadata: {
