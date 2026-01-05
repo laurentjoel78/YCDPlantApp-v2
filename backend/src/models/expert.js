@@ -15,27 +15,27 @@ module.exports = (sequelize) => {
     static associate(models) {
       // define association here
       Expert.belongsTo(models.User, {
-        foreignKey: 'userId',
+        foreignKey: 'user_id',
         as: 'user',
         onDelete: 'CASCADE'
       });
       Expert.belongsTo(models.User, {
-        foreignKey: 'createdByAdminId',
+        foreignKey: 'created_by_admin_id',
         as: 'createdByAdmin',
         onDelete: 'RESTRICT'
       });
       Expert.belongsTo(models.User, {
-        foreignKey: 'approvedByAdminId',
+        foreignKey: 'approved_by_admin_id',
         as: 'approvedByAdmin',
         onDelete: 'SET NULL'
       });
       Expert.hasMany(models.AuditLog, {
-        foreignKey: 'expertId',
+        foreignKey: 'expert_id',
         as: 'auditLogs',
         onDelete: 'CASCADE'
       });
       Expert.hasMany(models.ExpertReview, {
-        foreignKey: 'expertId',
+        foreignKey: 'expert_id',
         as: 'reviews',
         onDelete: 'CASCADE'
       });
@@ -48,7 +48,7 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    userId: {
+    user_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
@@ -78,16 +78,16 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: ['French', 'English']
     },
-    hourlyRate: {
+    hourly_rate: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
-    commissionRate: {
+    commission_rate: {
       type: DataTypes.DECIMAL(4, 2),
       allowNull: false,
       defaultValue: 0.20 // 20% commission
     },
-    totalEarnings: {
+    total_earnings: {
       type: DataTypes.DECIMAL(12, 2),
       allowNull: false,
       defaultValue: 0
@@ -96,27 +96,27 @@ module.exports = (sequelize) => {
       type: DataTypes.DECIMAL(2, 1),
       allowNull: true
     },
-    totalConsultations: {
+    total_consultations: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0
     },
-    completionRate: {
+    completion_rate: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    avgResponseTime: {
+    avg_response_time: {
       type: DataTypes.DECIMAL(4, 2),
       allowNull: true,
       comment: 'Average response time in hours'
     },
-    profileImage: {
+    profile_image: {
       type: DataTypes.STRING,
       allowNull: true
     },
     location: {
       type: DataTypes.JSONB,
-      allowNull: false
+      allowNull: true
     },
     availability: {
       type: DataTypes.JSONB,
@@ -132,16 +132,16 @@ module.exports = (sequelize) => {
         }
       }
     },
-    approvalStatus: {
+    approval_status: {
       type: DataTypes.ENUM('pending', 'approved', 'rejected'),
       allowNull: false,
       defaultValue: 'pending'
     },
-    verificationDocuments: {
+    verification_documents: {
       type: DataTypes.JSONB,
       allowNull: true
     },
-    createdByAdminId: {
+    created_by_admin_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
@@ -149,7 +149,7 @@ module.exports = (sequelize) => {
         key: 'id'
       }
     },
-    approvedByAdminId: {
+    approved_by_admin_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
@@ -157,16 +157,16 @@ module.exports = (sequelize) => {
         key: 'id'
       }
     },
-    approvedAt: {
+    approved_at: {
       type: DataTypes.DATE,
       allowNull: true
     },
-    profileVisible: {
+    profile_visible: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
     },
-    lastActive: {
+    last_active: {
       type: DataTypes.DATE,
       allowNull: true
     }
@@ -180,13 +180,13 @@ module.exports = (sequelize) => {
     hooks: {
       afterCreate: async (expert, options) => {
         await sequelize.models.AuditLog.create({
-          userId: expert.createdByAdminId,
-          userRole: 'admin',
-          actionType: 'EXPERT_CREATED',
-          actionDescription: 'New expert profile created',
-          tableName: 'experts',
-          recordId: expert.id,
-          newValues: expert.toJSON()
+          user_id: expert.created_by_admin_id,
+          user_role: 'admin',
+          action_type: 'EXPERT_CREATED',
+          action_description: 'New expert profile created',
+          table_name: 'experts',
+          record_id: expert.id,
+          new_values: expert.toJSON()
         });
       },
       afterUpdate: async (expert, options) => {
@@ -201,14 +201,14 @@ module.exports = (sequelize) => {
           });
 
           await sequelize.models.AuditLog.create({
-            userId: options.userId || expert.createdByAdminId,
-            userRole: 'admin',
-            actionType: 'EXPERT_UPDATED',
-            actionDescription: 'Expert profile updated',
-            tableName: 'experts',
-            recordId: expert.id,
-            oldValues,
-            newValues
+            user_id: options.userId || expert.created_by_admin_id,
+            user_role: 'admin',
+            action_type: 'EXPERT_UPDATED',
+            action_description: 'Expert profile updated',
+            table_name: 'experts',
+            record_id: expert.id,
+            old_values: oldValues,
+            new_values: newValues
           });
         }
       }

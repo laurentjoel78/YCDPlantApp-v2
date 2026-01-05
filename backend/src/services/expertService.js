@@ -68,19 +68,19 @@ class ExpertService {
 
       // Create expert profile
       const expert = await Expert.create({
-        userId: user.id,
+        user_id: user.id,
         specializations: finalSpecializations,
         certifications,
         experience,
         bio,
         languages: finalLanguages,
-        hourlyRate,
+        hourly_rate: hourlyRate,
         location,
-        createdByAdminId: adminId,
-        approvalStatus: 'approved',
-        profileVisible: true,
-        approvedByAdminId: adminId,
-        approvedAt: new Date()
+        created_by_admin_id: adminId,
+        approval_status: 'approved',
+        profile_visible: true,
+        approved_by_admin_id: adminId,
+        approved_at: new Date()
       }, { transaction });
 
       // Log expert creation
@@ -120,7 +120,7 @@ class ExpertService {
 
       const applications = await Expert.findAndCountAll({
         where: {
-          approvalStatus: 'pending'
+          approval_status: 'pending'
         },
         include: [{
           model: User,
@@ -129,7 +129,7 @@ class ExpertService {
         }],
         limit,
         offset,
-        order: [['createdAt', 'ASC']]
+        order: [['created_at', 'ASC']]
       });
 
       return applications;
@@ -148,16 +148,16 @@ class ExpertService {
       }
 
       await expert.update({
-        approvalStatus: 'approved',
-        approvedByAdminId: adminId,
-        approvedAt: new Date(),
-        profileVisible: true
+        approval_status: 'approved',
+        approved_by_admin_id: adminId,
+        approved_at: new Date(),
+        profile_visible: true
       });
 
-      const user = await User.findByPk(expert.userId);
+      const user = await User.findByPk(expert.user_id);
 
       await sendNotification({
-        userId: expert.userId,
+        userId: expert.user_id,
         type: 'expert_approval',
         title: 'Account Approved',
         message: 'Your expert account has been approved. You can now receive consultation requests.',
@@ -214,10 +214,10 @@ class ExpertService {
       }
 
       if (!includePrivate) {
-        delete expert.commissionRate;
-        delete expert.totalEarnings;
-        delete expert.createdByAdminId;
-        delete expert.approvedByAdminId;
+        delete expert.commission_rate;
+        delete expert.total_earnings;
+        delete expert.created_by_admin_id;
+        delete expert.approved_by_admin_id;
       }
 
       return expert;
@@ -239,7 +239,7 @@ class ExpertService {
 
       if (data.user) {
         await User.update(data.user, {
-          where: { id: expert.userId }
+          where: { id: expert.user_id }
         });
       }
 
@@ -274,8 +274,8 @@ class ExpertService {
       } = filters;
 
       const where = {
-        approvalStatus: 'approved',
-        profileVisible: true
+        approval_status: 'approved',
+        profile_visible: true
       };
 
       if (specializations) {
@@ -291,7 +291,7 @@ class ExpertService {
       }
 
       if (maxRate) {
-        where.hourlyRate = {
+        where.hourly_rate = {
           [Op.lte]: maxRate
         };
       }
@@ -322,7 +322,7 @@ class ExpertService {
         offset,
         order: [
           [sequelize.fn('COALESCE', sequelize.col('rating'), 0), 'DESC'],
-          ['totalConsultations', 'DESC']
+          ['total_consultations', 'DESC']
         ]
       });
 
@@ -431,9 +431,9 @@ class ExpertService {
       return {
         consultations,
         reviews,
-        earnings: expert.totalEarnings,
-        completionRate: expert.completionRate,
-        avgResponseTime: expert.avgResponseTime
+        earnings: expert.total_earnings,
+        completionRate: expert.completion_rate,
+        avgResponseTime: expert.avg_response_time
       };
     } catch (error) {
       console.error('Error getting expert stats:', error);

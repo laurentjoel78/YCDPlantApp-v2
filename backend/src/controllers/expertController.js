@@ -39,17 +39,17 @@ class ExpertController {
           // Update User profile image
           await User.update(
             { profile_image_url: result.secure_url },
-            { where: { id: expert.userId } }
+            { where: { id: expert.user_id } }
           );
 
           // Update Expert profile image
           await Expert.update(
-            { profileImage: result.secure_url },
+            { profile_image: result.secure_url },
             { where: { id: expert.id } }
           );
 
           // Add image to response
-          expert.profileImage = result.secure_url;
+          expert.profile_image = result.secure_url;
           if (expert.user) expert.user.profile_image_url = result.secure_url;
         } catch (uploadError) {
           console.error('Failed to upload expert profile image:', uploadError);
