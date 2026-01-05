@@ -4,7 +4,7 @@
   "description": "Backend server for YCD Farmer Guide App",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "npx sequelize-cli db:migrate && node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "node src/scripts/setupTestDb.js && jest --detectOpenHandles",
     "create-db": "node src/scripts/createDatabase.js",
