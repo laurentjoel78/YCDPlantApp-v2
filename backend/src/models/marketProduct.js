@@ -7,8 +7,12 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations
       this.belongsTo(models.Market, {
-        foreignKey: 'marketId',
+        foreignKey: 'market_id',
         as: 'market'
+      });
+      this.belongsTo(models.Product, {
+        foreignKey: 'product_id',
+        as: 'product'
       });
     }
   }
@@ -19,7 +23,7 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    marketId: {
+    market_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
@@ -27,59 +31,34 @@ module.exports = (sequelize) => {
         key: 'id'
       }
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    unit: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    currentPrice: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false
-    },
-    availability: {
-      type: DataTypes.ENUM('in-stock', 'low-stock', 'out-of-stock'),
-      defaultValue: 'in-stock'
-    },
-    qualityGrade: {
-      type: DataTypes.STRING
-    },
-    description: {
-      type: DataTypes.TEXT
-    },
-    seasonality: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
-    },
-    images: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: []
-    },
-    lastPriceUpdate: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    },
-    lastSyncedAt: {
-      type: DataTypes.DATE,
+    product_id: {
+      type: DataTypes.UUID,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      references: {
+        model: 'Products',
+        key: 'id'
+      }
+    },
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
+    },
+    available_quantity: {
+      type: DataTypes.FLOAT,
+      allowNull: true
     }
   }, {
     sequelize,
     modelName: 'MarketProduct',
     tableName: 'MarketProducts',
+    underscored: true,
+    timestamps: true,
     indexes: [
       {
-        fields: ['marketId']
+        fields: ['market_id']
       },
       {
-        fields: ['category']
+        fields: ['product_id']
       }
     ]
   });

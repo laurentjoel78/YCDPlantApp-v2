@@ -64,15 +64,12 @@ class MarketService {
     const transaction = await sequelize.transaction();
 
     try {
-      // Create product
-      const product = await MarketProduct.create(productData, { transaction });
-
-      // Create initial price history record
-      await PriceHistory.create({
-        productId: product.id,
-        price: productData.currentPrice,
-        source: 'market-update',
-        verified: true
+      // Create product link to market
+      const product = await MarketProduct.create({
+        market_id: productData.market_id,
+        product_id: productData.product_id,
+        price: productData.price,
+        available_quantity: productData.available_quantity
       }, { transaction });
 
       await transaction.commit();
@@ -94,20 +91,9 @@ class MarketService {
         throw new Error('Product not found');
       }
 
-      // Update product current price
+      // Update product price
       await product.update({
-        currentPrice: priceData.price,
-        lastPriceUpdate: new Date()
-      }, { transaction });
-
-      // Create price history record
-      await PriceHistory.create({
-        productId,
-        price: priceData.price,
-        source: priceData.source || 'market-update',
-        reporterId: priceData.reporterId,
-        verified: priceData.source === 'market-update',
-        notes: priceData.notes
+        price: priceData.price
       }, { transaction });
 
       await transaction.commit();
@@ -121,23 +107,14 @@ class MarketService {
 
   async getMarketProducts(marketId, query = {}) {
     try {
-      const whereClause = { marketId };
-
-      if (query.category) {
-        whereClause.category = query.category;
-      }
-
-      if (query.availability) {
-        whereClause.availability = query.availability;
-      }
+      const whereClause = { market_id: marketId };
 
       const products = await MarketProduct.findAll({
         where: whereClause,
         include: [
           {
-            model: PriceHistory,
-            limit: 5,
-            order: [['recordedAt', 'DESC']]
+            model: sequelize.models.Product,
+            as: 'product'
           }
         ]
       });
