@@ -146,16 +146,17 @@ class ConsultationController {
           // Create generic crop
           const newCrop = await Crop.create({
             name: 'General Crop',
+            category: 'General',
             description: 'General crop for consultation',
-            growth_period_days: 90
+            growth_duration: 90
           }, { transaction });
           finalCropId = newCrop.id;
         }
       }
 
       // Calculate costs (ensure we trust server-side rate or validate client-side)
-      // Fix: Access hourlyRate via camelCase as defined in Expert model
-      const hourlyRate = expertProfile.hourlyRate ? parseFloat(expertProfile.hourlyRate) : 5000;
+      // Fix: Access hourly_rate via snake_case as defined in Expert model
+      const hourlyRate = expertProfile.hourly_rate ? parseFloat(expertProfile.hourly_rate) : 5000;
       // Use client provided duration default to 60 if not
       const consultDuration = duration || 60;
       const calculatedCost = hourlyRate * (consultDuration / 60);
