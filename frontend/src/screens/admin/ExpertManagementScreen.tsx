@@ -56,6 +56,12 @@ const ExpertManagementScreen = () => {
 
     const handleDeleteExpert = (expertId: string) => {
         if (!token) return;
+        
+        // Validate expert ID before making request
+        if (!expertId || expertId === 'undefined' || expertId === 'null') {
+            Alert.alert('Error', 'Invalid expert ID');
+            return;
+        }
 
         Alert.alert(
             'Delete Expert Profile',

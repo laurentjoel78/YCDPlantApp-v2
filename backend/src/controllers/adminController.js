@@ -420,9 +420,15 @@ exports.deleteExpert = async (req, res) => {
 
     const { expertId } = req.params;
 
-    // Validate if expertId is provided
-    if (!expertId) {
+    // Validate if expertId is provided and is a valid UUID
+    if (!expertId || expertId === 'undefined' || expertId === 'null') {
       return res.status(400).json({ error: 'Expert ID is required' });
+    }
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(expertId)) {
+      return res.status(400).json({ error: 'Invalid Expert ID format' });
     }
 
     const expert = await Expert.findByPk(expertId);
@@ -472,7 +478,18 @@ exports.deleteUser = async (req, res) => {
     }
 
     const { userId } = req.params;
-    const { permanent = false } = req.body;
+    const { permanent = false } = req.body || {};
+
+    // Validate userId
+    if (!userId || userId === 'undefined' || userId === 'null') {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({ error: 'Invalid User ID format' });
+    }
 
     const user = await User.findByPk(userId);
     if (!user) {
