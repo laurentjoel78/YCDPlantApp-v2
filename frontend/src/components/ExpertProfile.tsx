@@ -18,12 +18,24 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
 }) => {
   const { colors } = useTheme();
 
+  // Safe defaults for potentially undefined values
+  const expertName = expert?.name || 'Unknown Expert';
+  const expertSpecialty = expert?.specialty || 'General';
+  const expertRating = typeof expert?.rating === 'number' ? expert.rating : parseFloat(String(expert?.rating)) || 0;
+  const expertExperience = expert?.experience || 'N/A';
+  const expertBio = expert?.bio || 'No bio available';
+  const expertImage = expert?.image || (expert as any)?.imageUrl || 'https://via.placeholder.com/200';
+  const expertLanguages = Array.isArray(expert?.languages) ? expert.languages : [];
+  const expertCertifications = Array.isArray(expert?.certifications) ? expert.certifications : [];
+  const rawFee = expert?.consultationFee ?? (expert as any)?.consultationPrice ?? 0;
+  const expertFee = typeof rawFee === 'number' ? rawFee : (parseFloat(String(rawFee)) || 0);
+
   return (
     <ScaleInView style={[styles.container, { backgroundColor: colors.surface }]}>
       <ScrollView bounces={false}>
         {/* Header with Image */}
         <View style={styles.header}>
-          <Image source={{ uri: expert.image }} style={styles.coverImage} />
+          <Image source={{ uri: expertImage }} style={styles.coverImage} />
           <TouchableOpacity
             style={[styles.closeButton, { backgroundColor: colors.surface }]}
             onPress={onClose}
@@ -35,9 +47,9 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
         {/* Expert Info */}
         <View style={styles.content}>
           <FadeInView delay={100}>
-            <Text style={[styles.name, { color: colors.text }]}>{expert.name}</Text>
+            <Text style={[styles.name, { color: colors.text }]}>{expertName}</Text>
             <Text style={[styles.specialty, { color: colors.textSecondary }]}>
-              {expert.specialty}
+              {expertSpecialty}
             </Text>
 
             {/* Stats Row */}
@@ -45,7 +57,7 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
               <View style={styles.statItem}>
                 <Icon name="star" size={20} color={colors.warning} />
                 <Text style={[styles.statValue, { color: colors.text }]}>
-                  {expert.rating.toFixed(1)}
+                  {expertRating.toFixed(1)}
                 </Text>
                 <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
                   Rating
@@ -55,7 +67,7 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
               <View style={styles.statItem}>
                 <Icon name="briefcase" size={20} color={colors.primary} />
                 <Text style={[styles.statValue, { color: colors.text }]}>
-                  {expert.experience}
+                  {expertExperience}
                 </Text>
                 <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
                   Experience
@@ -65,7 +77,7 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
               <View style={styles.statItem}>
                 <Icon name="cash" size={20} color={colors.success} />
                 <Text style={[styles.statValue, { color: colors.text }]}>
-                  {typeof expert.consultationFee === 'number' ? expert.consultationFee.toLocaleString() : expert.consultationFee} FCFA
+                  {expertFee.toLocaleString()} FCFA
                 </Text>
                 <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
                   Per Hour
@@ -77,7 +89,7 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
             <View style={[styles.section, { backgroundColor: colors.background }]}>
               <Text style={[styles.sectionTitle, { color: colors.text }]}>About</Text>
               <Text style={[styles.bio, { color: colors.textSecondary }]}>
-                {expert.bio}
+                {expertBio}
               </Text>
             </View>
 
@@ -85,9 +97,9 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
             <View style={[styles.section, { backgroundColor: colors.background }]}>
               <Text style={[styles.sectionTitle, { color: colors.text }]}>Languages</Text>
               <View style={styles.languagesContainer}>
-                {expert.languages.map((language, index) => (
+                {expertLanguages.map((language, index) => (
                   <View
-                    key={language}
+                    key={language || index}
                     style={[styles.languageChip, { backgroundColor: colors.surface }]}
                   >
                     <Text style={[styles.languageText, { color: colors.text }]}>
@@ -99,22 +111,24 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
             </View>
 
             {/* Certifications Section */}
-            <View style={[styles.section, { backgroundColor: colors.background }]}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>
-                Certifications
-              </Text>
-              {expert.certifications.map((cert, index) => (
-                <View key={index} style={styles.certificationItem}>
-                  <Icon name="certificate" size={20} color={colors.primary} />
-                  <Text
-                    style={[styles.certificationText, { color: colors.text }]}
-                    numberOfLines={2}
-                  >
-                    {cert}
-                  </Text>
-                </View>
-              ))}
-            </View>
+            {expertCertifications.length > 0 && (
+              <View style={[styles.section, { backgroundColor: colors.background }]}>
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                  Certifications
+                </Text>
+                {expertCertifications.map((cert, index) => (
+                  <View key={index} style={styles.certificationItem}>
+                    <Icon name="certificate" size={20} color={colors.primary} />
+                    <Text
+                      style={[styles.certificationText, { color: colors.text }]}
+                      numberOfLines={2}
+                    >
+                      {cert}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
           </FadeInView>
         </View>
       </ScrollView>
@@ -126,7 +140,7 @@ export const ExpertProfile: React.FC<ExpertProfileProps> = ({
           onPress={onBook}
         >
           <Text style={styles.bookButtonText}>Book Consultation</Text>
-          <Text style={styles.bookButtonPrice}>{typeof expert.consultationFee === 'number' ? expert.consultationFee.toLocaleString() : expert.consultationFee} FCFA/hr</Text>
+          <Text style={styles.bookButtonPrice}>{expertFee.toLocaleString()} FCFA/hr</Text>
         </TouchableOpacity>
       </View>
     </ScaleInView>
