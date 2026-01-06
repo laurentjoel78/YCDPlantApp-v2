@@ -27,7 +27,9 @@ const ExpertManagementScreen = () => {
         try {
             if (experts.length === 0) setLoading(true);
             const data = await adminService.getExperts(token, { limit: 50 });
+            console.log('Raw experts API response:', JSON.stringify(data, null, 2));
             const expertsList = data.experts || data || [];
+            console.log('First expert structure:', JSON.stringify(expertsList[0], null, 2));
             setExperts(expertsList);
             cacheService.set(CACHE_KEYS.ADMIN_EXPERTS, expertsList);
         } catch (error) {
@@ -171,7 +173,9 @@ const ExpertManagementScreen = () => {
                             <Menu.Item
                                 onPress={() => {
                                     setMenuVisible(null);
-                                    handleDeleteExpert(item.id);
+                                    const expertId = item.id || item.expert_id || item.expertId;
+                                    console.log('Deleting expert with data:', { id: item.id, expert_id: item.expert_id, expertId: item.expertId, fullItem: item });
+                                    handleDeleteExpert(expertId);
                                 }}
                                 title="Delete Account"
                                 leadingIcon="delete"
@@ -221,13 +225,13 @@ const ExpertManagementScreen = () => {
 
             <FlatList
                 data={experts.filter((e: any) => {
-                    const firstName = (e?.user?.firstName || '').toLowerCase();
-                    const lastName = (e?.user?.lastName || '').toLowerCase();
+                    const firstName = (e?.user?.first_name || e?.user?.firstName || '').toLowerCase();
+                    const lastName = (e?.user?.last_name || e?.user?.lastName || '').toLowerCase();
                     const query = searchQuery.toLowerCase();
                     return firstName.includes(query) || lastName.includes(query);
                 })}
                 renderItem={renderExpertCard}
-                keyExtractor={(item: any) => item.id}
+                keyExtractor={(item: any) => item.id || item.user_id || String(Math.random())}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={
                     <View style={styles.emptyState}>
