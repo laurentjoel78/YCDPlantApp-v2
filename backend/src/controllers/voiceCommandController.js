@@ -79,6 +79,16 @@ class VoiceCommandController {
 
   async deleteCommand(req, res) {
     const { id } = req.params;
+    
+    // Validate id
+    if (!id || id === 'undefined' || id === 'null') {
+      return res.status(400).json({ error: 'Command ID is required' });
+    }
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).json({ error: 'Invalid Command ID format' });
+    }
+    
     await VoiceCommandService.deleteCommand(id);
     res.json({
       success: true,

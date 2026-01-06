@@ -203,14 +203,25 @@ exports.deleteProduct = async (req, res) => {
       return res.status(403).json({ error: 'Only administrators can delete products' });
     }
 
-    const product = await Product.findOne({ where: { id: req.params.productId } });
+    const { productId } = req.params;
+    
+    // Validate productId
+    if (!productId || productId === 'undefined' || productId === 'null') {
+      return res.status(400).json({ error: 'Product ID is required' });
+    }
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(productId)) {
+      return res.status(400).json({ error: 'Invalid Product ID format' });
+    }
+
+    const product = await Product.findOne({ where: { id: productId } });
 
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
 
     const { CartItem } = require('../models');
-    await CartItem.destroy({ where: { product_id: req.params.productId } });
+    await CartItem.destroy({ where: { product_id: productId } });
 
     await product.destroy();
 

@@ -2,6 +2,7 @@ const db = require('../models');
 const sequelize = db.sequelize;
 const { Op } = require('sequelize');
 const { getIO } = require('../services/socketService');
+const { validateUUIDParam } = require('../utils/validators');
 
 /**
  * Get or create user's active cart
@@ -230,6 +231,13 @@ exports.removeFromCart = async (req, res) => {
     try {
         const userId = req.user.id;
         const { itemId } = req.params;
+        
+        // Validate itemId
+        const validation = validateUUIDParam(itemId, 'Item ID');
+        if (!validation.valid) {
+            return res.status(400).json({ error: validation.error });
+        }
+        
         const { Cart, CartItem, Product } = sequelize.models;
 
         const cartItem = await CartItem.findOne({

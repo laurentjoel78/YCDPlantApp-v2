@@ -329,6 +329,15 @@ exports.deleteMessage = async (req, res) => {
     const { messageId } = req.params;
     const userId = req.user.id;
 
+    // Validate messageId
+    if (!messageId || messageId === 'undefined' || messageId === 'null') {
+      return res.status(400).json({ error: 'Message ID is required' });
+    }
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(messageId)) {
+      return res.status(400).json({ error: 'Invalid Message ID format' });
+    }
+
     const result = await forumService.deleteMessage(userId, messageId);
 
     await auditService.logUserAction({
