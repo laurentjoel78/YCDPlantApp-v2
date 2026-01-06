@@ -120,7 +120,8 @@ const ExpertManagementScreen = () => {
         const firstName = item?.user?.first_name || item?.user?.firstName || '';
         const lastName = item?.user?.last_name || item?.user?.lastName || '';
         const email = item?.user?.email || '';
-        const profileImage = item?.user?.profile_image || item?.user?.profile_image_url || null;
+        // Check multiple possible locations for profile image
+        const profileImage = item?.profile_image || item?.profileImage || item?.user?.profile_image || item?.user?.profile_image_url || item?.user?.profileImage || null;
         const initials = `${firstName[0] || '?'}${lastName[0] || '?'}`;
         
         // Expert fields (backend returns snake_case)

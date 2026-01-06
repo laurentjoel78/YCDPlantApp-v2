@@ -316,7 +316,7 @@ class ExpertService {
         include: [{
           model: User,
           as: 'user',
-          attributes: ['id', 'first_name', 'last_name', 'email', 'profile_image']
+          attributes: ['id', 'first_name', 'last_name', 'email', 'profile_image_url']
         }],
         limit,
         offset,
