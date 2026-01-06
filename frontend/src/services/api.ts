@@ -73,7 +73,10 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
             parsedData = JSON.parse(data);
         } catch {
             // Check if response is empty or non-json
-            if (!data) return {} as T;
+            if (!data) {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return {} as T;
+            }
             throw new Error(data || `HTTP ${res.status}`);
         }
 

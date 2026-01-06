@@ -28,10 +28,17 @@ const ExpertManagementScreen = () => {
             if (experts.length === 0) setLoading(true);
             const data = await adminService.getExperts(token, { limit: 50 });
             console.log('Raw experts API response:', JSON.stringify(data, null, 2));
-            const expertsList = data.experts || data || [];
+            const expertsListRaw: any = (data as any)?.experts ?? data;
+            const expertsList = Array.isArray(expertsListRaw) ? expertsListRaw : [];
             console.log('First expert structure:', JSON.stringify(expertsList[0], null, 2));
-            setExperts(expertsList);
-            cacheService.set(CACHE_KEYS.ADMIN_EXPERTS, expertsList);
+            // Normalize id fields so downstream code always has item.id
+            const normalized = expertsList.map((e: any) => ({
+                ...e,
+                id: e?.id || e?.expert_id || e?.expertId,
+                user_id: e?.user_id || e?.userId || e?.user?.id
+            }));
+            setExperts(normalized);
+            cacheService.set(CACHE_KEYS.ADMIN_EXPERTS, normalized);
         } catch (error) {
             console.error('Error fetching experts:', error);
             Alert.alert('Error', 'Failed to load experts');
@@ -153,12 +160,12 @@ const ExpertManagementScreen = () => {
                             </View>
                         </View>
                         <Menu
-                            visible={menuVisible === item.id}
+                            visible={menuVisible === (item.id || item.expert_id || item.expertId)}
                             onDismiss={() => setMenuVisible(null)}
                             anchor={
                                 <IconButton
                                     icon="dots-vertical"
-                                    onPress={() => setMenuVisible(item.id)}
+                                    onPress={() => setMenuVisible(item.id || item.expert_id || item.expertId)}
                                 />
                             }
                         >
@@ -232,7 +239,7 @@ const ExpertManagementScreen = () => {
                     return firstName.includes(query) || lastName.includes(query);
                 })}
                 renderItem={renderExpertCard}
-                keyExtractor={(item: any) => item.id || item.user_id || String(Math.random())}
+                keyExtractor={(item: any) => item.id || item.expert_id || item.user_id || String(Math.random())}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={
                     <View style={styles.emptyState}>
