@@ -164,8 +164,8 @@ export const api = {
                 body: JSON.stringify(payload)
             });
         },
-        requestPasswordReset: (email: string) => request<{ message: string }>(`/auth/forgot-password`, { method: 'POST', body: JSON.stringify({ email }) }),
-        resetPassword: (token: string, password: string) => request<{ message: string }>(`/auth/reset-password`, { method: 'POST', body: JSON.stringify({ token, password }) }),
+        requestPasswordReset: (email: string) => request<{ message: string; mockMode?: boolean; resetToken?: string; userNotFound?: boolean }>(`/auth/password-reset/request`, { method: 'POST', body: JSON.stringify({ email }) }),
+        resetPassword: (token: string, password: string) => request<{ message: string }>(`/auth/password-reset/${token}`, { method: 'POST', body: JSON.stringify({ password }) }),
     },
     guidance: {
         crops: () => request<{ crops: any[] }>(`/crops`),

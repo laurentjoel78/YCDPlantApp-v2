@@ -9,6 +9,11 @@ const generateToken = () => {
   return crypto.randomBytes(32).toString('hex');
 };
 
+// Check if mock email is enabled
+const isMockEmailEnabled = () => {
+  return process.env.USE_MOCK_EMAIL === 'true';
+};
+
 // Request password reset
 const requestPasswordReset = async (req, res) => {
   try {
@@ -16,7 +21,14 @@ const requestPasswordReset = async (req, res) => {
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      // For security, don't reveal if email exists
+      // For security, don't reveal if email exists (unless mock mode for testing)
+      if (isMockEmailEnabled()) {
+        return res.json({ 
+          message: 'If your email is registered, you will receive a password reset link',
+          mockMode: true,
+          userNotFound: true
+        });
+      }
       return res.json({ message: 'If your email is registered, you will receive a password reset link' });
     }
 
@@ -29,6 +41,16 @@ const requestPasswordReset = async (req, res) => {
     });
 
     await emailService.sendPasswordResetEmail(user, resetToken);
+
+    // In mock email mode, return the token so the user can reset without real email
+    if (isMockEmailEnabled()) {
+      return res.json({ 
+        message: 'Password reset token generated. In mock mode, use this token to reset your password.',
+        mockMode: true,
+        resetToken: resetToken,
+        expiresIn: '1 hour'
+      });
+    }
 
     res.json({ message: 'If your email is registered, you will receive a password reset link' });
   } catch (error) {

@@ -546,6 +546,84 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
+// Update user info (admin)
+exports.updateUser = asyncHandler(async (req, res) => {
+  const { User } = require('../models');
+
+  if (!req.user.isAdmin) {
+    const error = new Error('Only admins can update users'); error.statusCode = 403; throw error;
+  }
+
+  const { userId } = req.params;
+  const { first_name, last_name, email, phone, role, is_active, is_verified } = req.body;
+
+  // Validate userId
+  if (!userId || userId === 'undefined' || userId === 'null') {
+    const error = new Error('User ID is required'); error.statusCode = 400; throw error;
+  }
+
+  // Validate UUID format
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (!uuidRegex.test(userId)) {
+    const error = new Error('Invalid User ID format'); error.statusCode = 400; throw error;
+  }
+
+  const user = await User.findByPk(userId);
+  if (!user) {
+    const error = new Error('User not found'); error.statusCode = 404; throw error;
+  }
+
+  // Build update object with only provided fields
+  const updateData = {};
+  if (first_name !== undefined) updateData.first_name = first_name;
+  if (last_name !== undefined) updateData.last_name = last_name;
+  if (email !== undefined) {
+    // Check if email is already taken by another user
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser && existingUser.id !== userId) {
+      const error = new Error('Email is already in use'); error.statusCode = 400; throw error;
+    }
+    updateData.email = email;
+  }
+  if (phone !== undefined) updateData.phone = phone;
+  if (role !== undefined) updateData.role = role;
+  if (is_active !== undefined) updateData.is_active = is_active;
+  if (is_verified !== undefined) updateData.is_verified = is_verified;
+
+  await user.update(updateData);
+
+  // Log the action
+  await auditService.logUserAction({
+    userId: req.user.id,
+    userRole: req.user.role,
+    actionType: 'ADMIN_USER_UPDATE',
+    actionDescription: `Admin updated user ${user.email}`,
+    req,
+    tableName: 'users',
+    recordId: userId,
+    metadata: {
+      targetUserId: userId,
+      targetEmail: user.email,
+      updatedFields: Object.keys(updateData)
+    }
+  });
+
+  res.json({
+    success: true,
+    message: 'User updated successfully',
+    data: {
+      id: user.id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone: user.phone,
+      role: user.role,
+      is_active: user.is_active,
+      is_verified: user.is_verified
+    }
+  });
+});
+
 // Activity Monitoring Controllers
 exports.getUserActivityLogs = asyncHandler(async (req, res) => {
   if (!req.user.isAdmin) {
@@ -601,5 +679,70 @@ exports.getActivityStats = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: stats
+  });
+});
+
+// Admin Password Reset - allows admin to reset any user's password
+exports.resetUserPassword = asyncHandler(async (req, res) => {
+  const { User } = require('../models');
+  const bcrypt = require('bcryptjs');
+  const crypto = require('crypto');
+
+  if (!req.user.isAdmin) {
+    const error = new Error('Only admins can reset user passwords'); error.statusCode = 403; throw error;
+  }
+
+  const { userId } = req.params;
+  const { newPassword, generateRandom } = req.body;
+
+  const user = await User.findByPk(userId);
+  if (!user) {
+    const error = new Error('User not found'); error.statusCode = 404; throw error;
+  }
+
+  // Either use provided password or generate a random one
+  let password;
+  if (generateRandom) {
+    // Generate a random 8-character password
+    password = crypto.randomBytes(4).toString('hex');
+  } else if (newPassword) {
+    password = newPassword;
+  } else {
+    const error = new Error('Either newPassword or generateRandom must be provided'); error.statusCode = 400; throw error;
+  }
+
+  // Hash the password
+  const password_hash = await bcrypt.hash(password, 12);
+
+  await user.update({
+    password_hash,
+    password_reset_token: null,
+    password_reset_expires: null
+  });
+
+  // Log the action
+  await auditService.logUserAction({
+    userId: req.user.id,
+    userRole: req.user.role,
+    actionType: 'ADMIN_PASSWORD_RESET',
+    actionDescription: `Admin reset password for user ${user.email}`,
+    req,
+    tableName: 'users',
+    recordId: userId,
+    metadata: {
+      targetUserId: userId,
+      targetEmail: user.email
+    }
+  });
+
+  res.json({
+    success: true,
+    message: 'Password reset successfully',
+    data: {
+      userId: user.id,
+      email: user.email,
+      // Only return the password if it was randomly generated
+      temporaryPassword: generateRandom ? password : undefined
+    }
   });
 });

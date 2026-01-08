@@ -134,6 +134,32 @@ class AdminService {
         });
     }
 
+    // Update user info
+    async updateUser(token: string, userId: string, userData: {
+        first_name?: string;
+        last_name?: string;
+        email?: string;
+        phone?: string;
+        role?: string;
+        is_active?: boolean;
+        is_verified?: boolean;
+    }) {
+        return await request<any>(`/admin/users/${userId}`, {
+            method: 'PUT',
+            headers: { Authorization: `Bearer ${token}` },
+            body: JSON.stringify(userData)
+        });
+    }
+
+    // Reset user password (admin)
+    async resetUserPassword(token: string, userId: string, options: { newPassword?: string; generateRandom?: boolean }) {
+        return await request<{ success: boolean; message: string; data: { userId: string; email: string; temporaryPassword?: string } }>(`/admin/users/${userId}/reset-password`, {
+            method: 'PUT',
+            headers: { Authorization: `Bearer ${token}` },
+            body: JSON.stringify(options)
+        });
+    }
+
     // Delete expert
     async deleteExpert(token: string, expertId: string) {
         return await request<any>(`/admin/experts/${expertId}`, {

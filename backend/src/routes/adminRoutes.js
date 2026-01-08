@@ -13,11 +13,13 @@ router.put('/experts/:expertId/review', adminController.reviewExpertApplication)
 router.delete('/experts/:expertId', adminController.deleteExpert);
 
 
-// User Management (Block/Delete)
+// User Management (Block/Delete/Password Reset/Update)
 router.get('/users', adminController.getAllUsers);
 
+router.put('/users/:userId', adminController.updateUser);
 router.put('/users/:userId/block', adminController.blockUser);
 router.put('/users/:userId/unblock', adminController.unblockUser);
+router.put('/users/:userId/reset-password', adminController.resetUserPassword);
 router.delete('/users/:userId', adminController.deleteUser);
 
 // Activity Monitoring
