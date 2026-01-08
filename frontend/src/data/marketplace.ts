@@ -16,11 +16,14 @@ export interface Product {
 
 export const categories = [
   { id: 'all', name: 'All' },
+  { id: 'grains', name: 'Grains' },
+  { id: 'livestock', name: 'Livestock' },
   { id: 'seeds', name: 'Seeds' },
   { id: 'plants', name: 'Plants' },
   { id: 'tools', name: 'Tools' },
   { id: 'fertilizers', name: 'Fertilizers' },
   { id: 'pesticides', name: 'Pesticides' },
+  { id: 'other', name: 'Other' },
 ] as const;
 
 export const sampleProducts: Product[] = [
