@@ -6,18 +6,31 @@ class EmailService {
   constructor() {
     const apiKey = process.env.RESEND_API_KEY || process.env.EMAIL_PASSWORD;
 
-    if (!apiKey) {
-      console.warn('⚠️ No RESEND_API_KEY set - emails will not be sent');
+    // Check if we should use mock email (no external provider)
+    this.useMockEmail = process.env.USE_MOCK_EMAIL === 'true' || !apiKey;
+
+    if (this.useMockEmail) {
+      console.log('📧 Using mock email service - emails will be logged but not sent');
       this.resend = null;
     } else {
       this.resend = new Resend(apiKey);
       console.log('📧 Resend API configured');
     }
 
-    this.fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
+    this.fromEmail = process.env.EMAIL_FROM || 'noreply@ycd-app.com';
   }
 
   async sendEmail(to, subject, html) {
+    // If using mock email, just log and return success
+    if (this.useMockEmail) {
+      console.log('📧 [MOCK EMAIL]');
+      console.log(`   To: ${to}`);
+      console.log(`   Subject: ${subject}`);
+      console.log(`   Content: ${html.substring(0, 100)}...`);
+      // Return a fake success response
+      return { id: `mock-${Date.now()}`, success: true };
+    }
+
     if (!this.resend) {
       console.warn('Email not sent - Resend not configured');
       return null;

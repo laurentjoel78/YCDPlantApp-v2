@@ -106,8 +106,10 @@ const register = async (req, res) => {
     const verificationToken = crypto.randomBytes(32).toString('hex');
     const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-    // Check if auto-verify is enabled in development
-    const autoVerify = process.env.AUTO_VERIFY_EMAILS === 'true' && process.env.NODE_ENV !== 'production';
+    // Auto-verify emails if:
+    // 1. AUTO_VERIFY_EMAILS is true (development), OR
+    // 2. USE_MOCK_EMAIL is true (no external email provider configured)
+    const autoVerify = process.env.AUTO_VERIFY_EMAILS === 'true' || process.env.USE_MOCK_EMAIL === 'true';
 
     const password_hash = password;
 
