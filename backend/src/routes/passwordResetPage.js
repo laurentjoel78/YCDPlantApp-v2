@@ -8,6 +8,7 @@ console.log('✅ Password reset page route loaded');
 // Serve password reset page
 router.get('/reset-password', async (req, res) => {
   console.log('🔐 Password reset page requested with token:', req.query.token?.substring(0, 10) + '...');
+  res.set('Cache-Control', 'no-store');
   const { token } = req.query;
   
   if (!token) {
@@ -29,8 +30,15 @@ router.get('/reset-password', async (req, res) => {
   res.send(getResetPage(token));
 });
 
+// Stable success page (so refresh/back doesn't show token-expired page)
+router.get('/reset-password/success', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.send(getSuccessPage());
+});
+
 // Handle password reset form submission
 router.post('/reset-password', async (req, res) => {
+  res.set('Cache-Control', 'no-store');
   const { token, password, confirmPassword } = req.body;
 
   if (!token || !password) {
@@ -64,7 +72,8 @@ router.post('/reset-password', async (req, res) => {
       password_reset_expires: null
     });
 
-    res.send(getSuccessPage());
+    // PRG pattern: prevents resubmission on refresh and keeps a stable success URL.
+    res.redirect(303, '/reset-password/success');
   } catch (error) {
     console.error('Password reset error:', error);
     res.send(getErrorPage('An error occurred. Please try again.'));
