@@ -711,11 +711,9 @@ exports.resetUserPassword = asyncHandler(async (req, res) => {
     const error = new Error('Either newPassword or generateRandom must be provided'); error.statusCode = 400; throw error;
   }
 
-  // Hash the password
-  const password_hash = await bcrypt.hash(password, 12);
-
+  // Save the plain password - the User model's beforeSave hook will hash it
   await user.update({
-    password_hash,
+    password_hash: password,
     password_reset_token: null,
     password_reset_expires: null
   });

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models');
-const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
 console.log('✅ Password reset page route loaded');
@@ -58,10 +57,9 @@ router.post('/reset-password', async (req, res) => {
       return res.send(getErrorPage('This reset link has expired or is invalid. Please request a new password reset.'));
     }
 
-    // Hash new password and update
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Save plain password - the User model's beforeSave hook will hash it
     await user.update({ 
-      password: hashedPassword,
+      password_hash: password,
       password_reset_token: null,
       password_reset_expires: null
     });
