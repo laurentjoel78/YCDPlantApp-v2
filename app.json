@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "1325803e-15ee-4493-aebf-527ee1b1a817"
+      }
+    },
+    "android": {
+      "package": "com.laurentjoel.ycd_app"
+    }
+  }
+}
