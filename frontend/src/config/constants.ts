@@ -1,6 +1,6 @@
 // API Configuration
-export const API_BASE_URL = 'https://ycdplantapp-production.up.railway.app/api';
-export const SOCKET_URL = 'https://ycdplantapp-production.up.railway.app';
+export const API_BASE_URL = 'https://zippy-flow-production-62fe.up.railway.app/api';
+export const SOCKET_URL = 'https://zippy-flow-production-62fe.up.railway.app';
 
 // Theme Configuration
 export const DEFAULT_THEME = 'light';
