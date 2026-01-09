@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { User, PasswordReset } = require('../models');
-const bcrypt = require('bcrypt');
+const { User } = require('../models');
+const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
 // Serve password reset page
@@ -12,16 +12,15 @@ router.get('/reset-password', async (req, res) => {
     return res.send(getErrorPage('Invalid or missing reset token.'));
   }
 
-  // Check if token is valid
-  const resetRecord = await PasswordReset.findOne({
+  // Check if token is valid (stored in User model)
+  const user = await User.findOne({
     where: {
-      token,
-      used: false,
-      expires_at: { [Op.gt]: new Date() }
+      password_reset_token: token,
+      password_reset_expires: { [Op.gt]: new Date() }
     }
   });
 
-  if (!resetRecord) {
+  if (!user) {
     return res.send(getErrorPage('This reset link has expired or is invalid. Please request a new password reset from the app.'));
   }
 
@@ -45,29 +44,24 @@ router.post('/reset-password', async (req, res) => {
   }
 
   try {
-    const resetRecord = await PasswordReset.findOne({
+    const user = await User.findOne({
       where: {
-        token,
-        used: false,
-        expires_at: { [Op.gt]: new Date() }
+        password_reset_token: token,
+        password_reset_expires: { [Op.gt]: new Date() }
       }
     });
 
-    if (!resetRecord) {
-      return res.send(getErrorPage('This reset link has expired or is invalid. Please request a new password reset.'));
-    }
-
-    const user = await User.findByPk(resetRecord.user_id);
     if (!user) {
-      return res.send(getErrorPage('User not found.'));
+      return res.send(getErrorPage('This reset link has expired or is invalid. Please request a new password reset.'));
     }
 
     // Hash new password and update
     const hashedPassword = await bcrypt.hash(password, 10);
-    await user.update({ password: hashedPassword });
-
-    // Mark token as used
-    await resetRecord.update({ used: true });
+    await user.update({ 
+      password: hashedPassword,
+      password_reset_token: null,
+      password_reset_expires: null
+    });
 
     res.send(getSuccessPage());
   } catch (error) {
