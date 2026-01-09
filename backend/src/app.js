@@ -18,6 +18,11 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Version check endpoint
+app.get('/version', (req, res) => {
+  res.json({ version: '2.0.1', deployed: new Date().toISOString(), features: ['password-reset-page'] });
+});
+
 // Password reset web page (served at root level, not under /api)
 const passwordResetPage = require('./routes/passwordResetPage');
 app.use('/', passwordResetPage);
