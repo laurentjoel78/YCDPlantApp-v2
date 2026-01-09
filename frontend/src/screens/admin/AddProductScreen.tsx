@@ -23,7 +23,7 @@ const AddProductScreen = () => {
         market_name: ''
     });
 
-    const categories = ['Vegetables', 'Fruits', 'Grains', 'Livestock', 'Dairy', 'Other'];
+    const categories = ['Vegetables', 'Fruits', 'Grains', 'Livestock', 'Dairy', 'Seeds', 'Plants', 'Tools', 'Fertilizers', 'Pesticides', 'Other'];
     const units = ['kg', 'g', 'piece', 'bundle', 'liter', 'ton'];
 
     const pickImage = async () => {
