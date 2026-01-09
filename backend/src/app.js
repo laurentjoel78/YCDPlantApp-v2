@@ -18,6 +18,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Password reset web page (served at root level, not under /api)
+const passwordResetPage = require('./routes/passwordResetPage');
+app.use('/', passwordResetPage);
+
 // Routes
 const routes = require('./routes');
 app.use('/api', routes);

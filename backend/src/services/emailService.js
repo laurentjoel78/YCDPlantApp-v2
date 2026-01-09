@@ -103,7 +103,11 @@ class EmailService {
   }
 
   async sendPasswordResetEmail(user, resetToken) {
-    const resetUrl = `${process.env.FRONTEND_URL || 'https://ycd-app.com'}/reset-password?token=${resetToken}`;
+    // Use backend URL for password reset page (mobile app doesn't have a web frontend)
+    const backendUrl = process.env.BACKEND_URL || process.env.RAILWAY_PUBLIC_DOMAIN 
+      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` 
+      : 'https://zippy-flow-production-62fe.up.railway.app';
+    const resetUrl = `${backendUrl}/reset-password?token=${resetToken}`;
     const html = `
       <!DOCTYPE html>
       <html>
