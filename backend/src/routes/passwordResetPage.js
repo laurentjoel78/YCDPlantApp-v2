@@ -107,8 +107,8 @@ router.post('/reset-password', async (req, res) => {
 
     setRecentResetCookie(req, res);
 
-    // PRG pattern: prevents resubmission on refresh and keeps a stable success URL.
-    res.redirect(303, '/reset-password/success');
+    // Show success page directly with meta refresh as fallback (some browsers don't follow 303 for POST)
+    res.send(getSuccessPage());
   } catch (error) {
     console.error('Password reset error:', error);
     res.send(getErrorPage('An error occurred. Please try again.'));
