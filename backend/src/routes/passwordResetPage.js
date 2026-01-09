@@ -183,17 +183,54 @@ function getSuccessPage() {
         .icon { font-size: 64px; margin-bottom: 20px; }
         h1 { color: #2E7D32; margin-bottom: 15px; }
         p { color: #666; margin-bottom: 20px; line-height: 1.6; }
+        .steps { text-align: left; margin: 18px 0 22px; background: #f7faf7; border: 1px solid #e6f2e6; padding: 14px; border-radius: 12px; }
+        .steps li { margin-left: 18px; color: #2b2b2b; margin-bottom: 8px; }
+        .btn { display: inline-block; width: 100%; padding: 14px 16px; border-radius: 10px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; }
+        .btn-primary { background: #2E7D32; color: #fff; }
+        .btn-primary:hover { background: #256a29; }
+        .btn-secondary { background: transparent; color: #2E7D32; border: 2px solid #2E7D32; margin-top: 10px; }
+        .btn-secondary:hover { background: rgba(46,125,50,0.08); }
+        .hint { display: none; margin-top: 14px; color: #666; font-size: 13px; }
         .footer { margin-top: 30px; color: #999; font-size: 12px; }
       </style>
     </head>
     <body>
       <div class="container">
         <div class="icon">✅</div>
-        <h1>Password Reset Successful!</h1>
-        <p>Your password has been updated successfully.</p>
-        <p>You can now open the <strong>YCD Farmer Guide</strong> app and log in with your new password.</p>
+        <h1>Password Updated</h1>
+        <p>Your password has been changed successfully.</p>
+        <div class="steps">
+          <ol>
+            <li>Return to the <strong>YCD Farmer Guide</strong> app.</li>
+            <li>Log in using your <strong>new</strong> password.</li>
+            <li>If you refresh this page later, the link may show “expired” (that’s normal for security).</li>
+          </ol>
+        </div>
+        <button class="btn btn-primary" type="button" onclick="tryOpenApp()">Open the app</button>
+        <button class="btn btn-secondary" type="button" onclick="closeThisPage()">Close this page</button>
+        <div id="fallbackHint" class="hint">
+          If the app didn’t open automatically, just close this page and open the app manually.
+        </div>
         <p class="footer">© ${new Date().getFullYear()} YCD Farmer Guide</p>
       </div>
+
+      <script>
+        function tryOpenApp() {
+          // This only works if the mobile app is configured for deep linking.
+          // If not, we show a friendly fallback message.
+          var url = 'ycd-farmer-guide://login';
+          try { window.location.href = url; } catch (e) {}
+          setTimeout(function () {
+            var el = document.getElementById('fallbackHint');
+            if (el) el.style.display = 'block';
+          }, 1200);
+        }
+        function closeThisPage() {
+          try { window.close(); } catch (e) {}
+          var el = document.getElementById('fallbackHint');
+          if (el) el.style.display = 'block';
+        }
+      </script>
     </body>
     </html>
   `;
@@ -230,6 +267,7 @@ function getErrorPage(message) {
         .icon { font-size: 64px; margin-bottom: 20px; }
         h1 { color: #c62828; margin-bottom: 15px; }
         p { color: #666; margin-bottom: 20px; line-height: 1.6; }
+        .note { margin-top: 6px; font-size: 13px; color: #777; }
         .footer { margin-top: 30px; color: #999; font-size: 12px; }
       </style>
     </head>
@@ -238,6 +276,7 @@ function getErrorPage(message) {
         <div class="icon">❌</div>
         <h1>Oops!</h1>
         <p>${message}</p>
+        <p class="note">If you already reset your password successfully, you can close this page and log in in the app.</p>
         <p class="footer">© ${new Date().getFullYear()} YCD Farmer Guide</p>
       </div>
     </body>
