@@ -1,0 +1,20 @@
+# Root level exclusions
+node_modules/
+backend/
+.venv/
+.git/
+*.log
+npm-debug.log*
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Frontend exclusions
+frontend/node_modules/
+frontend/.expo/
+frontend/dist/
+frontend/build/
+frontend/web-build/
+frontend/__tests__/
+frontend/coverage/

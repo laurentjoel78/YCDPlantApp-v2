@@ -3,6 +3,7 @@
     "name": "YCD Farmer Guide",
     "slug": "ycd-farmer-guide",
     "version": "1.0.0",
+    "sdkVersion": "54.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -36,7 +37,7 @@
       "favicon": "./assets/icon.png"
     },
     "extra": {
-      "apiUrl": "https://ycdplantapp-production.up.railway.app/api",
+      "apiUrl": "https://zippy-flow-production-62fe.up.railway.app/api",
       "eas": {
         "projectId": "47ae6fd6-45d4-408c-a463-2ce4eec47373"
       }
