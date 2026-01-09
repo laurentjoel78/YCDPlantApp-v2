@@ -5,6 +5,32 @@ const { Op } = require('sequelize');
 
 console.log('✅ Password reset page route loaded');
 
+function parseCookies(req) {
+  const header = req.headers?.cookie;
+  if (!header) return {};
+  return header.split(';').reduce((acc, part) => {
+    const [rawKey, ...rawValueParts] = part.trim().split('=');
+    if (!rawKey) return acc;
+    const rawValue = rawValueParts.join('=');
+    acc[rawKey] = decodeURIComponent(rawValue || '');
+    return acc;
+  }, {});
+}
+
+function hasRecentResetCookie(req) {
+  const cookies = parseCookies(req);
+  return cookies.ycd_reset_success === '1';
+}
+
+function setRecentResetCookie(req, res) {
+  const isHttps = req.secure || req.headers?.['x-forwarded-proto'] === 'https';
+  const secureFlag = isHttps ? '; Secure' : '';
+  res.set(
+    'Set-Cookie',
+    `ycd_reset_success=1; Max-Age=300; Path=/; SameSite=Lax${secureFlag}`
+  );
+}
+
 // Serve password reset page
 router.get('/reset-password', async (req, res) => {
   console.log('🔐 Password reset page requested with token:', req.query.token?.substring(0, 10) + '...');
@@ -24,6 +50,9 @@ router.get('/reset-password', async (req, res) => {
   });
 
   if (!user) {
+    if (hasRecentResetCookie(req)) {
+      return res.redirect(303, '/reset-password/success');
+    }
     return res.send(getErrorPage('This reset link has expired or is invalid. Please request a new password reset from the app.'));
   }
 
@@ -33,6 +62,7 @@ router.get('/reset-password', async (req, res) => {
 // Stable success page (so refresh/back doesn't show token-expired page)
 router.get('/reset-password/success', (req, res) => {
   res.set('Cache-Control', 'no-store');
+  setRecentResetCookie(req, res);
   res.send(getSuccessPage());
 });
 
@@ -62,6 +92,9 @@ router.post('/reset-password', async (req, res) => {
     });
 
     if (!user) {
+      if (hasRecentResetCookie(req)) {
+        return res.redirect(303, '/reset-password/success');
+      }
       return res.send(getErrorPage('This reset link has expired or is invalid. Please request a new password reset.'));
     }
 
@@ -71,6 +104,8 @@ router.post('/reset-password', async (req, res) => {
       password_reset_token: null,
       password_reset_expires: null
     });
+
+    setRecentResetCookie(req, res);
 
     // PRG pattern: prevents resubmission on refresh and keeps a stable success URL.
     res.redirect(303, '/reset-password/success');
