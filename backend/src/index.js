@@ -6,6 +6,7 @@ const http = require('http');
 const db = require('./models');
 const errorHandler = require('./middleware/errorHandler');
 const socketService = require('./services/socketService');
+const { version: appVersion } = require('../package.json');
 
 require('dotenv').config();
 
@@ -28,6 +29,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.get('/version', (req, res) => {
+  res.json({
+    version: appVersion,
+    commit:
+      process.env.RAILWAY_GIT_COMMIT_SHA ||
+      process.env.RAILWAY_GIT_COMMIT ||
+      process.env.GIT_COMMIT_SHA ||
+      null,
+  });
+});
+
+// Password reset web page (served at root level, not under /api)
+const passwordResetPage = require('./routes/passwordResetPage');
+app.use('/', passwordResetPage);
+
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to YCD Farmer Guide API' });
 });
