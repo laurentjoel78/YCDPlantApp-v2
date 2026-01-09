@@ -4,8 +4,11 @@ const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
+console.log('✅ Password reset page route loaded');
+
 // Serve password reset page
 router.get('/reset-password', async (req, res) => {
+  console.log('🔐 Password reset page requested with token:', req.query.token?.substring(0, 10) + '...');
   const { token } = req.query;
   
   if (!token) {
