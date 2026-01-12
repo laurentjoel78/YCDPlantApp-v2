@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const axios = require('axios');
 const { WeatherData, Farm, Notification } = require('../models');
 const { sendNotification } = require('../utils/notificationHelper');
@@ -28,7 +29,7 @@ class WeatherService {
       // No API key - fall back to reasonable defaults for local development
       return { recentRain: 0, tempMax: 30 };
     } catch (err) {
-      console.warn('getWeatherForCoords failed, returning defaults', err && err.message);
+      logger.warn('getWeatherForCoords failed, returning defaults', err && err.message);
       return { recentRain: 0, tempMax: 30 };
     }
   }
@@ -171,7 +172,7 @@ class WeatherService {
 
       return mapped;
     } catch (err) {
-      console.warn('Tomorrow.io fetch failed', err.message);
+      logger.warn('Tomorrow.io fetch failed', err.message);
       throw err;
     }
   }

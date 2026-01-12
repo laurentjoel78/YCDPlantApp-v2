@@ -1,6 +1,7 @@
 const { Expert, User, ExpertReview, Consultation, sequelize } = require('../models');
 const { sendNotification } = require('../utils/notificationHelper');
 const { Op } = require('sequelize');
+const logger = require('../config/logger');
 const auditService = require('./auditService');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -100,7 +101,7 @@ class ExpertService {
       return expert;
     } catch (error) {
       await transaction.rollback();
-      console.error('Error creating expert:', error);
+      logger.error('Error creating expert:', error);
 
       // Handle duplicate email error
       if (error.name === 'SequelizeUniqueConstraintError' && error.fields?.email) {
@@ -134,7 +135,7 @@ class ExpertService {
 
       return applications;
     } catch (error) {
-      console.error('Error getting expert applications:', error);
+      logger.error('Error getting expert applications:', error);
       throw error;
     }
   }
@@ -179,7 +180,7 @@ class ExpertService {
 
       return expert;
     } catch (error) {
-      console.error('Error approving expert:', error);
+      logger.error('Error approving expert:', error);
       throw error;
     }
   }
@@ -222,7 +223,7 @@ class ExpertService {
 
       return expert;
     } catch (error) {
-      console.error('Error getting expert profile:', error);
+      logger.error('Error getting expert profile:', error);
       throw error;
     }
   }
@@ -256,7 +257,7 @@ class ExpertService {
 
       return expert;
     } catch (error) {
-      console.error('Error updating expert profile:', error);
+      logger.error('Error updating expert profile:', error);
       throw error;
     }
   }
@@ -328,7 +329,7 @@ class ExpertService {
 
       return experts;
     } catch (error) {
-      console.error('Error searching experts:', error);
+      logger.error('Error searching experts:', error);
       throw error;
     }
   }
@@ -392,7 +393,7 @@ class ExpertService {
       return review;
     } catch (error) {
       await transaction.rollback();
-      console.error('Error rating expert:', error);
+      logger.error('Error rating expert:', error);
       throw error;
     }
   }
@@ -436,7 +437,7 @@ class ExpertService {
         avgResponseTime: expert.avg_response_time
       };
     } catch (error) {
-      console.error('Error getting expert stats:', error);
+      logger.error('Error getting expert stats:', error);
       throw error;
     }
   }

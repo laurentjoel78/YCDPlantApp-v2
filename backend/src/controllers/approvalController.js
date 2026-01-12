@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const logger = require('../config/logger');
 const emailService = require('../services/emailService');
 const { Op } = require('sequelize');
 const auditService = require('../services/auditService');
@@ -19,7 +20,7 @@ exports.getPendingApprovals = async (req, res) => {
 
     res.json({ users: pendingUsers });
   } catch (error) {
-    console.error('Error fetching pending approvals:', error);
+    logger.error('Error fetching pending approvals:', error);
     res.status(500).json({ error: 'Error fetching pending approvals' });
   }
 };
@@ -89,7 +90,7 @@ exports.updateApprovalStatus = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error updating approval status:', error);
+    logger.error('Error updating approval status:', error);
     res.status(500).json({ error: 'Error updating approval status' });
   }
 };

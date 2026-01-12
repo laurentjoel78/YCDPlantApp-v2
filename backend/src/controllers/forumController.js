@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const forumService = require('../services/forumService');
 const auditService = require('../services/auditService');
 const socketService = require('../services/socketService');
@@ -27,7 +28,7 @@ exports.createTopic = async (req, res) => {
 
     res.status(201).json({ success: true, data: topic });
   } catch (error) {
-    console.error('Error in createTopic:', error);
+    logger.error('Error in createTopic:', error);
     res.status(500).json({ error: 'Failed to create topic' });
   }
 };
@@ -44,7 +45,7 @@ exports.getTopic = async (req, res) => {
 
     res.json({ success: true, data: result });
   } catch (error) {
-    console.error('Error in getTopic:', error);
+    logger.error('Error in getTopic:', error);
     res.status(500).json({ error: 'Failed to retrieve topic' });
   }
 };
@@ -76,7 +77,7 @@ exports.searchTopics = async (req, res) => {
 
     res.json({ success: true, data: result });
   } catch (error) {
-    console.error('Error in searchTopics:', error);
+    logger.error('Error in searchTopics:', error);
     res.status(500).json({ error: 'Failed to search topics' });
   }
 };
@@ -100,7 +101,7 @@ exports.getNearbyTopics = async (req, res) => {
 
     res.json({ success: true, data: result });
   } catch (error) {
-    console.error('Error in getNearbyTopics:', error);
+    logger.error('Error in getNearbyTopics:', error);
     res.status(500).json({ error: 'Failed to retrieve nearby topics' });
   }
 };
@@ -130,7 +131,7 @@ exports.createPost = async (req, res) => {
 
     res.status(201).json({ success: true, data: post });
   } catch (error) {
-    console.error('Error in createPost:', error);
+    logger.error('Error in createPost:', error);
     res.status(500).json({ error: 'Failed to create post' });
   }
 };
@@ -158,7 +159,7 @@ exports.reportContent = async (req, res) => {
 
     res.status(201).json({ success: true, data: moderation });
   } catch (error) {
-    console.error('Error in reportContent:', error);
+    logger.error('Error in reportContent:', error);
     res.status(500).json({ error: 'Failed to report content' });
   }
 };
@@ -187,7 +188,7 @@ exports.moderateContent = async (req, res) => {
 
     res.json({ success: true, data: moderation });
   } catch (error) {
-    console.error('Error in moderateContent:', error);
+    logger.error('Error in moderateContent:', error);
     res.status(500).json({ error: 'Failed to moderate content' });
   }
 };
@@ -216,7 +217,7 @@ exports.joinForum = async (req, res) => {
       message: 'Successfully joined the forum'
     });
   } catch (error) {
-    console.error('Error in joinForum:', error);
+    logger.error('Error in joinForum:', error);
     if (error.message === 'Forum not found') {
       return res.status(404).json({ error: error.message });
     }
@@ -246,7 +247,7 @@ exports.leaveForum = async (req, res) => {
 
     res.json({ success: true, message: result.message });
   } catch (error) {
-    console.error('Error in leaveForum:', error);
+    logger.error('Error in leaveForum:', error);
     if (error.message === 'User is not a member of this forum') {
       return res.status(400).json({ error: error.message });
     }
@@ -260,7 +261,7 @@ exports.getForumMembers = async (req, res) => {
     const members = await forumService.getForumMembers(id);
     res.json({ success: true, data: members });
   } catch (error) {
-    console.error('Error in getForumMembers:', error);
+    logger.error('Error in getForumMembers:', error);
     res.status(500).json({ error: 'Failed to retrieve forum members' });
   }
 };
@@ -271,7 +272,7 @@ exports.syncOffline = async (req, res) => {
     await forumService.syncOfflineChanges(changes);
     res.json({ success: true, message: 'Changes synchronized successfully' });
   } catch (error) {
-    console.error('Error in syncOffline:', error);
+    logger.error('Error in syncOffline:', error);
     res.status(500).json({ error: 'Failed to sync offline changes' });
   }
 };
@@ -283,7 +284,7 @@ exports.getMessages = async (req, res) => {
     const result = await forumService.getMessages(id, parseInt(page), parseInt(limit));
     res.json({ success: true, data: result });
   } catch (error) {
-    console.error('Error in getMessages:', error);
+    logger.error('Error in getMessages:', error);
     res.status(500).json({ error: 'Failed to retrieve messages' });
   }
 };
@@ -316,7 +317,7 @@ exports.sendMessage = async (req, res) => {
 
     res.status(201).json({ success: true, data: message });
   } catch (error) {
-    console.error('Error in sendMessage:', error);
+    logger.error('Error in sendMessage:', error);
     if (error.message === 'You must be a member of this forum to send messages') {
       return res.status(403).json({ error: error.message });
     }
@@ -352,7 +353,7 @@ exports.deleteMessage = async (req, res) => {
 
     res.json({ success: true, message: result.message });
   } catch (error) {
-    console.error('Error in deleteMessage:', error);
+    logger.error('Error in deleteMessage:', error);
     if (error.message === 'Message not found') {
       return res.status(404).json({ error: error.message });
     }

@@ -29,7 +29,7 @@ class TransactionService {
 
       return transaction;
     } catch (error) {
-      console.error('Error initiating transaction:', error);
+      logger.error('Error initiating transaction:', error);
       throw error;
     }
   }
@@ -125,7 +125,7 @@ class TransactionService {
 
       return transaction;
     } catch (error) {
-      console.error('Error processing payment:', error);
+      logger.error('Error processing payment:', error);
       throw error;
     }
   }
@@ -187,7 +187,7 @@ class TransactionService {
 
       return transaction;
     } catch (error) {
-      console.error('Error processing settlement:', error);
+      logger.error('Error processing settlement:', error);
       throw error;
     }
   }
@@ -227,7 +227,7 @@ class TransactionService {
 
       return transaction;
     } catch (error) {
-      console.error('Error getting transaction details:', error);
+      logger.error('Error getting transaction details:', error);
       throw error;
     }
   }
@@ -290,7 +290,7 @@ class TransactionService {
 
       return transaction;
     } catch (error) {
-      console.error('Error processing refund:', error);
+      logger.error('Error processing refund:', error);
       throw error;
     }
   }

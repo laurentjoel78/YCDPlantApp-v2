@@ -6,12 +6,13 @@ let AuditLog, UserActivityLog, SystemLog;
 const getModels = () => {
   if (!AuditLog || !UserActivityLog || !SystemLog) {
     try {
-      const models = require('../models');
+      const logger = require('../config/logger');
+const models = require('../models');
       AuditLog = models.AuditLog;
       UserActivityLog = models.UserActivityLog;
       SystemLog = models.SystemLog;
     } catch (e) {
-      console.warn('LoggingService: Could not load models', e.message);
+      logger.warn('LoggingService: Could not load models', e.message);
     }
   }
   return { AuditLog, UserActivityLog, SystemLog };
@@ -81,7 +82,7 @@ class LoggingService {
 
       return log;
     } catch (error) {
-      console.error('Failed to create audit log:', error);
+      logger.error('Failed to create audit log:', error);
       // Create system log for logging failure
       await this.logSystem({
         logLevel: 'error',
@@ -122,7 +123,7 @@ class LoggingService {
         status
       });
     } catch (error) {
-      console.error('Failed to create user activity log:', error);
+      logger.error('Failed to create user activity log:', error);
       await this.logSystem({
         logLevel: 'error',
         module: 'UserActivity',
@@ -161,9 +162,9 @@ class LoggingService {
         timestamp: new Date()
       });
     } catch (error) {
-      console.error('Failed to create system log:', error);
+      logger.error('Failed to create system log:', error);
       // If system logging fails, log to console as last resort
-      console.error({
+      logger.error({
         timestamp: new Date(),
         logLevel,
         module,

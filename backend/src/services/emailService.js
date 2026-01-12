@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const SibApiV3Sdk = require('@getbrevo/brevo');
 
 let instance = null;
@@ -11,14 +12,14 @@ class EmailService {
     this.useMockEmail = process.env.USE_MOCK_EMAIL === 'true' || !brevoApiKey;
 
     if (this.useMockEmail) {
-      console.log('📧 Using mock email service - emails will be logged but not sent');
+      logger.info('📧 Using mock email service - emails will be logged but not sent');
       this.brevoClient = null;
     } else {
       // Initialize Brevo API client
       this.brevoClient = new SibApiV3Sdk.TransactionalEmailsApi();
       const apiKey = this.brevoClient.authentications['apiKey'];
       apiKey.apiKey = brevoApiKey;
-      console.log('📧 Brevo email service configured');
+      logger.info('📧 Brevo email service configured');
     }
 
     this.fromEmail = process.env.EMAIL_FROM || 'noreply@ycd-app.com';
@@ -28,16 +29,16 @@ class EmailService {
   async sendEmail(to, subject, html) {
     // If using mock email, just log and return success
     if (this.useMockEmail) {
-      console.log('📧 [MOCK EMAIL]');
-      console.log(`   To: ${to}`);
-      console.log(`   Subject: ${subject}`);
-      console.log(`   Content: ${html.substring(0, 100)}...`);
+      logger.info('📧 [MOCK EMAIL]');
+      logger.info(`   To: ${to}`);
+      logger.info(`   Subject: ${subject}`);
+      logger.info(`   Content: ${html.substring(0, 100)}...`);
       // Return a fake success response
       return { id: `mock-${Date.now()}`, success: true };
     }
 
     if (!this.brevoClient) {
-      console.warn('Email not sent - Brevo not configured');
+      logger.warn('Email not sent - Brevo not configured');
       return null;
     }
 
@@ -49,13 +50,13 @@ class EmailService {
       sendSmtpEmail.htmlContent = html;
 
       const result = await this.brevoClient.sendTransacEmail(sendSmtpEmail);
-      console.log('📧 Email sent via Brevo:', result.messageId);
+      logger.info('📧 Email sent via Brevo:', result.messageId);
       return { id: result.messageId, success: true };
     } catch (error) {
-      console.error('❌ Brevo email error:', error.message || error);
+      logger.error('❌ Brevo email error:', error.message || error);
       // Log more details for debugging
       if (error.response) {
-        console.error('   Response:', error.response.text || error.response.body);
+        logger.error('   Response:', error.response.text || error.response.body);
       }
       return null;
     }
@@ -321,7 +322,7 @@ class EmailService {
 
       return this.sendEmail(user.email, `🛒 Order Confirmed - #${order.id.substring(0, 8).toUpperCase()}`, html);
     } catch (error) {
-      console.error('Order email error:', error);
+      logger.error('Order email error:', error);
       return null;
     }
   }

@@ -1,4 +1,5 @@
 const { Farm, GuidanceTemplate, FarmGuideline, WeatherData, FarmCrop, Crop } = require('../models');
+const logger = require('../config/logger');
 const weatherService = require('./weatherService');
 const soilService = require('./soilService');
 const regionCropService = require('./regionCropService');
@@ -68,7 +69,7 @@ class FarmGuidelineService {
       }
     });
 
-    console.log(`farmGuidelineService: found ${templates.length} guidance templates for farm ${farmId}`);
+    logger.info(`farmGuidelineService: found ${templates.length} guidance templates for farm ${farmId}`);
 
     // Filter and adapt templates based on conditions
     const relevantTemplates = templates.filter(template => {
@@ -117,7 +118,7 @@ class FarmGuidelineService {
     // If strict matching returned no templates, attempt a relaxed fallback query to pick useful templates
     if ((!templates || templates.length === 0) || (relevantTemplates.length === 0)) {
       try {
-        console.log('farmGuidelineService: no strict matches, trying relaxed fallback query for farm', farmId);
+        logger.info('farmGuidelineService: no strict matches, trying relaxed fallback query for farm', farmId);
         const relaxed = await GuidanceTemplate.findAll({
           where: {
             [Op.or]: [
@@ -130,18 +131,18 @@ class FarmGuidelineService {
         });
 
         if (relaxed && relaxed.length > 0) {
-          console.log(`farmGuidelineService: relaxed fallback found ${relaxed.length} templates for farm ${farmId}`);
+          logger.info(`farmGuidelineService: relaxed fallback found ${relaxed.length} templates for farm ${farmId}`);
           // prefer relaxed templates as relevantTemplates
           relevantTemplates.splice(0, relevantTemplates.length, ...relaxed);
         }
       } catch (err) {
-        console.warn('farmGuidelineService: relaxed fallback query failed', err && err.message);
+        logger.warn('farmGuidelineService: relaxed fallback query failed', err && err.message);
       }
     }
 
     // Create or update guidelines for the farm (if DB insert works). If DB creation fails or is not allowed,
     // fall back to in-memory formatting from templates to avoid FK errors.
-    console.log('farmGuidelineService: creating guidelines from templates:', relevantTemplates.map(t => ({ id: t.id, title: t.title })));
+    logger.info('farmGuidelineService: creating guidelines from templates:', relevantTemplates.map(t => ({ id: t.id, title: t.title })));
     const guidelines = [];
     for (const template of relevantTemplates) {
       try {
@@ -157,12 +158,12 @@ class FarmGuidelineService {
         });
         if (guideline) guidelines.push(guideline);
       } catch (err) {
-        console.warn('farmGuidelineService: failed to create/find FarmGuideline for template', template && template.id, err && err.message);
+        logger.warn('farmGuidelineService: failed to create/find FarmGuideline for template', template && template.id, err && err.message);
         // don't abort the whole process for one failure; continue with others
       }
     }
 
-    console.log(`farmGuidelineService: created/loaded ${guidelines.length} farmGuideline rows for farm ${farmId}`);
+    logger.info(`farmGuidelineService: created/loaded ${guidelines.length} farmGuideline rows for farm ${farmId}`);
 
     // Enrich guidelines with region/crop specific recommendations if available
     const farmCrops = (farm.crops || []).map(fc => fc.crop && fc.crop.name).filter(Boolean);
@@ -223,8 +224,8 @@ class FarmGuidelineService {
       }
     }
 
-  console.log(`farmGuidelineService: extraRecommendations for farm ${farmId}:`, extraRecommendations);
-  console.log(`farmGuidelineService: formatted guidelines count=${formatted.length} for farm ${farmId}`);
+  logger.info(`farmGuidelineService: extraRecommendations for farm ${farmId}:`, extraRecommendations);
+  logger.info(`farmGuidelineService: formatted guidelines count=${formatted.length} for farm ${farmId}`);
 
     // If no templates matched, return a fallback synthetic guideline that includes any extraRecommendations
     if (!formatted || formatted.length === 0) {
@@ -238,7 +239,7 @@ class FarmGuidelineService {
         recommendations: fallbackRecommendations,
         priority: 'low'
       };
-      console.log('farmGuidelineService: returning fallback guideline for farm', farmId, fallback);
+      logger.info('farmGuidelineService: returning fallback guideline for farm', farmId, fallback);
       return [fallback];
     }
 

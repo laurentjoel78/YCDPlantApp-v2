@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const crypto = require('crypto');
 const { User } = require('../models');
 const { Op } = require('sequelize');
@@ -34,7 +35,7 @@ const sendVerificationEmail = async (req, res) => {
 
     res.json({ message: 'Verification email sent successfully' });
   } catch (error) {
-    console.error('Error sending verification email:', error);
+    logger.error('Error sending verification email:', error);
     res.status(500).json({ error: 'Error sending verification email' });
   }
 };
@@ -59,7 +60,7 @@ const getVerificationToken = async (req, res) => {
 
     res.json({ token: user.email_verification_token });
   } catch (error) {
-    console.error('Error getting verification token:', error);
+    logger.error('Error getting verification token:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -88,7 +89,7 @@ const verifyEmail = async (req, res) => {
 
     res.json({ message: 'Email verified successfully' });
   } catch (error) {
-    console.error('Error verifying email:', error);
+    logger.error('Error verifying email:', error);
     res.status(500).json({ error: 'Error verifying email' });
   }
 };

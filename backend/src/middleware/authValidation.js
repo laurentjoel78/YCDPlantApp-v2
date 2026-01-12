@@ -18,7 +18,7 @@ const createValidationMiddleware = (validations) => {
     }));
 
     // Log validation errors for debugging
-    console.log('Validation failed:', req.path, JSON.stringify(validationErrors, null, 2));
+    logger.info('Validation failed:', req.path, JSON.stringify(validationErrors, null, 2));
 
     return res.status(400).json({
       error: 'Validation error',

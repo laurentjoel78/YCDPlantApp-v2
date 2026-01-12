@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models');
@@ -44,12 +45,12 @@ router.post('/auto-verify', async (req, res) => {
             email_verification_expires: null
         });
 
-        console.log('\n' + '='.repeat(70));
-        console.log('✅ EMAIL VERIFIED VIA DEV ENDPOINT');
-        console.log('   Email:', email);
-        console.log('   User ID:', user.id);
-        console.log('   User can now login!');
-        console.log('='.repeat(70) + '\n');
+        logger.info('\n' + '='.repeat(70));
+        logger.info('✅ EMAIL VERIFIED VIA DEV ENDPOINT');
+        logger.info('   Email:', email);
+        logger.info('   User ID:', user.id);
+        logger.info('   User can now login!');
+        logger.info('='.repeat(70) + '\n');
 
         res.json({
             message: 'Email verified successfully',
@@ -63,7 +64,7 @@ router.post('/auto-verify', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error auto-verifying email:', error);
+        logger.error('Error auto-verifying email:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -102,7 +103,7 @@ router.get('/verification-status/:email', async (req, res) => {
 
         res.json(status);
     } catch (error) {
-        console.error('Error getting verification status:', error);
+        logger.error('Error getting verification status:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -127,17 +128,17 @@ router.post('/verify-all', async (req, res) => {
             }
         );
 
-        console.log('\n' + '='.repeat(70));
-        console.log('✅ BULK EMAIL VERIFICATION COMPLETE');
-        console.log('   Verified users:', result[0]);
-        console.log('='.repeat(70) + '\n');
+        logger.info('\n' + '='.repeat(70));
+        logger.info('✅ BULK EMAIL VERIFICATION COMPLETE');
+        logger.info('   Verified users:', result[0]);
+        logger.info('='.repeat(70) + '\n');
 
         res.json({
             message: 'All users verified successfully',
             count: result[0]
         });
     } catch (error) {
-        console.error('Error verifying all users:', error);
+        logger.error('Error verifying all users:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

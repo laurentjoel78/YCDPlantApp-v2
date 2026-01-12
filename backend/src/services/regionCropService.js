@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const fs = require('fs');
 const path = require('path');
 
@@ -59,7 +60,7 @@ class RegionCropService {
         this._full = [];
       }
     } catch (err) {
-      console.error('Failed to load region crop data:', err.message);
+      logger.error('Failed to load region crop data:', err.message);
       this._summary = [];
       this._full = [];
     }

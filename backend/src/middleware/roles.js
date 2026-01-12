@@ -5,9 +5,9 @@ const getLogger = (req, method) => {
   }
   // Fallback console logger
   return {
-    debug: (...args) => console.log(`[roles.${method}]`, ...args),
-    warn: (...args) => console.warn(`[roles.${method}]`, ...args),
-    error: (...args) => console.error(`[roles.${method}]`, ...args)
+    debug: (...args) => logger.info(`[roles.${method}]`, ...args),
+    warn: (...args) => logger.warn(`[roles.${method}]`, ...args),
+    error: (...args) => logger.error(`[roles.${method}]`, ...args)
   };
 };
 

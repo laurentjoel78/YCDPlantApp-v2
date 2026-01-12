@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const natural = require('natural');
 const imageController = require('../controllers/imageController');
 const diseaseDetectionService = require('../services/diseaseDetectionService');
@@ -80,7 +81,7 @@ class ChatbotHandler {
           };
       }
     } catch (error) {
-      console.error('Chatbot error:', error);
+      logger.error('Chatbot error:', error);
       return {
         type: 'error',
         content: 'Sorry, I encountered an error processing your request.'
@@ -104,7 +105,7 @@ class ChatbotHandler {
         }
       };
     } catch (error) {
-      console.error('Image analysis error:', error);
+      logger.error('Image analysis error:', error);
       return {
         type: 'error',
         content: 'Sorry, I had trouble analyzing that image. Please make sure it\'s a clear picture of the plant.'

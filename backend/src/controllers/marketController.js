@@ -1,6 +1,7 @@
 const { Market, Farm, Product, Sequelize } = require('../models');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
+const logger = require('../config/logger');
 const marketService = require('../services/marketService');
 
 // Helper function to calculate distance between two points using Haversine formula
@@ -566,7 +567,7 @@ exports.getMarketAnalytics = async (req, res) => {
       analytics
     });
   } catch (error) {
-    console.error('Error in getMarketAnalytics:', error);
+    logger.error('Error in getMarketAnalytics:', error);
     res.status(500).json({ error: 'Failed to fetch market analytics' });
   }
 };
@@ -589,7 +590,7 @@ exports.findNearbyMarkets = async (req, res) => {
     });
     return res.status(200).json({ markets });
   } catch (error) {
-    console.error('Error in findNearbyMarkets:', error);
+    logger.error('Error in findNearbyMarkets:', error);
     res.status(500).json({ error: 'Failed to find nearby markets' });
   }
 };
@@ -601,7 +602,7 @@ exports.getMarketProducts = async (req, res) => {
     const products = await marketService.getMarketProducts(marketId, req.query || {});
     res.status(200).json({ products });
   } catch (error) {
-    console.error('Error in getMarketProducts:', error);
+    logger.error('Error in getMarketProducts:', error);
     res.status(500).json({ error: 'Failed to fetch market products' });
   }
 };
@@ -640,7 +641,7 @@ exports.addProduct = async (req, res) => {
     const product = await marketService.addProduct(productData);
     res.status(201).json({ product });
   } catch (error) {
-    console.error('Error in addProduct:', error);
+    logger.error('Error in addProduct:', error);
     res.status(500).json({ error: 'Failed to add product to market' });
   }
 };
@@ -666,7 +667,7 @@ exports.updateProductPrice = async (req, res) => {
 
     res.status(200).json({ product: updated });
   } catch (error) {
-    console.error('Error in updateProductPrice:', error);
+    logger.error('Error in updateProductPrice:', error);
     res.status(500).json({ error: 'Failed to update product price' });
   }
 };
@@ -679,7 +680,7 @@ exports.getPriceHistory = async (req, res) => {
     const history = await marketService.getPriceHistory(productId, startDate, endDate);
     res.status(200).json({ history });
   } catch (error) {
-    console.error('Error in getPriceHistory:', error);
+    logger.error('Error in getPriceHistory:', error);
     res.status(500).json({ error: 'Failed to fetch price history' });
   }
 };
@@ -691,7 +692,7 @@ exports.syncOfflineChanges = async (req, res) => {
     const result = await marketService.syncOfflineChanges(changes);
     res.status(200).json({ ok: result });
   } catch (error) {
-    console.error('Error in syncOfflineChanges:', error);
+    logger.error('Error in syncOfflineChanges:', error);
     res.status(500).json({ error: 'Failed to sync offline changes' });
   }
 };

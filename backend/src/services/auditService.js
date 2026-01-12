@@ -1,4 +1,5 @@
 const { AuditLog, SystemLog, PerformanceLog } = require('../models');
+const logger = require('../config/logger');
 const geoip = require('geoip-lite');
 
 class AuditService {
@@ -50,7 +51,7 @@ class AuditService {
 
       return logEntry;
     } catch (error) {
-      console.error('Error creating audit log:', error);
+      logger.error('Error creating audit log:', error);
       // Don't throw - audit logging should not break main functionality
       return null;
     }
@@ -79,7 +80,7 @@ class AuditService {
 
       return logEntry;
     } catch (error) {
-      console.error('Error creating system log:', error);
+      logger.error('Error creating system log:', error);
       throw error;
     }
   }
@@ -114,7 +115,7 @@ class AuditService {
 
       return logEntry;
     } catch (error) {
-      console.error('Error creating performance log:', error);
+      logger.error('Error creating performance log:', error);
       throw error;
     }
   }
@@ -149,7 +150,7 @@ class AuditService {
 
       return logs;
     } catch (error) {
-      console.error('Error retrieving audit logs:', error);
+      logger.error('Error retrieving audit logs:', error);
       throw error;
     }
   }
@@ -194,7 +195,7 @@ class AuditService {
         timeframe
       };
     } catch (error) {
-      console.error('Error retrieving system metrics:', error);
+      logger.error('Error retrieving system metrics:', error);
       throw error;
     }
   }
@@ -282,7 +283,7 @@ class AuditService {
         cutoffDate
       };
     } catch (error) {
-      console.error('Error cleaning old logs:', error);
+      logger.error('Error cleaning old logs:', error);
       throw error;
     }
   }

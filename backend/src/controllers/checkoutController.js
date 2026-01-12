@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const paymentService = require('../services/paymentService');
 const emailService = require('../services/emailService');
 const db = require('../models');
@@ -143,7 +144,7 @@ exports.checkout = async (req, res) => {
 
             } catch (paymentError) {
                 await transaction.rollback();
-                console.error('[Checkout] Payment initiation failed:', paymentError);
+                logger.error('[Checkout] Payment initiation failed:', paymentError);
                 return res.status(500).json({
                     error: 'Payment initiation failed',
                     details: paymentError.message
@@ -162,7 +163,7 @@ exports.checkout = async (req, res) => {
 
         // Send confirmation email (async)
         emailService.sendOrderConfirmation(req.user, order, cart.items)
-            .catch(err => console.error('Email send failed:', err));
+            .catch(err => logger.error('Email send failed:', err));
 
         // Emit Socket.IO event
         const io = getIO();
@@ -204,7 +205,7 @@ exports.checkout = async (req, res) => {
 
     } catch (error) {
         if (transaction) await transaction.rollback();
-        console.error('Checkout error:', error);
+        logger.error('Checkout error:', error);
 
         // Handle Sequelize Validation Errors gracefully
         if (error.name === 'SequelizeValidationError') {
@@ -282,7 +283,7 @@ exports.verifyPayment = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Payment verification error:', error);
+        logger.error('Payment verification error:', error);
         res.status(500).json({ error: 'Payment verification failed' });
     }
 };
@@ -321,7 +322,7 @@ exports.getOrders = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get orders error:', error);
+        logger.error('Get orders error:', error);
         res.status(500).json({ error: 'Failed to fetch orders' });
     }
 };
@@ -360,7 +361,7 @@ exports.getOrderDetails = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get order details error:', error);
+        logger.error('Get order details error:', error);
         res.status(500).json({ error: 'Failed to fetch order details' });
     }
 };

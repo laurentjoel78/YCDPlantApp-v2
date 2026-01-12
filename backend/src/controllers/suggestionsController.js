@@ -51,7 +51,7 @@ exports.getSuggestions = async (req, res) => {
 
     res.status(200).json(suggestions);
   } catch (err) {
-    console.error('Error in getSuggestions:', err);
+    logger.error('Error in getSuggestions:', err);
     res.status(500).json({ error: 'Failed to generate suggestions' });
   }
 };
@@ -75,9 +75,9 @@ exports.getSuggestionsPublic = async (req, res) => {
 
       if (user && user.farms && user.farms.length > 0) {
         farmId = user.farms[0].id;
-        console.log('Found farm for user:', { userId: user.id, farmId: user.farms[0].id });
+        logger.info('Found farm for user:', { userId: user.id, farmId: user.farms[0].id });
       } else {
-        console.log('No farms found for user:', { userId: user?.id, email: req.query.email });
+        logger.info('No farms found for user:', { userId: user?.id, email: req.query.email });
       }
     }
 
@@ -104,17 +104,18 @@ exports.getSuggestionsPublic = async (req, res) => {
     // If debug query flag is present in non-production, include intermediate debug info
     if (req.query && req.query.debug && process.env.NODE_ENV !== 'production') {
       try {
-        const farmGuidelineService = require('../services/farmGuidelineService');
+        const logger = require('../config/logger');
+const farmGuidelineService = require('../services/farmGuidelineService');
         const debug = await farmGuidelineService.debugForFarm(farmId);
         return res.status(200).json(Object.assign({}, suggestions, { debug }));
       } catch (e) {
-        console.error('Failed to include debug data in public suggestions:', e);
+        logger.error('Failed to include debug data in public suggestions:', e);
       }
     }
 
     res.status(200).json(suggestions);
   } catch (err) {
-    console.error('Error in getSuggestionsPublic:', err);
+    logger.error('Error in getSuggestionsPublic:', err);
     res.status(500).json({ error: 'Failed to generate suggestions' });
   }
 };
@@ -129,7 +130,7 @@ exports.getDebugGuidelines = async (req, res) => {
     const debug = await farmGuidelineService.debugForFarm(farmId);
     res.json(debug);
   } catch (err) {
-    console.error('Error in getDebugGuidelines:', err);
+    logger.error('Error in getDebugGuidelines:', err);
     res.status(500).json({ error: 'Failed to compute debug info' });
   }
 };
@@ -145,7 +146,7 @@ exports.listGuidanceTemplates = async (req, res) => {
     });
     res.json(rows.map(r => r.toJSON()));
   } catch (err) {
-    console.error('Error in listGuidanceTemplates:', err);
+    logger.error('Error in listGuidanceTemplates:', err);
     res.status(500).json({ error: 'Failed to list templates' });
   }
 };

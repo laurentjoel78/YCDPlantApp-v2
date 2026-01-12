@@ -1,9 +1,10 @@
+const logger = require('../config/logger');
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models');
 const { Op } = require('sequelize');
 
-console.log('✅ Password reset page route loaded');
+logger.info('✅ Password reset page route loaded');
 
 function parseCookies(req) {
   const header = req.headers?.cookie;
@@ -33,7 +34,7 @@ function setRecentResetCookie(req, res) {
 
 // Serve password reset page
 router.get('/reset-password', async (req, res) => {
-  console.log('🔐 Password reset page requested with token:', req.query.token?.substring(0, 10) + '...');
+  logger.info('🔐 Password reset page requested with token:', req.query.token?.substring(0, 10) + '...');
   res.set('Cache-Control', 'no-store');
   const { token } = req.query;
   
@@ -110,7 +111,7 @@ router.post('/reset-password', async (req, res) => {
     // Show success page directly with meta refresh as fallback (some browsers don't follow 303 for POST)
     res.send(getSuccessPage());
   } catch (error) {
-    console.error('Password reset error:', error);
+    logger.error('Password reset error:', error);
     res.send(getErrorPage('An error occurred. Please try again.'));
   }
 });

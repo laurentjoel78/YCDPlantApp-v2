@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const auditService = require('../services/auditService');
 const { isValidUUID } = require('../utils/validators');
 
@@ -37,7 +38,7 @@ class AuditController {
 
       res.json(logs);
     } catch (error) {
-      console.error('Error in getAuditLogs:', error);
+      logger.error('Error in getAuditLogs:', error);
       res.status(500).json({ error: 'Failed to retrieve audit logs' });
     }
   }
@@ -56,7 +57,7 @@ class AuditController {
       const metrics = await auditService.getSystemMetrics(timeframe);
       res.json(metrics);
     } catch (error) {
-      console.error('Error in getSystemMetrics:', error);
+      logger.error('Error in getSystemMetrics:', error);
       res.status(500).json({ error: 'Failed to retrieve system metrics' });
     }
   }
@@ -76,7 +77,7 @@ class AuditController {
 
       res.json(logs);
     } catch (error) {
-      console.error('Error in getUserActivity:', error);
+      logger.error('Error in getUserActivity:', error);
       res.status(500).json({ error: 'Failed to retrieve user activity' });
     }
   }
@@ -119,7 +120,7 @@ class AuditController {
         }
       });
     } catch (error) {
-      console.error('Error in getDashboardStats:', error);
+      logger.error('Error in getDashboardStats:', error);
       res.status(500).json({ error: 'Failed to retrieve dashboard statistics' });
     }
   }

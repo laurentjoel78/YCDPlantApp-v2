@@ -576,7 +576,7 @@ exports.getExpertQueries = async (req, res) => {
 
     res.status(200).json({ queries });
   } catch (error) {
-    console.error('Error in getExpertQueries:', error);
+    logger.error('Error in getExpertQueries:', error);
     res.status(500).json({ error: 'Failed to fetch queries' });
   }
 };

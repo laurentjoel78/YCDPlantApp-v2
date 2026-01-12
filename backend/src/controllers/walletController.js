@@ -1,5 +1,6 @@
 const { Wallet, Transaction, User } = require('../models');
 const { ValidationError, Op } = require('sequelize');
+const logger = require('../config/logger');
 const auditService = require('../services/auditService');
 
 // Get wallet balance
@@ -16,7 +17,7 @@ const getBalance = async (req, res) => {
 
         res.json(wallet);
     } catch (error) {
-        console.error('Error getting balance:', error);
+        logger.error('Error getting balance:', error);
         res.status(500).json({ error: 'Error retrieving wallet balance' });
     }
 };
@@ -70,7 +71,7 @@ const deposit = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error processing deposit:', error);
+        logger.error('Error processing deposit:', error);
         res.status(500).json({ error: 'Error processing deposit' });
     }
 };
@@ -128,7 +129,7 @@ const withdraw = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error processing withdrawal:', error);
+        logger.error('Error processing withdrawal:', error);
         res.status(500).json({ error: 'Error processing withdrawal' });
     }
 };
@@ -198,7 +199,7 @@ const transfer = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error processing transfer:', error);
+        logger.error('Error processing transfer:', error);
         res.status(500).json({ error: 'Error processing transfer' });
     }
 };
@@ -235,7 +236,7 @@ const getTransactions = async (req, res) => {
 
         res.json(transactions);
     } catch (error) {
-        console.error('Error getting transactions:', error);
+        logger.error('Error getting transactions:', error);
         res.status(500).json({ error: 'Error retrieving transaction history' });
     }
 };

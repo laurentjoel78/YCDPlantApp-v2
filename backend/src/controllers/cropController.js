@@ -9,7 +9,7 @@ exports.getAllCrops = async (req, res) => {
     });
     res.status(200).json({ crops });
   } catch (error) {
-    console.error('Error in getAllCrops:', error);
+    logger.error('Error in getAllCrops:', error);
     res.status(500).json({ error: 'Failed to fetch crops' });
   }
 };
@@ -27,7 +27,7 @@ exports.getCropById = async (req, res) => {
 
     res.status(200).json({ crop });
   } catch (error) {
-    console.error('Error in getCropById:', error);
+    logger.error('Error in getCropById:', error);
     res.status(500).json({ error: 'Failed to fetch crop' });
   }
 };
@@ -58,7 +58,7 @@ exports.createCrop = async (req, res) => {
     const crop = await Crop.create(cropData);
     res.status(201).json({ crop });
   } catch (error) {
-    console.error('Error in createCrop:', error);
+    logger.error('Error in createCrop:', error);
     res.status(500).json({ error: 'Failed to create crop' });
   }
 };
@@ -97,7 +97,7 @@ exports.updateCrop = async (req, res) => {
     await crop.update(updateData);
     res.status(200).json({ crop });
   } catch (error) {
-    console.error('Error in updateCrop:', error);
+    logger.error('Error in updateCrop:', error);
     res.status(500).json({ error: 'Failed to update crop' });
   }
 };
@@ -132,7 +132,7 @@ exports.deleteCrop = async (req, res) => {
 
     res.status(200).json({ message: 'Crop deleted successfully' });
   } catch (error) {
-    console.error('Error in deleteCrop:', error);
+    logger.error('Error in deleteCrop:', error);
     res.status(500).json({ error: 'Failed to delete crop' });
   }
 };
@@ -148,7 +148,7 @@ exports.getCropsByCategory = async (req, res) => {
     });
     res.status(200).json({ crops });
   } catch (error) {
-    console.error('Error in getCropsByCategory:', error);
+    logger.error('Error in getCropsByCategory:', error);
     res.status(500).json({ error: 'Failed to fetch crops by category' });
   }
 };
@@ -167,7 +167,7 @@ exports.getSeasonalCrops = async (req, res) => {
     });
     res.status(200).json({ crops });
   } catch (error) {
-    console.error('Error in getSeasonalCrops:', error);
+    logger.error('Error in getSeasonalCrops:', error);
     res.status(500).json({ error: 'Failed to fetch seasonal crops' });
   }
 };

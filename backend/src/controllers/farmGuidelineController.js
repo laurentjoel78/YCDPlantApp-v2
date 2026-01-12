@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const logger = require('../config/logger');
 const farmGuidelineService = require('../services/farmGuidelineService');
 
 class FarmGuidelineController {
@@ -21,7 +22,7 @@ class FarmGuidelineController {
         data: guidelines
       });
     } catch (error) {
-      console.error('Error in getGuidelines:', error);
+      logger.error('Error in getGuidelines:', error);
       res.status(500).json({
         error: 'Failed to fetch farm guidelines'
       });
@@ -58,7 +59,7 @@ class FarmGuidelineController {
         data: updatedGuideline
       });
     } catch (error) {
-      console.error('Error in updateGuideline:', error);
+      logger.error('Error in updateGuideline:', error);
       res.status(500).json({
         error: 'Failed to update farm guideline'
       });

@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const consultationService = require('../services/consultationService');
 const { isValidUUID } = require('../utils/validators');
 const auditService = require('../services/auditService');
@@ -50,7 +51,7 @@ class ConsultationController {
 
       res.status(201).json(consultation);
     } catch (error) {
-      console.error('Error in createConsultation:', error);
+      logger.error('Error in createConsultation:', error);
       res.status(500).json({ error: 'Failed to create consultation' });
     }
   }
@@ -80,7 +81,7 @@ class ConsultationController {
       // Validate required fields
       if (!expertId || !problemDescription || !consultationType || !scheduledDate || !paymentMethod || !phoneNumber) {
         await transaction.rollback();
-        console.error('Missing fields:', { expertId, problemDescription, consultationType, scheduledDate, paymentMethod, phoneNumber });
+        logger.error('Missing fields:', { expertId, problemDescription, consultationType, scheduledDate, paymentMethod, phoneNumber });
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
@@ -187,7 +188,7 @@ class ConsultationController {
       let paymentResult;
       if (paymentMethod !== 'cash_on_delivery') {
         try {
-          console.log('[Consultation] Initiating payment...', {
+          logger.info('[Consultation] Initiating payment...', {
             senderId: userId,
             receiverId: expertUser?.id,
             expertUserExists: !!expertUser,
@@ -218,7 +219,7 @@ class ConsultationController {
 
         } catch (paymentError) {
           await transaction.rollback();
-          console.error('[Consultation] Payment initiation failed:', paymentError);
+          logger.error('[Consultation] Payment initiation failed:', paymentError);
           return res.status(500).json({
             error: 'Payment initiation failed',
             details: paymentError.message
@@ -257,7 +258,7 @@ class ConsultationController {
     } catch (error) {
       // Check if transaction is still active before rollback (though library handles it usually)
       try { await transaction.rollback(); } catch (e) { }
-      console.error('Consultation booking error:', error);
+      logger.error('Consultation booking error:', error);
       res.status(500).json({
         error: 'Failed to book consultation',
         details: error.message
@@ -293,7 +294,7 @@ class ConsultationController {
 
       res.json(consultation);
     } catch (error) {
-      console.error('Error in approveConsultation:', error);
+      logger.error('Error in approveConsultation:', error);
       res.status(500).json({ error: 'Failed to approve consultation' });
     }
   }
@@ -326,7 +327,7 @@ class ConsultationController {
 
       res.json(consultation);
     } catch (error) {
-      console.error('Error in acceptConsultation:', error);
+      logger.error('Error in acceptConsultation:', error);
       res.status(500).json({ error: 'Failed to accept consultation' });
     }
   }
@@ -367,7 +368,7 @@ class ConsultationController {
 
       res.json(consultation);
     } catch (error) {
-      console.error('Error in completeConsultation:', error);
+      logger.error('Error in completeConsultation:', error);
       res.status(500).json({ error: 'Failed to complete consultation' });
     }
   }
@@ -384,7 +385,7 @@ class ConsultationController {
 
       res.json(consultations);
     } catch (error) {
-      console.error('Error in getFarmerConsultations:', error);
+      logger.error('Error in getFarmerConsultations:', error);
       res.status(500).json({ error: 'Failed to retrieve consultations' });
     }
   }
@@ -401,7 +402,7 @@ class ConsultationController {
 
       res.json(consultations);
     } catch (error) {
-      console.error('Error in getExpertConsultations:', error);
+      logger.error('Error in getExpertConsultations:', error);
       res.status(500).json({ error: 'Failed to retrieve consultations' });
     }
   }
@@ -414,7 +415,7 @@ class ConsultationController {
 
       res.json(consultations);
     } catch (error) {
-      console.error('Error in getAdminConsultations:', error);
+      logger.error('Error in getAdminConsultations:', error);
       res.status(500).json({ error: 'Failed to retrieve consultations' });
     }
   }
@@ -467,7 +468,7 @@ class ConsultationController {
       });
 
     } catch (error) {
-      console.error('Payment verification error:', error);
+      logger.error('Payment verification error:', error);
       res.status(500).json({ error: 'Payment verification failed' });
     }
   }
@@ -487,7 +488,7 @@ class ConsultationController {
         return res.status(400).json({ error: 'Rating must be 1-5' });
       }
 
-      console.log(`[Rate] Processing rating for ${id}`);
+      logger.info(`[Rate] Processing rating for ${id}`);
 
       // 1. Find the consultation (Simpler query without deep includes)
       const consultation = await Consultation.findOne({
@@ -499,7 +500,7 @@ class ConsultationController {
       });
 
       if (!consultation) {
-        console.error(`[Rate] Consultation not found for ID: ${id}`);
+        logger.error(`[Rate] Consultation not found for ID: ${id}`);
         return res.status(404).json({ error: 'Consultation not found' });
       }
 
@@ -535,10 +536,10 @@ class ConsultationController {
               where: { expertId: consultation.expertId, status: 'completed' }
             })
           });
-          console.log(`[Rate] Updated expert ${expertProfile.id} rating to ${avgRating}`);
+          logger.info(`[Rate] Updated expert ${expertProfile.id} rating to ${avgRating}`);
         }
       } else {
-        console.warn(`[Rate] Expert profile not found for user ${consultation.expertId}`);
+        logger.warn(`[Rate] Expert profile not found for user ${consultation.expertId}`);
       }
 
       res.json({
@@ -548,7 +549,7 @@ class ConsultationController {
       });
 
     } catch (error) {
-      console.error('Rate consultation error:', error);
+      logger.error('Rate consultation error:', error);
       res.status(500).json({ error: 'Failed to rate consultation' });
     }
   }

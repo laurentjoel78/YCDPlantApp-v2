@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 
 const validate = (req, res, next) => {
-  console.log('Validating request body:', {
+  logger.info('Validating request body:', {
     path: req.path,
     method: req.method,
     body: req.body
@@ -15,7 +15,7 @@ const validate = (req, res, next) => {
       value: err.value
     }));
 
-    console.error('Validation failed:', {
+    logger.error('Validation failed:', {
       path: req.path,
       method: req.method,
       errors: validationErrors
@@ -26,7 +26,7 @@ const validate = (req, res, next) => {
       details: validationErrors
     });
   }
-  console.log('Validation passed for:', req.path);
+  logger.info('Validation passed for:', req.path);
   next();
 };
 

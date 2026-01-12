@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const transactionService = require('../services/transactionService');
 const { Order } = require('../models');
 const { validationResult } = require('express-validator');
@@ -42,7 +43,7 @@ exports.initiatePayment = async (req, res) => {
 
     res.status(201).json({ transaction });
   } catch (error) {
-    console.error('Error in initiatePayment:', error);
+    logger.error('Error in initiatePayment:', error);
     res.status(500).json({ error: 'Failed to initiate payment' });
   }
 };
@@ -72,7 +73,7 @@ exports.confirmPayment = async (req, res) => {
 
     res.status(200).json({ transaction });
   } catch (error) {
-    console.error('Error in confirmPayment:', error);
+    logger.error('Error in confirmPayment:', error);
     res.status(500).json({ error: 'Failed to confirm payment' });
   }
 };
@@ -102,7 +103,7 @@ exports.processSettlement = async (req, res) => {
 
     res.status(200).json({ transaction });
   } catch (error) {
-    console.error('Error in processSettlement:', error);
+    logger.error('Error in processSettlement:', error);
     res.status(500).json({ error: 'Failed to process settlement' });
   }
 };
@@ -113,7 +114,7 @@ exports.getTransactionDetails = async (req, res) => {
     const transaction = await transactionService.getTransactionDetails(transactionId, req.user.id);
     res.status(200).json({ transaction });
   } catch (error) {
-    console.error('Error in getTransactionDetails:', error);
+    logger.error('Error in getTransactionDetails:', error);
     res.status(500).json({ error: 'Failed to get transaction details' });
   }
 };
@@ -150,7 +151,7 @@ exports.requestRefund = async (req, res) => {
 
     res.status(200).json({ transaction: refundedTransaction });
   } catch (error) {
-    console.error('Error in requestRefund:', error);
+    logger.error('Error in requestRefund:', error);
     res.status(500).json({ error: 'Failed to process refund request' });
   }
 };

@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
@@ -27,7 +28,7 @@ router.put('/profile', auth, sensitiveLimiter, upload.single('profileImage'), as
     const { updateProfile } = require('../controllers/authController');
     return updateProfile(req, res, next);
   } catch (err) {
-    console.error('Failed to handle /auth/profile route:', err);
+    logger.error('Failed to handle /auth/profile route:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -48,7 +49,7 @@ if (process.env.NODE_ENV !== 'production') {
       });
       res.json({ message: 'Farmer account approved successfully' });
     } catch (error) {
-      console.error('Error approving farmer:', error);
+      logger.error('Error approving farmer:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
@@ -67,7 +68,7 @@ if (process.env.NODE_ENV !== 'production') {
       await user.update({ password_hash: password });
       res.json({ message: 'Password updated successfully' });
     } catch (error) {
-      console.error('Error updating password:', error);
+      logger.error('Error updating password:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });

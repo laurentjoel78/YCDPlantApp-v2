@@ -1,4 +1,5 @@
-﻿const axios = require('axios');
+﻿const logger = require('../config/logger');
+const axios = require('axios');
 const NodeCache = require('node-cache');
 
 const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
@@ -23,7 +24,7 @@ class MarketDiscoveryService {
     async findNearbyMarkets(lat, lng, radiusKm = 50, cropFilter = []) {
         // Check for invalid coordinates
         if (lat === 0 && lng === 0) {
-            console.warn('marketDiscoveryService: received 0,0 coordinates, skipping OSM query');
+            logger.warn('marketDiscoveryService: received 0,0 coordinates, skipping OSM query');
             return await this.fetchFromDatabase(lat, lng, radiusKm);
         }
 
@@ -33,7 +34,7 @@ class MarketDiscoveryService {
             const cachedMarkets = marketCache.get(cacheKey);
 
             if (cachedMarkets) {
-                console.log(`marketDiscoveryService: returning ${cachedMarkets.length} cached markets`);
+                logger.info(`marketDiscoveryService: returning ${cachedMarkets.length} cached markets`);
                 return this.filterByCrops(cachedMarkets, cropFilter);
             }
 
@@ -55,12 +56,12 @@ class MarketDiscoveryService {
             // Cache the results
             marketCache.set(cacheKey, marketsWithDistance);
 
-            console.log(`marketDiscoveryService: found ${marketsWithDistance.length} total markets (${osmMarkets.length} OSM, ${dbMarkets.length} DB)`);
+            logger.info(`marketDiscoveryService: found ${marketsWithDistance.length} total markets (${osmMarkets.length} OSM, ${dbMarkets.length} DB)`);
 
             return this.filterByCrops(marketsWithDistance, cropFilter);
 
         } catch (error) {
-            console.error('marketDiscoveryService: error finding markets:', error.message);
+            logger.error('marketDiscoveryService: error finding markets:', error.message);
             return [];
         }
     }
@@ -89,7 +90,7 @@ class MarketDiscoveryService {
                 out center;
             `;
 
-            console.log(`marketDiscoveryService: querying OSM for markets near ${lat},${lng} (r=${radiusKm}km)`);
+            logger.info(`marketDiscoveryService: querying OSM for markets near ${lat},${lng} (r=${radiusKm}km)`);
 
             const response = await axios.post(OVERPASS_URL, `data=${encodeURIComponent(query)}`, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -137,7 +138,7 @@ class MarketDiscoveryService {
             return markets;
 
         } catch (error) {
-            console.error('marketDiscoveryService: OSM query error:', error.message);
+            logger.error('marketDiscoveryService: OSM query error:', error.message);
             return [];
         }
     }
@@ -193,7 +194,7 @@ class MarketDiscoveryService {
             }));
 
         } catch (error) {
-            console.error('marketDiscoveryService: database query error:', error.message);
+            logger.error('marketDiscoveryService: database query error:', error.message);
             return [];
         }
     }
@@ -317,7 +318,7 @@ class MarketDiscoveryService {
      */
     clearCache() {
         marketCache.flushAll();
-        console.log('marketDiscoveryService: cache cleared');
+        logger.info('marketDiscoveryService: cache cleared');
     }
 }
 

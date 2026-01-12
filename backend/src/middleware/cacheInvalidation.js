@@ -3,6 +3,7 @@
  * Add this to routes that modify user data
  */
 
+const logger = require('../config/logger');
 const socketService = require('../services/socketService');
 
 /**
@@ -11,9 +12,9 @@ const socketService = require('../services/socketService');
 function invalidateUserCache(userId, keys) {
     try {
         socketService.emitToUser(userId, 'CACHE_INVALIDATE', { keys });
-        console.log(`[Cache] Invalidated cache for user ${userId}:`, keys);
+        logger.info(`[Cache] Invalidated cache for user ${userId}:`, keys);
     } catch (error) {
-        console.error('[Cache] Error sending invalidation:', error);
+        logger.error('[Cache] Error sending invalidation:', error);
     }
 }
 

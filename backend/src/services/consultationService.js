@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const Consultation = require('../models/consultation');
 const Expert = require('../models/expert');
 const User = require('../models/User');
@@ -59,7 +60,7 @@ class ConsultationService {
 
       return consultation;
     } catch (error) {
-      console.error('Error creating consultation:', error);
+      logger.error('Error creating consultation:', error);
       throw error;
     }
   }
@@ -90,7 +91,7 @@ class ConsultationService {
 
       return consultation;
     } catch (error) {
-      console.error('Error approving consultation:', error);
+      logger.error('Error approving consultation:', error);
       throw error;
     }
   }
@@ -128,7 +129,7 @@ class ConsultationService {
 
       return consultation;
     } catch (error) {
-      console.error('Error accepting consultation:', error);
+      logger.error('Error accepting consultation:', error);
       throw error;
     }
   }
@@ -174,7 +175,7 @@ class ConsultationService {
 
       return consultation;
     } catch (error) {
-      console.error('Error completing consultation:', error);
+      logger.error('Error completing consultation:', error);
       throw error;
     }
   }
@@ -200,7 +201,7 @@ class ConsultationService {
 
       return consultations;
     } catch (error) {
-      console.error('Error getting farmer consultations:', error);
+      logger.error('Error getting farmer consultations:', error);
       throw error;
     }
   }
@@ -222,7 +223,7 @@ class ConsultationService {
 
       return consultations;
     } catch (error) {
-      console.error('Error getting expert consultations:', error);
+      logger.error('Error getting expert consultations:', error);
       throw error;
     }
   }
@@ -255,7 +256,7 @@ class ConsultationService {
 
       return consultations;
     } catch (error) {
-      console.error('Error getting admin consultations:', error);
+      logger.error('Error getting admin consultations:', error);
       throw error;
     }
   }

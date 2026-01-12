@@ -1,4 +1,5 @@
 const { Farm, Crop, Market, MarketPrice, GuidanceTemplate, FarmGuideline, FarmCrop } = require('../models');
+const logger = require('../config/logger');
 const weatherService = require('./weatherService');
 const farmGuidelineService = require('./farmGuidelineService');
 const regionCropService = require('./regionCropService');
@@ -6,7 +7,7 @@ const marketDiscoveryService = require('./marketDiscoveryService');
 
 async function generateSuggestionsForFarm(farmId, options = {}) {
   const { userRole } = options || {};
-  console.log('generateSuggestionsForFarm called with farmId=', farmId);
+  logger.info('generateSuggestionsForFarm called with farmId=', farmId);
 
   let farm = null;
   const isUuid = typeof farmId === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(farmId);
@@ -108,8 +109,8 @@ async function generateSuggestionsForFarm(farmId, options = {}) {
 
     // Debug: inspect farmGuidelines returned by farmGuidelineService
     try {
-      console.log('suggestionService: farmGuidelines count=', Array.isArray(farmGuidelines) ? farmGuidelines.length : 'not-array');
-      if (Array.isArray(farmGuidelines) && farmGuidelines.length > 0) console.log('suggestionService: sample guideline=', JSON.stringify(farmGuidelines[0]));
+      logger.info('suggestionService: farmGuidelines count=', Array.isArray(farmGuidelines) ? farmGuidelines.length : 'not-array');
+      if (Array.isArray(farmGuidelines) && farmGuidelines.length > 0) logger.info('suggestionService: sample guideline=', JSON.stringify(farmGuidelines[0]));
     } catch (e) { /* ignore logging errors */ }
 
     // Convert guidelines to advisory format (now that vars are available)
@@ -338,13 +339,13 @@ async function generateSuggestionsForFarm(farmId, options = {}) {
             cropNames // Filter by crops the farmer grows
           );
           marketSuggestions = allMarkets.slice(0, 10); // Limit to top 10 closest markets
-          console.log(`suggestionService: found ${marketSuggestions.length} markets for farm`);
+          logger.info(`suggestionService: found ${marketSuggestions.length} markets for farm`);
         } catch (err) {
-          console.warn('suggestionService: failed to discover markets', err.message);
+          logger.warn('suggestionService: failed to discover markets', err.message);
         }
       }
     } catch (err) {
-      console.warn('suggestionService: error in market discovery', err.message);
+      logger.warn('suggestionService: error in market discovery', err.message);
     }
 
     // Note: marketSuggestions already contains formatted markets with distances from the enhanced service
@@ -368,7 +369,7 @@ async function generateSuggestionsForFarm(farmId, options = {}) {
 
     return base;
   } catch (error) {
-    console.error('Error in generateSuggestionsForFarm:', error);
+    logger.error('Error in generateSuggestionsForFarm:', error);
     return { error: error.message };
   }
 }

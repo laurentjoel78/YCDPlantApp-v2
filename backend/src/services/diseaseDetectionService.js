@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const Groq = require('groq-sdk');
 const path = require('path');
 const fs = require('fs').promises;
@@ -7,7 +8,7 @@ class DiseaseDetectionService {
     // Initialize Groq AI (already working for chatbot)
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-      console.warn('GROQ_API_KEY not found in environment variables');
+      logger.warn('GROQ_API_KEY not found in environment variables');
     }
     this.groq = new Groq({ apiKey });
 
@@ -22,7 +23,7 @@ class DiseaseDetectionService {
         const data = await fs.readFile(this.diseasesPath, 'utf8');
         this.diseases = JSON.parse(data);
       } catch (error) {
-        console.warn('Disease database not found, using fallback knowledge');
+        logger.warn('Disease database not found, using fallback knowledge');
         this.diseases = this._getFallbackDiseases();
       }
     }

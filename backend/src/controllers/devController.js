@@ -23,7 +23,7 @@ const getVerificationToken = async (req, res) => {
 
     res.json({ token: user.email_verification_token });
   } catch (error) {
-    console.error('Error getting verification token:', error);
+    logger.error('Error getting verification token:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

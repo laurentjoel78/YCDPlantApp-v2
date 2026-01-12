@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const Groq = require('groq-sdk');
 const { Farm, Crop, FarmCrop, Advisory } = require('../models');
 const weatherService = require('./weatherService');
@@ -7,14 +8,14 @@ class ChatbotService {
     // Initialize Groq AI
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-      console.warn('GROQ_API_KEY not found in environment variables');
+      logger.warn('GROQ_API_KEY not found in environment variables');
     }
     this.groq = new Groq({ apiKey });
   }
 
   async processMessage(userId, message, farmId, language = 'en') {
     try {
-      console.log(`Processing message for user ${userId}, farm ${farmId}`);
+      logger.info(`Processing message for user ${userId}, farm ${farmId}`);
 
       // Get farm context if farmId provided
       let context = '';
@@ -30,7 +31,7 @@ class ChatbotService {
 
       return response;
     } catch (error) {
-      console.error('Chatbot processing failed:', error);
+      logger.error('Chatbot processing failed:', error);
       throw new Error(`Chatbot processing failed: ${error.message}`);
     }
   }
@@ -69,7 +70,7 @@ class ChatbotService {
             farm.location_lng
           );
         } catch (err) {
-          console.warn('Failed to fetch weather:', err.message);
+          logger.warn('Failed to fetch weather:', err.message);
         }
       }
 
@@ -96,7 +97,7 @@ ${advisories.map(a => `- ${a.title}: ${a.detail?.substring(0, 100) || ''}`).join
 
       return context;
     } catch (error) {
-      console.error('Error getting farm context:', error);
+      logger.error('Error getting farm context:', error);
       return '';
     }
   }
@@ -156,7 +157,7 @@ Respond in ${language === 'fr' ? 'French' : 'English'}.`;
         intent: this._detectIntent(userMessage)
       };
     } catch (error) {
-      console.error('Failed to generate response:', error.message);
+      logger.error('Failed to generate response:', error.message);
 
       // Robust Fallback
       const intent = this._detectIntent(userMessage);

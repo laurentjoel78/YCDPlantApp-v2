@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const auditService = require('../services/auditService');
 
 const TRACKED_ACTIONS = {
@@ -79,7 +80,7 @@ async function logActivity(req, res, startTime, responseData) {
             });
         }
     } catch (error) {
-        console.error('Activity tracking error:', error);
+        logger.error('Activity tracking error:', error);
         // Don't fail the request if logging fails
     }
 }

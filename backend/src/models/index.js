@@ -6,17 +6,25 @@ const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
+const logger = require('../config/logger');
 require('dotenv').config();
 
 let sequelize;
 
 // Create Sequelize instance
 try {
+  // Custom logging function for Sequelize
+  const sqlLogger = (msg) => {
+    if (process.env.LOG_SQL === 'true') {
+      logger.database('query', 'sequelize', 0, { query: msg });
+    }
+  };
+
   // Use DATABASE_URL if available (production), otherwise use individual vars
   if (process.env.DATABASE_URL) {
     sequelize = new Sequelize(process.env.DATABASE_URL, {
       dialect: 'postgres',
-      logging: process.env.NODE_ENV === 'development' ? console.log : false,
+      logging: process.env.NODE_ENV === 'development' ? sqlLogger : false,
       dialectOptions: {
         ssl: {
           require: true,
@@ -34,7 +42,7 @@ try {
         underscoredAll: true
       }
     });
-    console.log('Using DATABASE_URL for connection');
+    logger.info('Using DATABASE_URL for connection');
   } else {
     sequelize = new Sequelize(
       process.env.DB_NAME,
@@ -44,7 +52,7 @@ try {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: 'postgres',
-        logging: process.env.NODE_ENV === 'development' ? console.log : false,
+        logging: process.env.NODE_ENV === 'development' ? sqlLogger : false,
         pool: {
           max: 5,
           min: 0,
@@ -57,10 +65,10 @@ try {
         }
       }
     );
-    console.log('Using individual DB_* variables for connection');
+    logger.info('Using individual DB_* variables for connection');
   }
 } catch (error) {
-  console.error('Failed to create Sequelize instance:', error);
+  logger.error('Failed to create Sequelize instance', { error: error.message, stack: error.stack });
   process.exit(1);
 }
 
@@ -80,7 +88,7 @@ const modelFiles = fs.readdirSync(__dirname)
     );
   });
 
-console.log('Loading models:', modelFiles);
+logger.debug('Loading models', { files: modelFiles });
 
 // Import models
 for (const file of modelFiles) {
@@ -92,17 +100,17 @@ for (const file of modelFiles) {
         const loggingModels = modelDef(sequelize);
         Object.keys(loggingModels).forEach(modelName => {
           db[modelName] = loggingModels[modelName];
-          console.log(`Loaded model: ${modelName}`);
+          logger.debug(`Loaded model: ${modelName}`);
         });
       } else {
         const model = modelDef(sequelize);
         if (model) {
           db[model.name] = model;
-          console.log(`Loaded model: ${model.name}`);
+          logger.debug(`Loaded model: ${model.name}`);
         }
       }
     } catch (error) {
-      console.error(`Error loading model ${file}:`, error);
+      logger.error(`Error loading model ${file}`, { error: error.message, stack: error.stack });
       process.exit(1);
     }
   }
@@ -113,7 +121,7 @@ try {
   const defineAssociations = require('./associations');
   defineAssociations(db);
 } catch (error) {
-  console.error('Error setting up associations:', error);
+  logger.error('Error setting up associations', { error: error.message, stack: error.stack });
   process.exit(1);
 }
 

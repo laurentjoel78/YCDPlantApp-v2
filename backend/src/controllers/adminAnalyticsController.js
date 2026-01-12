@@ -112,7 +112,7 @@ exports.getDashboardStats = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error fetching dashboard stats:', error);
+        logger.error('Error fetching dashboard stats:', error);
         res.status(500).json({ error: 'Failed to fetch dashboard statistics' });
     }
 };
@@ -185,7 +185,7 @@ exports.getRecentActivities = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error fetching recent activities:', error);
+        logger.error('Error fetching recent activities:', error);
         res.status(500).json({ error: 'Failed to fetch recent activities' });
     }
 };
@@ -224,7 +224,7 @@ exports.getUserGrowth = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error fetching user growth:', error);
+        logger.error('Error fetching user growth:', error);
         res.status(500).json({ error: 'Failed to fetch user growth data' });
     }
 };
@@ -274,7 +274,7 @@ exports.getSystemHealth = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error fetching system health:', error);
+        logger.error('Error fetching system health:', error);
         res.status(500).json({ error: 'Failed to fetch system health' });
     }
 };

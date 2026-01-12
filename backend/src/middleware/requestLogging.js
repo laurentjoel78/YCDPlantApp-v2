@@ -1,4 +1,5 @@
 const { addContext, logRequest, logResponse } = require('../utils/logger');
+const logger = require('../config/logger');
 const geoip = require('geoip-lite');
 const DeviceDetector = require('node-device-detector');
 const detector = new DeviceDetector();
@@ -12,16 +13,16 @@ const requestLoggingMiddleware = async (req, res, next) => {
     // Add request context to logger
     req.log = {
       error: (msg, meta = {}) => {
-        console.error(msg, { requestId, ...meta });
+        logger.error(msg, { requestId, ...meta });
       },
       info: (msg, meta = {}) => {
-        console.info(msg, { requestId, ...meta });
+        logger.info(msg, { requestId, ...meta });
       },
       warn: (msg, meta = {}) => {
-        console.warn(msg, { requestId, ...meta });
+        logger.warn(msg, { requestId, ...meta });
       },
       debug: (msg, meta = {}) => {
-        console.debug(msg, { requestId, ...meta });
+        logger.debug(msg, { requestId, ...meta });
       }
     };
 

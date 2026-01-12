@@ -43,7 +43,7 @@ exports.getEcommerceActivity = async (req, res) => {
             data: { activities }
         });
     } catch (error) {
-        console.error('Get e-commerce activity error:', error);
+        logger.error('Get e-commerce activity error:', error);
         res.status(500).json({ error: 'Failed to fetch activity logs' });
     }
 };
@@ -108,7 +108,7 @@ exports.getEcommerceMetrics = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Get e-commerce metrics error:', error);
+        logger.error('Get e-commerce metrics error:', error);
         res.status(500).json({ error: 'Failed to fetch metrics' });
     }
 };

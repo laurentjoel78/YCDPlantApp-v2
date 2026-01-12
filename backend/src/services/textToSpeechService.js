@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const fs = require('fs').promises;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
@@ -79,7 +80,7 @@ class TextToSpeechService {
         }
       });
     } catch (error) {
-      console.error('Error checking local language pack:', error);
+      logger.error('Error checking local language pack:', error);
       return null;
     }
   }
@@ -125,7 +126,7 @@ class TextToSpeechService {
         }
       }
     } catch (error) {
-      console.error('Cache cleanup failed:', error);
+      logger.error('Cache cleanup failed:', error);
     }
   }
 }

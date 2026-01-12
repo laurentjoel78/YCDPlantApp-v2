@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const axios = require('axios');
 const models = require('../models');
 const SoilData = models.SoilData; // may be undefined in some deployments
@@ -20,7 +21,7 @@ class SoilService {
 
       return soilData;
     } catch (error) {
-      console.error('Error fetching soil data:', error);
+      logger.error('Error fetching soil data:', error);
       // Return default data if fetch fails
       return this.getDefaultSoilData(lat);
     }
@@ -66,7 +67,7 @@ class SoilService {
       });
     } catch (err) {
       // Don't let caching failures break the caller --- log and continue
-      console.warn('soilService.cacheSoilData: failed to create cache record', err && err.message);
+      logger.warn('soilService.cacheSoilData: failed to create cache record', err && err.message);
       return null;
     }
   }

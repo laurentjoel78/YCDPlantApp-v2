@@ -1,6 +1,7 @@
 const { Order, Product, User } = require('../models');
 const { validationResult } = require('express-validator');
 const { sendNotification } = require('../utils/notificationHelper');
+const logger = require('../config/logger');
 const auditService = require('../services/auditService');
 const socketService = require('../services/socketService');
 
@@ -93,7 +94,7 @@ exports.createOrder = async (req, res) => {
 
     res.status(201).json({ order: orderWithDetails });
   } catch (error) {
-    console.error('Error in createOrder:', error);
+    logger.error('Error in createOrder:', error);
     res.status(500).json({ error: 'Failed to create order' });
   }
 };
@@ -112,7 +113,7 @@ exports.getBuyerOrders = async (req, res) => {
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.error('Error in getBuyerOrders:', error);
+    logger.error('Error in getBuyerOrders:', error);
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 };
@@ -131,7 +132,7 @@ exports.getFarmerOrders = async (req, res) => {
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.error('Error in getFarmerOrders:', error);
+    logger.error('Error in getFarmerOrders:', error);
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 };
@@ -182,7 +183,7 @@ exports.updateOrderStatus = async (req, res) => {
 
     res.status(200).json({ order });
   } catch (error) {
-    console.error('Error in updateOrderStatus:', error);
+    logger.error('Error in updateOrderStatus:', error);
     res.status(500).json({ error: 'Failed to update order status' });
   }
 };
@@ -220,7 +221,7 @@ exports.cancelOrder = async (req, res) => {
 
     res.status(200).json({ message: 'Order cancelled successfully' });
   } catch (error) {
-    console.error('Error in cancelOrder:', error);
+    logger.error('Error in cancelOrder:', error);
     res.status(500).json({ error: 'Failed to cancel order' });
   }
 };
@@ -247,7 +248,7 @@ exports.getOrderDetails = async (req, res) => {
 
     res.status(200).json({ order });
   } catch (error) {
-    console.error('Error in getOrderDetails:', error);
+    logger.error('Error in getOrderDetails:', error);
     res.status(500).json({ error: 'Failed to fetch order details' });
   }
 };

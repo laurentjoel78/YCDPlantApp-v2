@@ -19,37 +19,37 @@ function initialize(server, corsOptions = null) {
     });
 
     io.on('connection', (socket) => {
-        console.log(`Socket connected: ${socket.id}`);
+        logger.info(`Socket connected: ${socket.id}`);
 
         // Handle user authentication/registration
         socket.on('register', (userId) => {
             if (userId) {
                 userSockets.set(userId, socket.id);
                 socket.userId = userId;
-                console.log(`User ${userId} registered with socket ${socket.id}`);
+                logger.info(`User ${userId} registered with socket ${socket.id}`);
             }
         });
 
         // Handle room joins (e.g., for specific forums, orders)
         socket.on('join', (room) => {
             socket.join(room);
-            console.log(`Socket ${socket.id} joined room: ${room}`);
+            logger.info(`Socket ${socket.id} joined room: ${room}`);
         });
 
         socket.on('leave', (room) => {
             socket.leave(room);
-            console.log(`Socket ${socket.id} left room: ${room}`);
+            logger.info(`Socket ${socket.id} left room: ${room}`);
         });
 
         socket.on('disconnect', () => {
             if (socket.userId) {
                 userSockets.delete(socket.userId);
             }
-            console.log(`Socket disconnected: ${socket.id}`);
+            logger.info(`Socket disconnected: ${socket.id}`);
         });
     });
 
-    console.log('Socket.io initialized');
+    logger.info('Socket.io initialized');
     return io;
 }
 

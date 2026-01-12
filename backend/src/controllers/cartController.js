@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const db = require('../models');
 const sequelize = db.sequelize;
 const { Op } = require('sequelize');
@@ -45,7 +46,7 @@ exports.getCart = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Get cart error:', error);
+        logger.error('Get cart error:', error);
         res.status(500).json({ error: 'Failed to retrieve cart' });
     }
 };
@@ -150,7 +151,7 @@ exports.addToCart = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error('Add to cart error:', error);
+        logger.error('Add to cart error:', error);
         res.status(500).json({ error: 'Failed to add item to cart' });
     }
 };
@@ -219,7 +220,7 @@ exports.updateCartItem = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Update cart item error:', error);
+        logger.error('Update cart item error:', error);
         res.status(500).json({ error: 'Failed to update cart item' });
     }
 };
@@ -279,7 +280,7 @@ exports.removeFromCart = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Remove from cart error:', error);
+        logger.error('Remove from cart error:', error);
         res.status(500).json({ error: 'Failed to remove item from cart' });
     }
 };
@@ -317,7 +318,7 @@ exports.clearCart = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Clear cart error:', error);
+        logger.error('Clear cart error:', error);
         res.status(500).json({ error: 'Failed to clear cart' });
     }
 };

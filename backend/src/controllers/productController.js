@@ -2,6 +2,7 @@ const { Product, User, Farm, Crop } = require('../models');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 const { uploadImage, deleteImage } = require('../services/uploadService');
+const logger = require('../config/logger');
 const auditService = require('../services/auditService');
 const socketService = require('../services/socketService');
 
@@ -33,7 +34,7 @@ exports.createProduct = async (req, res) => {
         const uploadResults = await Promise.all(uploadPromises);
         imageUrls = uploadResults.map(result => result.secure_url);
       } catch (uploadError) {
-        console.error('Image upload failed:', uploadError);
+        logger.error('Image upload failed:', uploadError);
         // Continue without images if upload fails
       }
     } else if (req.body.images) {
@@ -74,7 +75,7 @@ exports.createProduct = async (req, res) => {
 
     res.status(201).json({ product });
   } catch (error) {
-    console.error('Error in createProduct:', error);
+    logger.error('Error in createProduct:', error);
     res.status(500).json({ error: 'Failed to create product listing' });
   }
 };
@@ -104,7 +105,7 @@ exports.getProducts = async (req, res) => {
 
     res.status(200).json({ products });
   } catch (error) {
-    console.error('Error in getProducts:', error);
+    logger.error('Error in getProducts:', error);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 };
@@ -123,7 +124,7 @@ exports.getProductById = async (req, res) => {
 
     res.status(200).json({ product });
   } catch (error) {
-    console.error('Error in getProductById:', error);
+    logger.error('Error in getProductById:', error);
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 };
@@ -191,7 +192,7 @@ exports.updateProduct = async (req, res) => {
 
     res.status(200).json({ product });
   } catch (error) {
-    console.error('Error in updateProduct:', error);
+    logger.error('Error in updateProduct:', error);
     res.status(500).json({ error: 'Failed to update product' });
   }
 };
@@ -240,7 +241,7 @@ exports.deleteProduct = async (req, res) => {
 
     res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    console.error('Error in deleteProduct:', error);
+    logger.error('Error in deleteProduct:', error);
     res.status(500).json({ error: 'Failed to delete product' });
   }
 };

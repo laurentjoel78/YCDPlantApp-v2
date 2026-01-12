@@ -1,4 +1,5 @@
 const { SQLite } = require('react-native-sqlite-storage');
+const logger = require('../config/logger');
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const NetInfo = require('@react-native-community/netinfo');
 
@@ -20,7 +21,7 @@ class OfflineDataManager {
 
       await this.createTables();
     } catch (error) {
-      console.error('Failed to initialize offline database:', error);
+      logger.error('Failed to initialize offline database:', error);
     }
   }
 
@@ -92,7 +93,7 @@ class OfflineDataManager {
 
       return true;
     } catch (error) {
-      console.error(`Failed to store offline ${type}:`, error);
+      logger.error(`Failed to store offline ${type}:`, error);
       return false;
     }
   }
@@ -116,7 +117,7 @@ class OfflineDataManager {
 
       return null;
     } catch (error) {
-      console.error(`Failed to get offline ${type}:`, error);
+      logger.error(`Failed to get offline ${type}:`, error);
       return null;
     }
   }
@@ -144,7 +145,7 @@ class OfflineDataManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to add to sync queue:', error);
+      logger.error('Failed to add to sync queue:', error);
       return false;
     }
   }
@@ -192,7 +193,7 @@ class OfflineDataManager {
         }
       }
     } catch (error) {
-      console.error('Failed to process sync queue:', error);
+      logger.error('Failed to process sync queue:', error);
     }
   }
 
@@ -222,7 +223,7 @@ class OfflineDataManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to sync operation:', error);
+      logger.error('Failed to sync operation:', error);
       return false;
     }
   }
@@ -290,7 +291,7 @@ class OfflineDataManager {
 
       await AsyncStorage.setItem('failed_syncs', JSON.stringify(syncs));
     } catch (error) {
-      console.error('Failed to log failed sync:', error);
+      logger.error('Failed to log failed sync:', error);
     }
   }
 
@@ -307,7 +308,7 @@ class OfflineDataManager {
 
       return true;
     } catch (error) {
-      console.error(`Failed to clear synced ${type}:`, error);
+      logger.error(`Failed to clear synced ${type}:`, error);
       return false;
     }
   }

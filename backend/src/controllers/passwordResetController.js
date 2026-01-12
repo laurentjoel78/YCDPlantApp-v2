@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { User } = require('../models');
@@ -54,7 +55,7 @@ const requestPasswordReset = async (req, res) => {
 
     res.json({ message: 'If your email is registered, you will receive a password reset link' });
   } catch (error) {
-    console.error('Error requesting password reset:', error);
+    logger.error('Error requesting password reset:', error);
     res.status(500).json({ error: 'Error requesting password reset' });
   }
 };
@@ -87,7 +88,7 @@ const resetPassword = async (req, res) => {
 
     res.json({ message: 'Password reset successfully' });
   } catch (error) {
-    console.error('Error resetting password:', error);
+    logger.error('Error resetting password:', error);
     res.status(500).json({ error: 'Error resetting password' });
   }
 };

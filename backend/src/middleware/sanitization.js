@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const mongoSanitize = require('express-mongo-sanitize');
 const validator = require('validator');
 
@@ -10,7 +11,7 @@ const validator = require('validator');
 const mongoSanitizer = mongoSanitize({
     replaceWith: '_', // Replace prohibited characters with underscore
     onSanitize: ({ req, key }) => {
-        console.warn(`[SECURITY] Sanitized key in ${req.path}: ${key}`);
+        logger.warn(`[SECURITY] Sanitized key in ${req.path}: ${key}`);
     }
 });
 

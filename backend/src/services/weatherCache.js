@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const Redis = require('redis');
 const { promisify } = require('util');
 
@@ -7,8 +8,8 @@ class WeatherCache {
       url: process.env.REDIS_URL || 'redis://localhost:6379'
     });
 
-    this.client.on('error', (err) => console.error('Redis Client Error:', err));
-    this.client.on('connect', () => console.log('Connected to Redis'));
+    this.client.on('error', (err) => logger.error('Redis Client Error:', err));
+    this.client.on('connect', () => logger.info('Connected to Redis'));
 
     // Promisify Redis commands
     this.get = promisify(this.client.get).bind(this.client);
@@ -22,7 +23,7 @@ class WeatherCache {
       const cachedData = await this.get(cacheKey);
       return cachedData ? JSON.parse(cachedData) : null;
     } catch (error) {
-      console.error('Error getting cached weather:', error);
+      logger.error('Error getting cached weather:', error);
       return null;
     }
   }
@@ -33,7 +34,7 @@ class WeatherCache {
       // Cache for 30 minutes
       await this.set(cacheKey, JSON.stringify(weatherData), 'EX', 1800);
     } catch (error) {
-      console.error('Error caching weather:', error);
+      logger.error('Error caching weather:', error);
     }
   }
 
@@ -43,7 +44,7 @@ class WeatherCache {
       const cachedData = await this.get(cacheKey);
       return cachedData ? JSON.parse(cachedData) : null;
     } catch (error) {
-      console.error('Error getting cached forecast:', error);
+      logger.error('Error getting cached forecast:', error);
       return null;
     }
   }
@@ -54,7 +55,7 @@ class WeatherCache {
       // Cache for 3 hours
       await this.set(cacheKey, JSON.stringify(forecastData), 'EX', 10800);
     } catch (error) {
-      console.error('Error caching forecast:', error);
+      logger.error('Error caching forecast:', error);
     }
   }
 
@@ -64,7 +65,7 @@ class WeatherCache {
       const cachedData = await this.get(cacheKey);
       return cachedData ? JSON.parse(cachedData) : null;
     } catch (error) {
-      console.error('Error getting cached alerts:', error);
+      logger.error('Error getting cached alerts:', error);
       return null;
     }
   }
@@ -75,7 +76,7 @@ class WeatherCache {
       // Cache for 15 minutes
       await this.set(cacheKey, JSON.stringify(alertsData), 'EX', 900);
     } catch (error) {
-      console.error('Error caching alerts:', error);
+      logger.error('Error caching alerts:', error);
     }
   }
 
@@ -88,7 +89,7 @@ class WeatherCache {
       ];
       await Promise.all(keys.map(key => this.del(key)));
     } catch (error) {
-      console.error('Error invalidating cache:', error);
+      logger.error('Error invalidating cache:', error);
     }
   }
 }

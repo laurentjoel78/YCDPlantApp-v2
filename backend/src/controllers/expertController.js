@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const expertService = require('../services/expertService');
 const { isValidUUID } = require('../utils/validators');
 const auditService = require('../services/auditService');
@@ -52,7 +53,7 @@ class ExpertController {
           expert.profile_image = result.secure_url;
           if (expert.user) expert.user.profile_image_url = result.secure_url;
         } catch (uploadError) {
-          console.error('Failed to upload expert profile image:', uploadError);
+          logger.error('Failed to upload expert profile image:', uploadError);
           // Continue execution, don't fail creation just for image
         }
       }
@@ -85,7 +86,7 @@ class ExpertController {
           // Implementing picture was the priority.
 
         } catch (certError) {
-          console.error('Failed to upload certifications:', certError);
+          logger.error('Failed to upload certifications:', certError);
         }
       }
 
@@ -103,7 +104,7 @@ class ExpertController {
 
       res.status(201).json(expert);
     } catch (error) {
-      console.error('Error in createExpert:', error);
+      logger.error('Error in createExpert:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -125,7 +126,7 @@ class ExpertController {
       const experts = await expertService.searchExperts({ limit: 100, offset: 0 });
       res.json(experts.rows || experts);
     } catch (error) {
-      console.error('Error in getAllExperts:', error);
+      logger.error('Error in getAllExperts:', error);
       res.status(500).json({ error: 'Failed to retrieve experts' });
     }
   }
@@ -154,7 +155,7 @@ class ExpertController {
 
       res.json(expert);
     } catch (error) {
-      console.error('Error in approveExpert:', error);
+      logger.error('Error in approveExpert:', error);
       res.status(500).json({ error: 'Failed to approve expert' });
     }
   }
@@ -174,7 +175,7 @@ class ExpertController {
 
       res.json(expert);
     } catch (error) {
-      console.error('Error in getExpertProfile:', error);
+      logger.error('Error in getExpertProfile:', error);
       res.status(500).json({ error: 'Failed to retrieve expert profile' });
     }
   }
@@ -208,7 +209,7 @@ class ExpertController {
 
       res.json(expert);
     } catch (error) {
-      console.error('Error in updateExpertProfile:', error);
+      logger.error('Error in updateExpertProfile:', error);
       res.status(500).json({ error: 'Failed to update expert profile' });
     }
   }
@@ -232,7 +233,7 @@ class ExpertController {
 
       res.json(result.rows || result);
     } catch (error) {
-      console.error('Error in searchExperts:', error);
+      logger.error('Error in searchExperts:', error);
       res.status(500).json({ error: 'Failed to search experts' });
     }
   }
@@ -254,7 +255,7 @@ class ExpertController {
 
       res.json(stats);
     } catch (error) {
-      console.error('Error in getExpertStats:', error);
+      logger.error('Error in getExpertStats:', error);
       res.status(500).json({ error: 'Failed to retrieve expert statistics' });
     }
   }
@@ -284,7 +285,7 @@ class ExpertController {
 
       res.json(reviews);
     } catch (error) {
-      console.error('Error in getExpertReviews:', error);
+      logger.error('Error in getExpertReviews:', error);
       res.status(500).json({ error: 'Failed to retrieve expert reviews' });
     }
   }
@@ -327,7 +328,7 @@ class ExpertController {
 
       res.status(201).json(review);
     } catch (error) {
-      console.error('Error in rateExpert:', error);
+      logger.error('Error in rateExpert:', error);
       if (error.message.includes('already reviewed')) {
         return res.status(409).json({ error: error.message });
       }

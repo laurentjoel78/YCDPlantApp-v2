@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const auditService = require('../services/auditService');
 
 const auditMiddleware = async (req, res, next) => {
@@ -28,7 +29,7 @@ const auditMiddleware = async (req, res, next) => {
       requestSize: JSON.stringify(safeReqBody).length,
       responseSize: JSON.stringify(body).length,
       userId: req.user ? req.user.id : null
-    }).catch(console.error);
+    }).catch(logger.error);
 
     // If it's an error response, log it as a system event
     if (res.statusCode >= 400) {
@@ -42,7 +43,7 @@ const auditMiddleware = async (req, res, next) => {
           requestBody: safeReqBody,
           requestHeaders: req.headers
         }
-      }).catch(console.error);
+      }).catch(logger.error);
     }
 
     // Call original send
@@ -65,7 +66,7 @@ const auditMiddleware = async (req, res, next) => {
       requestSize: JSON.stringify(safeReqBody).length,
       responseSize: JSON.stringify(body).length,
       userId: req.user ? req.user.id : null
-    }).catch(console.error);
+    }).catch(logger.error);
 
     // If it's an error response, log it as a system event
     if (res.statusCode >= 400) {
@@ -79,7 +80,7 @@ const auditMiddleware = async (req, res, next) => {
           requestBody: safeReqBody,
           requestHeaders: req.headers
         }
-      }).catch(console.error);
+      }).catch(logger.error);
     }
 
     // Call original json

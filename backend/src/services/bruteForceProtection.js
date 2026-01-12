@@ -45,7 +45,7 @@ class BruteForceProtection {
                 // Block if max attempts exceeded
                 if (attempt.count >= this.maxAttempts) {
                     attempt.blockedUntil = now + this.blockDurationMs;
-                    console.warn(`[SECURITY] IP ${ip} blocked due to ${attempt.count} failed login attempts`);
+                    logger.warn(`[SECURITY] IP ${ip} blocked due to ${attempt.count} failed login attempts`);
                 }
             }
         }
@@ -70,7 +70,7 @@ class BruteForceProtection {
                     
                     if (attempt.count >= this.maxAttempts) {
                         attempt.blockedUntil = now + this.blockDurationMs;
-                        console.warn(`[SECURITY] User ${userId} blocked due to ${attempt.count} failed login attempts`);
+                        logger.warn(`[SECURITY] User ${userId} blocked due to ${attempt.count} failed login attempts`);
                     }
                 }
             }

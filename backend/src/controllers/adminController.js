@@ -1,3 +1,4 @@
+const logger = require('../config/logger');
 const expertService = require('../services/expertService');
 const { asyncHandler } = require('../utils/asyncHandler');
 // ApiError removed - using standard error handling
@@ -433,7 +434,7 @@ exports.deleteExpert = async (req, res) => {
 
     const expert = await Expert.findByPk(expertId);
     if (!expert) {
-      console.log(`Expert with ID ${expertId} not found during deletion attempt.`);
+      logger.info(`Expert with ID ${expertId} not found during deletion attempt.`);
       return res.status(404).json({ error: 'Expert not found' });
     }
 
@@ -451,7 +452,7 @@ exports.deleteExpert = async (req, res) => {
         recordId: expertId
       });
     } catch (logError) {
-      console.error('Failed to log expert deletion:', logError);
+      logger.error('Failed to log expert deletion:', logError);
       // Continue execution, do not fail the request
     }
 
@@ -460,7 +461,7 @@ exports.deleteExpert = async (req, res) => {
       message: 'Expert profile deleted successfully'
     });
   } catch (error) {
-    console.error('Error in deleteExpert:', error);
+    logger.error('Error in deleteExpert:', error);
     // Ensure we don't send headers twice if we already sent 404
     if (!res.headersSent) {
       return res.status(500).json({ error: 'Failed to delete expert' });
@@ -541,7 +542,7 @@ exports.deleteUser = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error in deleteUser:', error);
+    logger.error('Error in deleteUser:', error);
     res.status(500).json({ error: 'Failed to delete user' });
   }
 };

@@ -8,6 +8,7 @@ const db = require('./models');
 const errorHandler = require('./middleware/errorHandler');
 const socketService = require('./services/socketService');
 const { version: appVersion } = require('../package.json');
+const logger = require('./config/logger');
 
 // Security configurations
 const { corsOptions, socketCorsOptions } = require('./config/corsConfig');
@@ -45,8 +46,8 @@ app.use(xssProtection); // Remove XSS attempts
 // 5. HTTP Parameter Pollution protection
 app.use(hpp());
 
-// 6. Logging
-app.use(morgan('dev'));
+// 6. Logging - Use Winston logger with Morgan
+app.use(morgan('combined', { stream: logger.stream }));
 
 // 7. Rate limiting - Apply to all routes
 app.use('/api/', apiLimiter);
@@ -90,12 +91,12 @@ async function startServer() {
   try {
     // Test database connection
     await db.sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
-    console.log('Environment:', process.env.NODE_ENV);
+    logger.info('Database connection has been established successfully');
+    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
     // DISABLED: Sync causes issues with column naming in production
     // Schema is handled by migrations only
-    console.log('Database sync disabled - using migrations for schema management');
+    logger.info('Database sync disabled - using migrations for schema management');
 
     // Start server and bind to all interfaces
     server.listen(PORT, '0.0.0.0', () => {
@@ -110,14 +111,15 @@ async function startServer() {
         }
         if (localIp !== 'localhost') break;
       }
-      console.log(`Server is running on port ${PORT}`);
-      console.log(`Accessible on LAN at http://${localIp}:${PORT}`);
-      console.log('Socket.io is ready for real-time connections');
+      logger.info(`Server is running on port ${PORT}`);
+      logger.info(`Accessible on LAN at http://${localIp}:${PORT}`);
+      logger.info('Socket.io is ready for real-time connections');
+      logger.info('Security features: CORS, Rate Limiting, Helmet, Input Sanitization, HPP');
     });
 
     return server;
   } catch (error) {
-    console.error('Unable to start server:', error);
+    logger.error('Unable to start server', { error: error.message, stack: error.stack });
     process.exit(1);
   }
 }

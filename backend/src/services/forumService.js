@@ -1,4 +1,5 @@
 const { Op, Sequelize } = require('sequelize');
+const logger = require('../config/logger');
 const sequelize = require('../config/database');
 const { ForumTopic, ForumPost, ForumModeration, ForumMember, ForumMessage, User } = require('../models');
 
@@ -289,7 +290,7 @@ class ForumService {
   }
 
   async syncOfflineChanges(changes) {
-    console.log('Syncing offline changes:', changes);
+    logger.info('Syncing offline changes:', changes);
     return true;
   }
 }

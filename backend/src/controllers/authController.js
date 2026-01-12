@@ -5,6 +5,8 @@ const { User, Wallet, Farm, Crop, FarmCrop } = require('../models');
 const emailService = require('../services/emailService');
 const { uploadImage } = require('../services/uploadService');
 const auditService = require('../services/auditService');
+const logger = require('../config/logger');
+const bruteForceProtection = require('../services/bruteForceProtection');
 const bruteForceProtection = require('../services/bruteForceProtection');
 
 const generateToken = (user) => {
@@ -36,7 +38,7 @@ const logout = async (req, res) => {
       message: 'Successfully logged out'
     });
   } catch (error) {
-    console.error('Logout error:', error);
+    logger.error('Logout error:', error);
     res.status(500).json({
       success: false,
       error: 'Internal server error during logout'
@@ -46,7 +48,7 @@ const logout = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    console.log('Registration request received:', JSON.stringify(req.body, null, 2));
+    logger.info('Registration request received:', JSON.stringify(req.body, null, 2));
 
     const {
       email,
@@ -73,7 +75,7 @@ const register = async (req, res) => {
     const requiredFields = ['email', 'password', 'first_name', 'role'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
     if (missingFields.length > 0) {
-      console.log('Registration failed - Missing required fields:', missingFields);
+      logger.info('Registration failed - Missing required fields:', missingFields);
       return res.status(400).json({
         error: 'Missing required fields',
         missingFields
@@ -85,7 +87,7 @@ const register = async (req, res) => {
       const requiredFarmerFields = ['farm_size_hectares', 'crops_grown', 'farming_experience_years'];
       const missingFarmerFields = requiredFarmerFields.filter(field => !req.body[field]);
       if (missingFarmerFields.length > 0) {
-        console.log('Registration failed - Missing farmer fields:', missingFarmerFields);
+        logger.info('Registration failed - Missing farmer fields:', missingFarmerFields);
         return res.status(400).json({
           error: 'Missing required farmer information',
           missingFields: missingFarmerFields
@@ -98,7 +100,7 @@ const register = async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      console.log('Registration failed - Email already exists:', email);
+      logger.info('Registration failed - Email already exists:', email);
       return res.status(400).json({ error: 'Email already registered' });
     }
 
@@ -250,7 +252,7 @@ const login = async (req, res) => {
     const logger = (req && req.log) ? req.log : console;
     const ip = req.ip || req.connection.remoteAddress;
 
-    console.log(`[LOGIN] Attempting login for email: ${email}`);
+    logger.info(`[LOGIN] Attempting login for email: ${email}`);
 
     const user = await User.findOne({
       where: { email },
@@ -262,45 +264,45 @@ const login = async (req, res) => {
     });
 
     if (!user) {
-      console.log(`[LOGIN] User not found: ${email}`);
+      logger.info(`[LOGIN] User not found: ${email}`);
       bruteForceProtection.recordFailedAttempt(ip);
       return res.status(401).json({ error: 'Invalid credentials - user not found' });
     }
 
-    console.log(`[LOGIN] User found: ${email}, role: ${user.role}, email_verified: ${user.email_verified}, is_active: ${user.is_active}, approval_status: ${user.approval_status}`);
+    logger.info(`[LOGIN] User found: ${email}, role: ${user.role}, email_verified: ${user.email_verified}, is_active: ${user.is_active}, approval_status: ${user.approval_status}`);
 
     // For farmers: Check approval status first
     // Approved farmers can bypass email verification
     if (user.role === 'farmer') {
       if (user.approval_status !== 'approved') {
-        console.log(`[LOGIN] Farmer account pending approval: ${email}`);
+        logger.info(`[LOGIN] Farmer account pending approval: ${email}`);
         return res.status(401).json({ error: 'Account pending approval' });
       }
       // Approved farmers don't need email verification
     } else {
       // Non-farmers still need email verification (except admin)
       if (user.role !== 'admin' && !user.email_verified) {
-        console.log(`[LOGIN] Email not verified: ${email}`);
+        logger.info(`[LOGIN] Email not verified: ${email}`);
         return res.status(401).json({ error: 'Email not verified' });
       }
     }
 
     if (!user.is_active) {
-      console.log(`[LOGIN] Account inactive: ${email}`);
+      logger.info(`[LOGIN] Account inactive: ${email}`);
       return res.status(401).json({ error: 'Account is inactive' });
     }
 
 
     if (!user.password_hash) {
-      console.log(`[LOGIN] No password hash found: ${email}`);
+      logger.info(`[LOGIN] No password hash found: ${email}`);
       return res.status(401).json({ error: 'Invalid credentials - no password set' });
     }
 
     const isValid = await bcrypt.compare(password, user.password_hash);
-    console.log(`[LOGIN] Password validation result for ${email}: ${isValid}`);
+    logger.info(`[LOGIN] Password validation result for ${email}: ${isValid}`);
     
     if (!isValid) {
-      console.log(`[LOGIN] Invalid password for: ${email}`);
+      logger.info(`[LOGIN] Invalid password for: ${email}`);
       // Record failed attempt for brute force protection
       bruteForceProtection.recordFailedAttempt(ip, user.id);
       
@@ -338,7 +340,7 @@ const login = async (req, res) => {
 
     const token = generateToken(user);
 
-    console.log(`[LOGIN] Login successful for: ${email}, role: ${user.role}`);
+    logger.info(`[LOGIN] Login successful for: ${email}, role: ${user.role}`);
 
     res.json({
       message: 'Login successful',
@@ -357,8 +359,8 @@ const login = async (req, res) => {
     });
   } catch (error) {
     const logger = (req && req.log) ? req.log : console;
-    console.error('[LOGIN] Error during login:', error);
-    console.error('[LOGIN] Error stack:', error.stack);
+    logger.error('[LOGIN] Error during login:', error);
+    logger.error('[LOGIN] Error stack:', error.stack);
     logger.error('Login error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Error during login', details: error.message });
   }
@@ -381,7 +383,7 @@ const getCurrentUser = async (req, res) => {
 
     res.json({ user });
   } catch (error) {
-    console.error('Error fetching current user details', error);
+    logger.error('Error fetching current user details', error);
     res.status(500).json({ error: 'Error fetching user details' });
   }
 };
@@ -401,9 +403,9 @@ const updateProfile = async (req, res) => {
 
         const result = await uploadFile(req.file.path, 'ycd_profiles');
         updates.profile_image_url = result.secure_url;
-        await fs.unlink(req.file.path).catch(console.error);
+        await fs.unlink(req.file.path).catch(logger.error);
       } catch (uploadError) {
-        console.error('Error uploading profile image:', uploadError);
+        logger.error('Error uploading profile image:', uploadError);
         return res.status(500).json({ error: 'Failed to upload profile image' });
       }
     }
@@ -442,7 +444,7 @@ const updateProfile = async (req, res) => {
     const safeUser = await User.findByPk(userId, { attributes: { exclude: ['password_hash'] } });
     res.json({ user: safeUser });
   } catch (error) {
-    console.error('Error updating profile', error);
+    logger.error('Error updating profile', error);
     res.status(500).json({ error: 'Error updating profile' });
   }
 };
