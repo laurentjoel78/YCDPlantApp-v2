@@ -2,18 +2,12 @@ const express = require('express');
 const router = express.Router();
 const paymentController = require('../controllers/paymentController');
 const { authenticate } = require('../middleware/auth');
-const { rateLimit } = require('../middleware/rateLimiter');
-
-// Apply rate limiting to prevent abuse
-const paymentLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 30 // limit each IP to 30 payment requests per windowMs
-});
+const { sensitiveLimiter } = require('../middleware/rateLimiter');
 
 // Payment endpoints
 router.post('/initiate',
   authenticate(),
-  paymentLimiter,
+  sensitiveLimiter,
   paymentController.initiatePayment
 );
 

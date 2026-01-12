@@ -2,18 +2,12 @@ const express = require('express');
 const router = express.Router();
 const farmMappingController = require('../controllers/farmMappingController');
 const { authenticate } = require('../middleware/auth');
-const { rateLimit } = require('../middleware/rateLimiter');
-
-// Apply rate limiting to prevent abuse
-const mapLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
+const { apiLimiter } = require('../middleware/rateLimiter');
 
 // Farm management
 router.post('/farms',
   authenticate(),
-  mapLimiter,
+  apiLimiter,
   farmMappingController.createFarm
 );
 
