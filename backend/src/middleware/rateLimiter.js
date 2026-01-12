@@ -1,34 +1,49 @@
-const rateLimit = (options) => {
-    const windowMs = options.windowMs || 15 * 60 * 1000; // Default 15 mins
-    const max = options.max || 100; // Default 100 requests
+const rateLimit = require('express-rate-limit');
 
-    const requests = new Map();
+// General API rate limiter - prevents abuse
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+    standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
+    legacyHeaders: false, // Disable `X-RateLimit-*` headers
+    // Skip rate limiting in development if needed
+    skip: (req) => {
+        return process.env.NODE_ENV === 'development' && process.env.SKIP_RATE_LIMIT === 'true';
+    }
+});
 
-    return (req, res, next) => {
-        const ip = req.ip;
-        const now = Date.now();
+// Strict rate limiter for authentication endpoints - prevents brute force
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Limit each IP to 5 login/register attempts per windowMs
+    message: 'Too many authentication attempts, please try again after 15 minutes',
+    skipSuccessfulRequests: true, // Don't count successful requests
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
-        if (!requests.has(ip)) {
-            requests.set(ip, []);
-        }
+// Medium rate limiter for sensitive operations (password reset, profile updates)
+const sensitiveLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10, // 10 requests per hour
+    message: 'Too many requests for this operation, please try again later',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
-        const timestamps = requests.get(ip);
+// Permissive limiter for read operations
+const readLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200, // Higher limit for read operations
+    message: 'Too many requests, please slow down',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
-        // Filter out old timestamps
-        const validTimestamps = timestamps.filter(time => now - time < windowMs);
-
-        if (validTimestamps.length >= max) {
-            return res.status(429).json({
-                success: false,
-                message: 'Too many requests, please try again later.'
-            });
-        }
-
-        validTimestamps.push(now);
-        requests.set(ip, validTimestamps);
-
-        next();
-    };
+module.exports = {
+    apiLimiter,
+    authLimiter,
+    sensitiveLimiter,
+    readLimiter
 };
-
-module.exports = { rateLimit };

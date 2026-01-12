@@ -6,13 +6,16 @@ const userSockets = new Map(); // Map userId to socket id(s)
 /**
  * Initialize Socket.io with the HTTP server
  * @param {http.Server} server - The HTTP server instance
+ * @param {Object} corsOptions - CORS options for Socket.io (optional)
  */
-function initialize(server) {
+function initialize(server, corsOptions = null) {
+    const defaultCors = {
+        origin: '*',
+        methods: ['GET', 'POST']
+    };
+    
     io = new Server(server, {
-        cors: {
-            origin: '*',
-            methods: ['GET', 'POST']
-        }
+        cors: corsOptions || defaultCors
     });
 
     io.on('connection', (socket) => {

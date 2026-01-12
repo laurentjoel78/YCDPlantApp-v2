@@ -3,30 +3,53 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const http = require('http');
+const hpp = require('hpp');
 const db = require('./models');
 const errorHandler = require('./middleware/errorHandler');
 const socketService = require('./services/socketService');
 const { version: appVersion } = require('../package.json');
+
+// Security configurations
+const { corsOptions, socketCorsOptions } = require('./config/corsConfig');
+const { helmetConfig, additionalHeaders } = require('./config/securityHeaders');
+const { mongoSanitizer, xssProtection } = require('./middleware/sanitization');
+const { apiLimiter } = require('./middleware/rateLimiter');
 
 require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
 
-// Initialize Socket.io
-socketService.initialize(server);
+// Initialize Socket.io with secure CORS
+socketService.initialize(server, socketCorsOptions);
 
-// Middleware
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' || !process.env.NODE_ENV) {
-  app.use(cors({ origin: true, credentials: true }));
-  console.log('CORS: permissive development mode (origin: any)');
-} else {
-  app.use(cors());
-}
-app.use(helmet());
+// Trust proxy - important for rate limiting and IP detection behind Railway/Nginx
+app.set('trust proxy', 1);
+
+// Security Middleware (order matters!)
+// 1. Helmet - Security headers first
+app.use(helmetConfig);
+app.use(additionalHeaders);
+
+// 2. CORS - Control allowed origins
+app.use(cors(corsOptions));
+
+// 3. Request body size limits (prevent DoS)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// 4. Input sanitization - Clean malicious input
+app.use(mongoSanitizer); // Remove MongoDB operators
+app.use(xssProtection); // Remove XSS attempts
+
+// 5. HTTP Parameter Pollution protection
+app.use(hpp());
+
+// 6. Logging
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+// 7. Rate limiting - Apply to all routes
+app.use('/api/', apiLimiter);
 
 // Routes
 app.get('/version', (req, res) => {
@@ -37,6 +60,11 @@ app.get('/version', (req, res) => {
       process.env.RAILWAY_GIT_COMMIT ||
       process.env.GIT_COMMIT_SHA ||
       null,
+    security: {
+      corsEnabled: true,
+      rateLimitEnabled: true,
+      helmetEnabled: true
+    }
   });
 });
 

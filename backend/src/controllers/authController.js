@@ -5,6 +5,7 @@ const { User, Wallet, Farm, Crop, FarmCrop } = require('../models');
 const emailService = require('../services/emailService');
 const { uploadImage } = require('../services/uploadService');
 const auditService = require('../services/auditService');
+const bruteForceProtection = require('../services/bruteForceProtection');
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -247,6 +248,7 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const logger = (req && req.log) ? req.log : console;
+    const ip = req.ip || req.connection.remoteAddress;
 
     console.log(`[LOGIN] Attempting login for email: ${email}`);
 
@@ -261,6 +263,7 @@ const login = async (req, res) => {
 
     if (!user) {
       console.log(`[LOGIN] User not found: ${email}`);
+      bruteForceProtection.recordFailedAttempt(ip);
       return res.status(401).json({ error: 'Invalid credentials - user not found' });
     }
 
@@ -298,6 +301,9 @@ const login = async (req, res) => {
     
     if (!isValid) {
       console.log(`[LOGIN] Invalid password for: ${email}`);
+      // Record failed attempt for brute force protection
+      bruteForceProtection.recordFailedAttempt(ip, user.id);
+      
       // Log failed login attempt
       await auditService.logUserAction({
         userId: user.id,
@@ -307,8 +313,16 @@ const login = async (req, res) => {
         req,
         metadata: { email }
       });
-      return res.status(401).json({ error: 'Invalid credentials' });
+      
+      const remaining = bruteForceProtection.getRemainingAttempts(ip);
+      return res.status(401).json({ 
+        error: 'Invalid credentials',
+        remainingAttempts: remaining > 0 ? remaining : undefined
+      });
     }
+
+    // Successful login - reset brute force tracking
+    bruteForceProtection.resetAttempts(ip, user.id);
 
     await user.update({ last_login: new Date() });
 

@@ -14,12 +14,14 @@ const {
   passwordResetValidation
 } = require('../middleware/authValidation');
 const upload = require('../middleware/imageUpload');
+const { authLimiter, sensitiveLimiter } = require('../middleware/rateLimiter');
+const bruteForceProtection = require('../services/bruteForceProtection');
 
-// Public routes
-router.post('/register', registrationValidation, register);
-router.post('/login', loginValidation, login);
+// Public routes with rate limiting and brute force protection
+router.post('/register', authLimiter, registrationValidation, register);
+router.post('/login', authLimiter, bruteForceProtection.checkBlocked(), loginValidation, login);
 router.post('/logout', auth, logout);
-router.put('/profile', auth, upload.single('profileImage'), async (req, res, next) => {
+router.put('/profile', auth, sensitiveLimiter, upload.single('profileImage'), async (req, res, next) => {
   // Delegate to controller method if available
   try {
     const { updateProfile } = require('../controllers/authController');
