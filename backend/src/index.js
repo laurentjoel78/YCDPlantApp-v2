@@ -89,6 +89,10 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   try {
+    // Log loaded models
+    const modelNames = Object.keys(db).filter(key => key !== 'sequelize' && key !== 'Sequelize');
+    logger.info(`Loaded ${modelNames.length} models:`, modelNames.sort().join(', '));
+
     // Test database connection
     await db.sequelize.authenticate();
     logger.info('Database connection has been established successfully');
