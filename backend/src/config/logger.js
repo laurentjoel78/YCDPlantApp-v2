@@ -90,12 +90,12 @@ const logger = winston.createLogger({
     ]
 });
 
-// Add console transport in development
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston.transports.Console({
-        format: consoleFormat
-    }));
-}
+// Add console transport (Railway/containerized environments need stdout/stderr)
+logger.add(new winston.transports.Console({
+    format: process.env.NODE_ENV === 'production' 
+        ? logFormat  // JSON format for production log aggregation
+        : consoleFormat  // Colorized format for local development
+}));
 
 // Helper methods for common logging patterns
 logger.security = (message, meta = {}) => {
