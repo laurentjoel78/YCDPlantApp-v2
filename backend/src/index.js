@@ -130,7 +130,14 @@ async function startServer() {
 
 // Start server if this file is run directly
 if (require.main === module) {
-  startServer();
+  logger.info('🚀 Starting YCD Farmer Guide Backend...');
+  logger.info(`Node version: ${process.version}`);
+  logger.info(`LOG_LEVEL: ${process.env.LOG_LEVEL || 'info (default)'}`);
+  
+  startServer().catch(err => {
+    logger.error('Fatal error during server startup:', err);
+    process.exit(1);
+  });
 }
 
 module.exports = { app, server, startServer };
