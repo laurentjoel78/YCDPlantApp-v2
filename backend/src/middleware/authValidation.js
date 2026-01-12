@@ -1,4 +1,5 @@
 const { body, param, validationResult } = require('express-validator');
+const logger = require('../config/logger');
 
 // Validation middleware factory
 const createValidationMiddleware = (validations) => {

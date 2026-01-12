@@ -7,7 +7,6 @@ const { uploadImage } = require('../services/uploadService');
 const auditService = require('../services/auditService');
 const logger = require('../config/logger');
 const bruteForceProtection = require('../services/bruteForceProtection');
-const bruteForceProtection = require('../services/bruteForceProtection');
 
 const generateToken = (user) => {
   return jwt.sign(

@@ -3,6 +3,8 @@
  * Tracks failed authentication attempts and temporarily blocks suspicious IPs/users
  */
 
+const logger = require('../config/logger');
+
 class BruteForceProtection {
     constructor() {
         // In-memory storage (use Redis in production for distributed systems)

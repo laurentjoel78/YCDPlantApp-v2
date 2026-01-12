@@ -1,6 +1,13 @@
 const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 const path = require('path');
+const fs = require('fs');
+
+// Create logs directory if it doesn't exist
+const logsDir = path.join(__dirname, '../../logs');
+if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+}
 
 // Define log format
 const logFormat = winston.format.combine(
@@ -16,15 +23,12 @@ const consoleFormat = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
         let msg = `${timestamp} [${level}]: ${message}`;
-        if (Object.keys(meta).length > 0) {
+        if (Object.keys(meta).length > 0 && meta.service !== 'ycd-farmer-guide') {
             msg += ` ${JSON.stringify(meta)}`;
         }
         return msg;
     })
 );
-
-// Create logs directory if it doesn't exist
-const logsDir = path.join(__dirname, '../../logs');
 
 // Daily rotate file transport for all logs
 const allLogsTransport = new DailyRotateFile({

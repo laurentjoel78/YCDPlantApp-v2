@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const logger = require('../config/logger');
 
 const validate = (req, res, next) => {
   logger.info('Validating request body:', {

@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const logger = require('../config/logger');
 
 let io = null;
 const userSockets = new Map(); // Map userId to socket id(s)

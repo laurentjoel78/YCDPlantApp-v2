@@ -1,6 +1,7 @@
 const { Advisory, AdvisoryResponse, User, Farm, Crop, Notification } = require('../models');
 const { validationResult } = require('express-validator');
 const { sendNotification } = require('../utils/notificationHelper');
+const logger = require('../config/logger');
 
 // Submit farmer query to admin (farmer to admin)
 exports.submitFarmerQuery = async (req, res) => {

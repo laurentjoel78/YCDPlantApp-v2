@@ -1,5 +1,6 @@
-const { ActivityLog } = require('../models');
+const { ActivityLog, sequelize } = require('../models');
 const { Op } = require('sequelize');
+const logger = require('../config/logger');
 
 /**
  * Admin endpoint to get all e-commerce transaction activity

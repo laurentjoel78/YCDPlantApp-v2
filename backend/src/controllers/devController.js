@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const logger = require('../config/logger');
 
 // For development testing only - DO NOT USE IN PRODUCTION
 const getVerificationToken = async (req, res) => {

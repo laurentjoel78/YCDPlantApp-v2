@@ -1,3 +1,5 @@
+const logger = require('../config/logger');
+
 // Safe logger helper that handles missing req.log
 const getLogger = (req, method) => {
   if (req.log && typeof req.log.child === 'function') {

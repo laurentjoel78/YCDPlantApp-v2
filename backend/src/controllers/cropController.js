@@ -1,5 +1,6 @@
 const { Crop, FarmCrop } = require('../models');
 const { validationResult } = require('express-validator');
+const logger = require('../config/logger');
 
 // Get all available crops
 exports.getAllCrops = async (req, res) => {

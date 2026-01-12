@@ -1,5 +1,6 @@
 const { Transaction, Order, User } = require('../models');
 const { sendNotification } = require('../utils/notificationHelper');
+const logger = require('../config/logger');
 
 class TransactionService {
   async initiateTransaction(order, paymentMethod) {
