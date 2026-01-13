@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Button, Text, IconButton, TextInput } from 'react-native-paper';
+import { View, StyleSheet, Dimensions, Alert } from 'react-native';
+import { Button, Text, IconButton, TextInput, ActivityIndicator } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import { useTranslation } from 'react-i18next';
 import * as Location from 'expo-location';
@@ -26,6 +26,8 @@ export default function MapPicker({
   const [currentLng, setCurrentLng] = useState(longitude || 12.3547);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [gettingLocation, setGettingLocation] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchLoading, setSearchLoading] = useState(false);
   const webViewRef = useRef<WebView>(null);
 
   const { t } = useTranslation();
@@ -77,6 +79,54 @@ export default function MapPicker({
       setLocationError('Could not get location');
     } finally {
       setGettingLocation(false);
+    }
+  };
+
+  // Search for landmarks to help farmers find their location
+  const searchLandmark = async () => {
+    if (!searchQuery.trim()) return;
+    
+    setSearchLoading(true);
+    try {
+      // Use Nominatim OpenStreetMap search API
+      const query = encodeURIComponent(`${searchQuery.trim()}, Cameroon`);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`,
+        { headers: { 'User-Agent': 'YCD-Farmer-Guide/1.0' } }
+      );
+      
+      const results = await response.json();
+      
+      if (results && results.length > 0) {
+        const result = results[0];
+        const newLat = parseFloat(result.lat);
+        const newLng = parseFloat(result.lon);
+        
+        setCurrentLat(newLat);
+        setCurrentLng(newLng);
+        onLocationSelect(newLat, newLng);
+        
+        // Update map
+        if (webViewRef.current) {
+          webViewRef.current.injectJavaScript(`
+            if (typeof map !== 'undefined' && typeof marker !== 'undefined') {
+              map.setView([${newLat}, ${newLng}], 14);
+              marker.setLatLng([${newLat}, ${newLng}]);
+            }
+            true;
+          `);
+        }
+        
+        Alert.alert('Location Found', `Found: ${result.display_name}`);
+        setSearchQuery(''); // Clear search after successful search
+      } else {
+        Alert.alert('Location Not Found', `Could not find "${searchQuery}". Try searching for a nearby town, village, or landmark in Cameroon.`);
+      }
+    } catch (err) {
+      console.error('Search error:', err);
+      Alert.alert('Search Error', 'Could not search for location. Please check your internet connection.');
+    } finally {
+      setSearchLoading(false);
     }
   };
 
@@ -152,18 +202,53 @@ export default function MapPicker({
       )}
 
       <View style={styles.header}>
-        <Text style={styles.title}>{t('farmer.registration.location')}</Text>
+        <Text style={styles.title}>📍 {t('farmer.registration.location')}</Text>
         <View style={styles.headerButtons}>
           <IconButton
             icon="crosshairs-gps"
-            size={20}
+            size={24}
             onPress={getCurrentLocation}
             disabled={gettingLocation}
+            iconColor={gettingLocation ? '#ccc' : '#2196F3'}
+            style={{ backgroundColor: gettingLocation ? '#f5f5f5' : '#e3f2fd' }}
           />
           <IconButton
             icon={isExpanded ? 'chevron-up' : 'chevron-down'}
             onPress={() => setIsExpanded(!isExpanded)}
+            iconColor="#666"
           />
+        </View>
+      </View>
+
+      {/* Help text for farmers */}
+      <View style={styles.helpContainer}>
+        <Text style={styles.helpText}>
+          💡 Tap the GPS button to use your current location, or tap on the map to select your farm location
+        </Text>
+      </View>
+
+      {/* Landmark Search */}
+      <View style={styles.searchContainer}>
+        <Text style={styles.searchLabel}>🔍 Search for a nearby town or landmark:</Text>
+        <View style={styles.searchRow}>
+          <TextInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="e.g., Douala, Bamenda, Bafoussam..."
+            style={styles.searchInput}
+            mode="outlined"
+            dense
+            onSubmitEditing={searchLandmark}
+          />
+          <Button
+            mode="contained"
+            onPress={searchLandmark}
+            disabled={!searchQuery.trim() || searchLoading}
+            style={styles.searchButton}
+            compact
+          >
+            {searchLoading ? <ActivityIndicator size="small" color="#fff" /> : 'Find'}
+          </Button>
         </View>
       </View>
 
@@ -187,40 +272,46 @@ export default function MapPicker({
       <View style={styles.coordinatesContainer}>
         <Text style={styles.coordinatesLabel}>📍 Selected Location:</Text>
         <Text style={styles.coordinates}>
-          {currentLat.toFixed(6)}, {currentLng.toFixed(6)}
+          {currentLat.toFixed(4)}, {currentLng.toFixed(4)}
+        </Text>
+        <Text style={styles.coordinatesHelper}>
+          Latitude: {currentLat.toFixed(4)} • Longitude: {currentLng.toFixed(4)}
         </Text>
       </View>
 
       {/* Manual coordinate input */}
       <View style={styles.manualInputContainer}>
-        <Text style={styles.manualInputLabel}>Or enter manually:</Text>
+        <Text style={styles.manualInputLabel}>🔧 Advanced: Enter coordinates manually</Text>
+        <Text style={styles.manualInputHelper}>
+          For Cameroon: Latitude (1-13), Longitude (8-17)
+        </Text>
         <View style={styles.inputRow}>
           <TextInput
-            label="Lat"
-            value={currentLat.toString()}
+            label="Latitude"
+            value={currentLat.toFixed(6)}
             onChangeText={(text) => {
               const val = parseFloat(text);
-              if (!isNaN(val)) {
+              if (!isNaN(val) && val >= -90 && val <= 90) {
                 setCurrentLat(val);
                 onLocationSelect(val, currentLng);
               }
             }}
-            keyboardType="numeric"
+            keyboardType="decimal-pad"
             style={styles.input}
             mode="outlined"
             dense
           />
           <TextInput
-            label="Lng"
-            value={currentLng.toString()}
+            label="Longitude"
+            value={currentLng.toFixed(6)}
             onChangeText={(text) => {
               const val = parseFloat(text);
-              if (!isNaN(val)) {
+              if (!isNaN(val) && val >= -180 && val <= 180) {
                 setCurrentLng(val);
                 onLocationSelect(currentLat, val);
               }
             }}
-            keyboardType="numeric"
+            keyboardType="decimal-pad"
             style={styles.input}
             mode="outlined"
             dense
@@ -263,10 +354,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
   },
   mapCollapsed: {
-    height: 200,
+    height: 250, // Increased from 200 for better usability
   },
   mapExpanded: {
-    height: Dimensions.get('window').height * 0.5,
+    height: Dimensions.get('window').height * 0.6, // Increased from 0.5
   },
   coordinatesContainer: {
     padding: 12,
@@ -282,18 +373,66 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   coordinates: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#1B5E20',
-    fontFamily: 'monospace',
+    fontWeight: '600',
+  },
+  coordinatesHelper: {
+    fontSize: 11,
+    color: '#4caf50',
+    marginTop: 2,
+  },
+  helpContainer: {
+    padding: 12,
+    backgroundColor: '#e8f5e9',
+    borderLeftWidth: 4,
+    borderLeftColor: '#4caf50',
+  },
+  helpText: {
+    fontSize: 13,
+    color: '#2e7d32',
+    lineHeight: 18,
+  },
+  searchContainer: {
+    padding: 12,
+    backgroundColor: '#fff3e0',
+    borderLeftWidth: 4,
+    borderLeftColor: '#ff9800',
+  },
+  searchLabel: {
+    fontSize: 13,
+    color: '#e65100',
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  searchRow: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'flex-end',
+  },
+  searchInput: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  searchButton: {
+    height: 40,
+    justifyContent: 'center',
   },
   manualInputContainer: {
     padding: 12,
     backgroundColor: '#fafafa',
   },
   manualInputLabel: {
-    fontSize: 12,
+    fontSize: 13,
+    color: '#333',
+    marginBottom: 4,
+    fontWeight: '500',
+  },
+  manualInputHelper: {
+    fontSize: 11,
     color: '#666',
     marginBottom: 8,
+    fontStyle: 'italic',
   },
   inputRow: {
     flexDirection: 'row',

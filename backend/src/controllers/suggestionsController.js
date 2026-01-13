@@ -1,4 +1,5 @@
 const { generateSuggestionsForFarm } = require('../services/suggestionService');
+const logger = require('../config/logger');
 
 exports.getSuggestions = async (req, res) => {
   try {
@@ -26,12 +27,9 @@ exports.getSuggestions = async (req, res) => {
 
     const userRole = req.user?.role;
     const language = req.headers['accept-language']?.startsWith('fr') ? 'fr' : 'en';
-    let suggestions;
-    try {
-      suggestions = await generateSuggestionsForFarm(farmId, { userRole, language });
-    } catch (error) {
-      // Public endpoint convenience: when there is no farm in the DB, return a demo payload
-      // so the frontend can render during local development/testing.
+    const suggestions = await generateSuggestionsForFarm(farmId, { userRole, language });
+    if (suggestions && suggestions.error) {
+      // In development/testing, return a demo payload if the farm isn't found.
       if (suggestions.error === 'Farm not found') {
         const demo = {
           farm_id: 'demo-farm',
@@ -45,11 +43,10 @@ exports.getSuggestions = async (req, res) => {
         };
         return res.status(200).json(demo);
       }
-
       return res.status(404).json({ error: suggestions.error });
     }
 
-    res.status(200).json(suggestions);
+    return res.status(200).json(suggestions);
   } catch (err) {
     logger.error('Error in getSuggestions:', err);
     res.status(500).json({ error: 'Failed to generate suggestions' });
@@ -104,8 +101,7 @@ exports.getSuggestionsPublic = async (req, res) => {
     // If debug query flag is present in non-production, include intermediate debug info
     if (req.query && req.query.debug && process.env.NODE_ENV !== 'production') {
       try {
-        const logger = require('../config/logger');
-const farmGuidelineService = require('../services/farmGuidelineService');
+        const farmGuidelineService = require('../services/farmGuidelineService');
         const debug = await farmGuidelineService.debugForFarm(farmId);
         return res.status(200).json(Object.assign({}, suggestions, { debug }));
       } catch (e) {
