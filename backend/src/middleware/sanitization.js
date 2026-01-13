@@ -1,5 +1,17 @@
-const logger = require('../config/logger');
 const validator = require('validator');
+
+// Lazy load logger to avoid initialization issues
+const getLogger = () => {
+    try {
+        return require('../config/logger');
+    } catch (error) {
+        return {
+            warn: console.warn,
+            error: console.error,
+            info: console.info
+        };
+    }
+};
 
 /**
  * Custom MongoDB sanitizer that doesn't modify read-only properties
@@ -24,6 +36,7 @@ const customMongoSanitizer = (req, res, next) => {
         
         next();
     } catch (error) {
+        const logger = getLogger();
         logger.error('Error in MongoDB sanitization:', error);
         next(); // Continue even if sanitization fails
     }
@@ -46,6 +59,7 @@ const sanitizeObject = (obj) => {
     for (const [key, value] of Object.entries(obj)) {
         // Remove keys that start with $ or contain . (MongoDB operators)
         if (key.startsWith('$') || key.includes('.')) {
+            const logger = getLogger();
             logger.warn(`[SECURITY] Removed prohibited key: ${key}`);
             sanitized[key.replace(/[$\.]/g, '_')] = sanitizeObject(value);
         } else {
