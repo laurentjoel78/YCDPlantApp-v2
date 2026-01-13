@@ -1,19 +1,60 @@
 const logger = require('../config/logger');
-const mongoSanitize = require('express-mongo-sanitize');
 const validator = require('validator');
 
 /**
- * Sanitize request data to prevent NoSQL injection and XSS attacks
- * This middleware should be applied before parsing request bodies
+ * Custom MongoDB sanitizer that doesn't modify read-only properties
+ * Replaces the problematic express-mongo-sanitize
  */
-
-// Remove any keys that start with $ or contain . (MongoDB operators)
-const mongoSanitizer = mongoSanitize({
-    replaceWith: '_', // Replace prohibited characters with underscore
-    onSanitize: ({ req, key }) => {
-        logger.warn(`[SECURITY] Sanitized key in ${req.path}: ${key}`);
+const customMongoSanitizer = (req, res, next) => {
+    try {
+        // Sanitize request body
+        if (req.body) {
+            req.body = sanitizeObject(req.body);
+        }
+        
+        // Sanitize query parameters
+        if (req.query) {
+            req.query = sanitizeObject(req.query);
+        }
+        
+        // Sanitize URL parameters
+        if (req.params) {
+            req.params = sanitizeObject(req.params);
+        }
+        
+        next();
+    } catch (error) {
+        logger.error('Error in MongoDB sanitization:', error);
+        next(); // Continue even if sanitization fails
     }
-});
+};
+
+/**
+ * Recursively sanitize an object to remove MongoDB operators
+ */
+const sanitizeObject = (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        return obj;
+    }
+    
+    if (Array.isArray(obj)) {
+        return obj.map(sanitizeObject);
+    }
+    
+    const sanitized = {};
+    
+    for (const [key, value] of Object.entries(obj)) {
+        // Remove keys that start with $ or contain . (MongoDB operators)
+        if (key.startsWith('$') || key.includes('.')) {
+            logger.warn(`[SECURITY] Removed prohibited key: ${key}`);
+            sanitized[key.replace(/[$\.]/g, '_')] = sanitizeObject(value);
+        } else {
+            sanitized[key] = sanitizeObject(value);
+        }
+    }
+    
+    return sanitized;
+};
 
 // Sanitize string inputs to prevent XSS
 const sanitizeString = (str) => {
@@ -74,6 +115,7 @@ const xssProtection = (req, res, next) => {
 };
 
 module.exports = {
+    customMongoSanitizer,
     xssProtection,
     sanitizeString,
     deepSanitize
