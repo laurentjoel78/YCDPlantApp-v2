@@ -74,7 +74,6 @@ const xssProtection = (req, res, next) => {
 };
 
 module.exports = {
-    mongoSanitizer,
     xssProtection,
     sanitizeString,
     deepSanitize

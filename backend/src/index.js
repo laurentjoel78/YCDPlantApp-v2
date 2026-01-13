@@ -13,8 +13,9 @@ const logger = require('./config/logger');
 // Security configurations
 const { corsOptions, socketCorsOptions } = require('./config/corsConfig');
 const { helmetConfig, additionalHeaders } = require('./config/securityHeaders');
-const { mongoSanitizer, xssProtection } = require('./middleware/sanitization');
+const { xssProtection } = require('./middleware/sanitization');
 const { apiLimiter } = require('./middleware/rateLimiter');
+const mongoSanitize = require('express-mongo-sanitize');
 
 require('dotenv').config();
 
@@ -39,8 +40,10 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// 4. Input sanitization - Clean malicious input
-app.use(mongoSanitizer); // Remove MongoDB operators
+// 4. Input sanitization - Clean malicious input (apply after body parsing)
+app.use(mongoSanitize({
+  replaceWith: '_'
+})); // Remove MongoDB operators
 app.use(xssProtection); // Remove XSS attempts
 
 // 5. HTTP Parameter Pollution protection
