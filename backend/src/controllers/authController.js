@@ -47,7 +47,8 @@ const logout = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    logger.info('Registration request received:', JSON.stringify(req.body, null, 2));
+    const requestLogger = (req && req.log) ? req.log : logger;
+    requestLogger.info('Registration request received:', JSON.stringify(req.body, null, 2));
 
     const {
       email,
@@ -74,7 +75,7 @@ const register = async (req, res) => {
     const requiredFields = ['email', 'password', 'first_name', 'role'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
     if (missingFields.length > 0) {
-      logger.info('Registration failed - Missing required fields:', missingFields);
+      requestLogger.info('Registration failed - Missing required fields:', missingFields);
       return res.status(400).json({
         error: 'Missing required fields',
         missingFields
@@ -86,7 +87,7 @@ const register = async (req, res) => {
       const requiredFarmerFields = ['farm_size_hectares', 'crops_grown', 'farming_experience_years'];
       const missingFarmerFields = requiredFarmerFields.filter(field => !req.body[field]);
       if (missingFarmerFields.length > 0) {
-        logger.info('Registration failed - Missing farmer fields:', missingFarmerFields);
+        requestLogger.info('Registration failed - Missing farmer fields:', missingFarmerFields);
         return res.status(400).json({
           error: 'Missing required farmer information',
           missingFields: missingFarmerFields
@@ -94,12 +95,10 @@ const register = async (req, res) => {
       }
     }
 
-    const logger = (req && req.log) ? req.log : console;
-
     // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      logger.info('Registration failed - Email already exists:', email);
+      requestLogger.info('Registration failed - Email already exists:', email);
       return res.status(400).json({ error: 'Email already registered' });
     }
 
@@ -195,7 +194,7 @@ const register = async (req, res) => {
             status: 'planning',
             is_active: true
           }).catch(err => {
-            logger.warn('Failed to create FarmCrop for registration', { error: err.message, cropName, farmId: createdFarm.id });
+            requestLogger.warn('Failed to create FarmCrop for registration', { error: err.message, cropName, farmId: createdFarm.id });
           });
         }
       }
@@ -206,7 +205,7 @@ const register = async (req, res) => {
       try {
         await emailService.sendVerificationEmail(user, verificationToken);
       } catch (emailError) {
-        logger.error('Failed to send verification email', { error: emailError.message });
+        requestLogger.error('Failed to send verification email', { error: emailError.message });
       }
     }
 
