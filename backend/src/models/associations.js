@@ -149,7 +149,7 @@ module.exports = function defineAssociations(models) {
   Expert.hasMany(Advisory, { foreignKey: 'expert_id' });
   Expert.hasMany(Consultation, { foreignKey: 'expert_id' });
   Expert.hasMany(ExpertReview, { foreignKey: 'expert_id' });
-  Expert.hasOne(Wallet, { foreignKey: 'expert_id' });
+  // Expert's wallet is accessed via user_id (through the User model), not expert_id
 
   // Wallet associations
   Wallet.belongsTo(User, { as: 'owner', foreignKey: 'user_id' });
