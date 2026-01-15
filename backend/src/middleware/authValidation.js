@@ -52,8 +52,8 @@ const registrationValidation = createValidationMiddleware([
     .withMessage('Invalid role specified'),
   body('phone_number')
     .optional()
-    .matches(/^\+\d{1,3}\d{9,10}$/)
-    .withMessage('Please provide a valid phone number with country code (e.g., +237612345678)')
+    .matches(/^\+\d{1,4}\d{4,15}$/)
+    .withMessage('Please provide a valid international phone number with country code (e.g., +237612345678, +33612345678, +1234567890)')
 ]);
 
 // Login validation rules
