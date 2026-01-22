@@ -16,8 +16,6 @@ module.exports = {
       last_name: 'Administrator',
       role: 'admin',
       email_verified: true,
-      is_active: true,
-      approval_status: 'approved',
       created_at: new Date(),
       updated_at: new Date()
     }]);
