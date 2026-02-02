@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+    <!-- Title -->
+    <text x="450" y="35" font-size="26" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
+    Series A Use of Funds Breakdown
+    </text>
+    <text x="450" y="60" font-size="12" text-anchor="middle" fill="#666">
+    $500K - $1.2M Investment Allocation
+    </text>
+
+    <!-- Define pie chart -->
+    <defs>
+        <style>
+      .pie-slice:hover { opacity: 0.9; }
+        </style>
+    </defs>
+
+    <!-- Team Expansion: 30% (108°) - Light Blue -->
+    <path d="M 350 280 L 450 180 A 100 100 0 0 1 495.11 200.88 Z" fill="#4c6ef5" stroke="#1d3a96" stroke-width="2" class="pie-slice"/>
+
+    <!-- User Acquisition: 25% (90°) - Green -->
+    <path d="M 350 280 L 495.11 200.88 A 100 100 0 0 1 450 380 Z" fill="#00a878" stroke="#005a47" stroke-width="2" class="pie-slice"/>
+
+    <!-- Market Expansion: 20% (72°) - Orange -->
+    <path d="M 350 280 L 450 380 A 100 100 0 0 1 404.89 359.12 Z" fill="#ff9800" stroke="#e65100" stroke-width="2" class="pie-slice"/>
+
+    <!-- Product Development: 15% (54°) - Purple -->
+    <path d="M 350 280 L 404.89 359.12 A 100 100 0 0 1 354.89 359.12 Z" fill="#845ef7" stroke="#5f3dc4" stroke-width="2" class="pie-slice"/>
+
+    <!-- Operations: 10% (36°) - Red -->
+    <path d="M 350 280 L 354.89 359.12 A 100 100 0 0 1 330.9 369.1 Z" fill="#ff6b6b" stroke="#c92a2a" stroke-width="2" class="pie-slice"/>
+
+    <!-- Center circle for donut effect (optional) -->
+    <circle cx="350" cy="280" r="0" fill="white"/>
+
+    <!-- Percentage labels on pie -->
+    <text x="420" y="205" font-size="13" font-weight="bold" text-anchor="middle" fill="white">30%</text>
+    <text x="460" y="330" font-size="13" font-weight="bold" text-anchor="middle" fill="white">25%</text>
+    <text x="410" y="375" font-size="13" font-weight="bold" text-anchor="middle" fill="white">20%</text>
+    <text x="365" y="355" font-size="13" font-weight="bold" text-anchor="middle" fill="white">15%</text>
+    <text x="325" y="320" font-size="13" font-weight="bold" text-anchor="middle" fill="white">10%</text>
+
+    <!-- Legend and Details -->
+    <rect x="500" y="160" width="350" height="300" fill="white" stroke="#ddd" stroke-width="1" rx="4"/>
+
+    <!-- Team Expansion -->
+    <rect x="515" y="175" width="15" height="15" fill="#4c6ef5" stroke="#1d3a96" stroke-width="1"/>
+    <text x="540" y="187" font-size="12" font-weight="bold" fill="#333">Team Expansion (30%)</text>
+    <text x="540" y="205" font-size="11" fill="#666">$180-250K</text>
+    <text x="540" y="220" font-size="10" fill="#999">8-12 additional hires:</text>
+    <text x="540" y="232" font-size="10" fill="#999">Engineers, Product, Operations</text>
+
+    <!-- User Acquisition -->
+    <rect x="515" y="250" width="15" height="15" fill="#00a878" stroke="#005a47" stroke-width="1"/>
+    <text x="540" y="262" font-size="12" font-weight="bold" fill="#333">User Acquisition (25%)</text>
+    <text x="540" y="280" font-size="11" fill="#666">$150-250K</text>
+    <text x="540" y="295" font-size="10" fill="#999">Community partnerships,</text>
+    <text x="540" y="307" font-size="10" fill="#999">marketing, field teams</text>
+
+    <!-- Market Expansion -->
+    <rect x="515" y="325" width="15" height="15" fill="#ff9800" stroke="#e65100" stroke-width="1"/>
+    <text x="540" y="337" font-size="12" font-weight="bold" fill="#333">Market Expansion (20%)</text>
+    <text x="540" y="355" font-size="11" fill="#666">$120-180K</text>
+    <text x="540" y="370" font-size="10" fill="#999">Launch in 3-5 additional</text>
+    <text x="540" y="382" font-size="10" fill="#999">African countries</text>
+
+    <!-- Product Development -->
+    <rect x="515" y="400" width="15" height="15" fill="#845ef7" stroke="#5f3dc4" stroke-width="1"/>
+    <text x="540" y="412" font-size="12" font-weight="bold" fill="#333">Product Development (15%)</text>
+    <text x="540" y="430" font-size="11" fill="#666">$100-200K</text>
+    <text x="540" y="445" font-size="10" fill="#999">Advanced ML/AI, offline</text>
+    <text x="540" y="457" font-size="10" fill="#999">enhancements, blockchain</text>
+
+    <!-- Funding total box -->
+    <rect x="500" y="480" width="350" height="70" fill="#f0f8ff" stroke="#4c6ef5" stroke-width="2" rx="4"/>
+    <text x="675" y="503" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Total Series A Request</text>
+    <text x="675" y="525" font-size="18" font-weight="bold" text-anchor="middle" fill="#4c6ef5">$500K - $1.2M</text>
+
+</svg>

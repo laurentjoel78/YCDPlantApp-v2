@@ -9,7 +9,8 @@ const {
   getVoiceRecording,
   listVoiceRecordings,
   deleteVoiceRecording,
-  translateText
+  translateText,
+  transcribeAudio
 } = require('../controllers/voiceController');
 
 const router = express.Router();
@@ -55,6 +56,9 @@ router.delete('/:id', deleteVoiceRecording);
 
 // Translation route
 router.post('/translate', validateLanguage, translateText);
+
+// Direct transcription route (for real-time voice chat)
+router.post('/transcribe', transcribeAudio);
 
 // Language support information
 router.get('/languages', (req, res) => {

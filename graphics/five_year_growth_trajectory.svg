@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+    <!-- Title -->
+    <text x="600" y="40" font-size="26" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
+    5-Year Growth Projection
+    </text>
+    <text x="600" y="65" font-size="12" text-anchor="middle" fill="#666">
+    Active Farmers vs. Annual Transaction Volume
+    </text>
+
+    <!-- Grid background -->
+    <defs>
+        <pattern id="smallGrid" width="6" height="6" patternUnits="userSpaceOnUse">
+            <path d="M 6 0 L 0 0 0 6" fill="none" stroke="#f0f0f0" stroke-width="0.3"/>
+        </pattern>
+        <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+            <rect width="60" height="60" fill="url(#smallGrid)"/>
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+        </pattern>
+    </defs>
+
+    <rect x="100" y="100" width="1050" height="450" fill="url(#grid)" stroke="#999" stroke-width="2" rx="2"/>
+
+    <!-- Left Y-axis (Farmers) -->
+    <line x1="100" y1="100" x2="100" y2="550" stroke="#333" stroke-width="2"/>
+    <!-- Right Y-axis (Transaction Volume) -->
+    <line x1="1150" y1="100" x2="1150" y2="550" stroke="#333" stroke-width="2"/>
+    <!-- X-axis -->
+    <line x1="100" y1="550" x2="1150" y2="550" stroke="#333" stroke-width="2"/>
+
+    <!-- Left Y-axis labels (Farmers: 0-5M) -->
+    <text x="95" y="556" font-size="10" text-anchor="end" fill="#333">0</text>
+    <text x="95" y="480" font-size="10" text-anchor="end" fill="#333">1M</text>
+    <text x="95" y="404" font-size="10" text-anchor="end" fill="#333">2M</text>
+    <text x="95" y="328" font-size="10" text-anchor="end" fill="#333">3M</text>
+    <text x="95" y="252" font-size="10" text-anchor="end" fill="#333">4M</text>
+    <text x="95" y="176" font-size="10" text-anchor="end" fill="#333">5M</text>
+
+    <!-- Right Y-axis labels (Transaction Volume: $0-250M) -->
+    <text x="1155" y="556" font-size="10" text-anchor="start" fill="#333">$0</text>
+    <text x="1155" y="480" font-size="10" text-anchor="start" fill="#333">$50M</text>
+    <text x="1155" y="404" font-size="10" text-anchor="start" fill="#333">$100M</text>
+    <text x="1155" y="328" font-size="10" text-anchor="start" fill="#333">$150M</text>
+    <text x="1155" y="252" font-size="10" text-anchor="start" fill="#333">$200M</text>
+    <text x="1155" y="176" font-size="10" text-anchor="start" fill="#333">$250M</text>
+
+    <!-- Grid lines -->
+    <line x1="100" y1="476" x2="1150" y2="476" stroke="#e0e0e0" stroke-width="0.5"/>
+    <line x1="100" y1="400" x2="1150" y2="400" stroke="#e0e0e0" stroke-width="0.5"/>
+    <line x1="100" y1="324" x2="1150" y2="324" stroke="#e0e0e0" stroke-width="0.5"/>
+    <line x1="100" y1="248" x2="1150" y2="248" stroke="#e0e0e0" stroke-width="0.5"/>
+    <line x1="100" y1="172" x2="1150" y2="172" stroke="#e0e0e0" stroke-width="0.5"/>
+
+    <!-- X-axis labels (Years) -->
+    <text x="300" y="575" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Year 1</text>
+    <text x="500" y="575" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Year 2</text>
+    <text x="700" y="575" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Year 3</text>
+    <text x="900" y="575" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Year 4</text>
+    <text x="1100" y="575" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Year 5</text>
+
+    <!-- Axis labels -->
+    <text x="30" y="325" font-size="11" font-weight="bold" fill="#1a1a1a" text-anchor="middle" transform="rotate(-90 30 325)">
+    Active Farmers
+    </text>
+    <text x="1180" y="325" font-size="11" font-weight="bold" fill="#1a1a1a" text-anchor="middle" transform="rotate(90 1180 325)">
+    Transaction Volume
+    </text>
+    <text x="625" y="615" font-size="11" font-weight="bold" fill="#1a1a1a" text-anchor="middle">
+    Projection Timeline
+    </text>
+
+    <!-- Farmers line (0 to 5M) -->
+    <polyline points="300,540 500,470 700,350 900,240 1100,110" fill="none" stroke="#4c6ef5" stroke-width="4" stroke-linejoin="round"/>
+
+    <!-- Transaction volume line ($0 to $250M) -->
+    <polyline points="300,540 500,468 700,372 900,228 1100,100" fill="none" stroke="#00a878" stroke-width="4" stroke-linejoin="round" stroke-dasharray="8,4"/>
+
+    <!-- Data points - Farmers -->
+    <circle cx="300" cy="540" r="7" fill="#4c6ef5" stroke="#1d3a96" stroke-width="2"/>
+    <circle cx="500" cy="470" r="7" fill="#4c6ef5" stroke="#1d3a96" stroke-width="2"/>
+    <circle cx="700" cy="350" r="7" fill="#4c6ef5" stroke="#1d3a96" stroke-width="2"/>
+    <circle cx="900" cy="240" r="7" fill="#4c6ef5" stroke="#1d3a96" stroke-width="2"/>
+    <circle cx="1100" cy="110" r="7" fill="#4c6ef5" stroke="#1d3a96" stroke-width="2"/>
+
+    <!-- Data points - Transaction Volume -->
+    <circle cx="300" cy="540" r="5" fill="#00a878" stroke="#005a47" stroke-width="2"/>
+    <circle cx="500" cy="468" r="5" fill="#00a878" stroke="#005a47" stroke-width="2"/>
+    <circle cx="700" cy="372" r="5" fill="#00a878" stroke="#005a47" stroke-width="2"/>
+    <circle cx="900" cy="228" r="5" fill="#00a878" stroke="#005a47" stroke-width="2"/>
+    <circle cx="1100" cy="100" r="5" fill="#00a878" stroke="#005a47" stroke-width="2"/>
+
+    <!-- Value labels - Farmers -->
+    <text x="300" y="560" font-size="11" text-anchor="middle" fill="#4c6ef5" font-weight="bold">50K</text>
+    <text x="500" y="460" font-size="11" text-anchor="middle" fill="#4c6ef5" font-weight="bold">250K</text>
+    <text x="700" y="340" font-size="11" text-anchor="middle" fill="#4c6ef5" font-weight="bold">1M</text>
+    <text x="900" y="220" font-size="11" text-anchor="middle" fill="#4c6ef5" font-weight="bold">3M</text>
+    <text x="1100" y="90" font-size="11" text-anchor="middle" fill="#4c6ef5" font-weight="bold">5M</text>
+
+    <!-- Value labels - Transaction Volume -->
+    <text x="280" y="520" font-size="10" text-anchor="end" fill="#00a878" font-weight="bold">$2M</text>
+    <text x="480" y="450" font-size="10" text-anchor="end" fill="#00a878" font-weight="bold">$12M</text>
+    <text x="680" y="360" font-size="10" text-anchor="end" fill="#00a878" font-weight="bold">$50M</text>
+    <text x="880" y="215" font-size="10" text-anchor="end" fill="#00a878" font-weight="bold">$125M</text>
+    <text x="1080" y="95" font-size="10" text-anchor="end" fill="#00a878" font-weight="bold">$250M</text>
+
+    <!-- Legend -->
+    <rect x="120" y="590" width="900" height="50" fill="white" stroke="#ddd" stroke-width="1" rx="4"/>
+
+    <line x1="140" y1="610" x2="180" y2="610" stroke="#4c6ef5" stroke-width="4"/>
+    <text x="200" y="615" font-size="11" fill="#333" font-weight="bold">Active Farmers (Left Axis)</text>
+
+    <line x1="520" y1="610" x2="560" y2="610" stroke="#00a878" stroke-width="4" stroke-dasharray="8,4"/>
+    <text x="580" y="615" font-size="11" fill="#333" font-weight="bold">Annual Transaction Volume (Right Axis)</text>
+
+    <!-- Growth annotations -->
+    <rect x="350" y="120" width="140" height="70" fill="#fff3cd" border="1px solid #ff9800" stroke="#ff9800" stroke-width="1" rx="3"/>
+    <text x="420" y="138" font-size="11" font-weight="bold" text-anchor="middle" fill="#ff6f00">5-Year Growth</text>
+    <text x="420" y="158" font-size="10" text-anchor="middle" fill="#333">Farmers: 50K → 5M</text>
+    <text x="420" y="173" font-size="10" text-anchor="middle" fill="#333">(100x increase)</text>
+
+    <rect x="850" y="120" width="140" height="70" fill="#e8f5e9" stroke="#4caf50" stroke-width="1" rx="3"/>
+    <text x="920" y="138" font-size="11" font-weight="bold" text-anchor="middle" fill="#2e7d32">Revenue Growth</text>
+    <text x="920" y="158" font-size="10" text-anchor="middle" fill="#333">Volume: $2M → $250M</text>
+    <text x="920" y="173" font-size="10" text-anchor="middle" fill="#333">(125x increase)</text>
+
+</svg>

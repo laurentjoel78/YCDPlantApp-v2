@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Folder id="results">
+	<name>market near Buea</name>
+	<Placemark id="1.2.1">
+		<name>Buea Central Market</name>
+		<address>Bitingi 680164001, Central market, Buea</address>
+		<phoneNumber>6 51 24 58 75</phoneNumber>
+		<snippet>Bitingi 680164001, Central market, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x106131f8905d3471:0x672a961c0448f3e8&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_A</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x106131f8905d3471:0x672a961c0448f3e8&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.279352299999999,4.1712598,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.3.1">
+		<name>Muea Market</name>
+		<address>58C3+G7C, Buea</address>
+		<phoneNumber>6 79 77 38 73</phoneNumber>
+		<snippet>58C3+G7C, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x106131ddb6990337:0x5b637817d496b240&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_B</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x106131ddb6990337:0x5b637817d496b240&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.303132999999999,4.1713017,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.4.1">
+		<name>Bokwaongo Main Market</name>
+		<address>46PG+G9M, Unnamed Road, Buea</address>
+		<snippet>46PG+G9M, Unnamed Road, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x10613302f637108f:0xaeaf18443875dfac&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_C</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x10613302f637108f:0xaeaf18443875dfac&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.225929299999999,4.1363457,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.5.1">
+		<name>Soppo Market</name>
+		<address>5734+HF2, D 61, Buéa</address>
+		<snippet>5734+HF2, D 61, Buéa</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x106133f5b9b74b91:0x5d7559ec25e63fe9&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_D</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x106133f5b9b74b91:0x5d7559ec25e63fe9&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.2561508,4.1538769,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.6.1">
+		<name>Njieforbi supper market</name>
+		<address>5732+PR2, Buea</address>
+		<snippet>5732+PR2, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x1061332919893669:0x8c198116526f1d20&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_E</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x1061332919893669:0x8c198116526f1d20&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.251996699999999,4.1542308,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.7.1">
+		<name>Ifunanya babies shop buea</name>
+		<address>564X+W6F, Great Soppo, Buea</address>
+		<phoneNumber>6 77 00 73 33</phoneNumber>
+		<snippet>564X+W6F, Great Soppo, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x10613240b5dcd495:0x48f60bb316d4f951&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_F</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x10613240b5dcd495:0x48f60bb316d4f951&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.248500699999999,4.1596351,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.8.1">
+		<name>COGENI BUEA</name>
+		<address>Buea</address>
+		<phoneNumber>6 79 11 87 29</phoneNumber>
+		<snippet>Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x10613222b0064e7f:0x9b513c892436dde4&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_G</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x10613222b0064e7f:0x9b513c892436dde4&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.268151999999999,4.157366,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.9.1">
+		<name>MARKET STATION</name>
+		<address>Sosoliso Molyko</address>
+		<phoneNumber>6 78 50 11 21</phoneNumber>
+		<snippet>Sosoliso Molyko</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x1061314b814293bb:0x19078aa05c128add&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_H</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x1061314b814293bb:0x19078aa05c128add&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.2831236,4.1583291,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.10.1">
+		<name>Y complex supermarket</name>
+		<address>563V+G32, Buea</address>
+		<phoneNumber>6 58 62 39 69</phoneNumber>
+		<snippet>563V+G32, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x106133bc0556e3e1:0x89aede68d1a58432&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_I</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x106133bc0556e3e1:0x89aede68d1a58432&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.242595999999999,4.153724299999999,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="1.11.1">
+		<name>AKAM’S FISH MARKET</name>
+		<address>Wotutu, Buea</address>
+		<phoneNumber>6 70 73 34 82</phoneNumber>
+		<snippet>Wotutu, Buea</snippet>
+		<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=4.17066&lng=9.27899&fid=0x106133215fefd7ad:0x7618d638d22fd0d1&hl=en&gl=cm&client=earth-client&cv=7.3.6.10441&useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+		<styleUrl>#listing_J</styleUrl>
+		<ExtendedData>
+			<Data name="placepageUri">
+				<value>https://www.google.com/earth/rpc/entity?lat=4.17066&amp;lng=9.27899&amp;fid=0x106133215fefd7ad:0x7618d638d22fd0d1&amp;hl=en&amp;gl=cm&amp;client=earth-client&amp;cv=7.3.6.10441&amp;useragent=GoogleEarth/7.3.6.10441(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+			</Data>
+		</ExtendedData>
+		<Point>
+			<coordinates>9.2533855,4.1534878,0</coordinates>
+		</Point>
+	</Placemark>
+	<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
+</Folder>
+</kml>

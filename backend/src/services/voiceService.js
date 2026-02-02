@@ -12,7 +12,7 @@ class VoiceService {
   constructor() {
     this.speechClient = new speech.SpeechClient();
     this.translateClient = new Translate();
-    this.supportedLanguages = new Set(['en-US', 'ta-IN', 'hi-IN', 'te-IN', 'kn-IN']);
+    this.supportedLanguages = new Set(['en-US', 'fr-FR', 'ta-IN', 'hi-IN', 'te-IN', 'kn-IN']);
     this.uploadDir = path.join(__dirname, '../../uploads/voice');
   }
 
@@ -174,6 +174,94 @@ class VoiceService {
         errorDetails: {
           error: error.message,
           targetLanguage
+        }
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Direct transcription from base64 audio data
+   * Used for real-time voice input in chat
+   */
+  async transcribeBase64Audio(audioBase64, language, mimeType = 'audio/m4a') {
+    try {
+      if (!this.supportedLanguages.has(language)) {
+        throw new AppError(`Language ${language} is not supported`, 400);
+      }
+
+      // Map MIME types to Google encoding formats
+      const encodingMap = {
+        'audio/m4a': 'MP3',
+        'audio/mp4': 'MP3',
+        'audio/mpeg': 'MP3',
+        'audio/wav': 'LINEAR16',
+        'audio/webm': 'WEBM_OPUS',
+        'audio/ogg': 'OGG_OPUS',
+      };
+
+      const encoding = encodingMap[mimeType] || 'MP3';
+
+      const audio = {
+        content: audioBase64
+      };
+
+      const config = {
+        encoding,
+        languageCode: language,
+        model: language === 'fr-FR' ? 'default' : 'default',
+        enableAutomaticPunctuation: true,
+        // Allow alternative languages for better accuracy
+        alternativeLanguageCodes: language === 'fr-FR' ? ['en-US'] : ['fr-FR'],
+      };
+
+      // Only set sample rate for LINEAR16 encoding
+      if (encoding === 'LINEAR16') {
+        config.sampleRateHertz = 16000;
+      }
+
+      const request = {
+        audio,
+        config
+      };
+
+      const [response] = await this.speechClient.recognize(request);
+      
+      if (!response.results || response.results.length === 0) {
+        return { text: '', confidence: 0 };
+      }
+
+      const transcription = response.results
+        .map(result => result.alternatives[0]?.transcript || '')
+        .join(' ')
+        .trim();
+
+      const confidence = response.results[0]?.alternatives[0]?.confidence || 0;
+
+      await loggingService.logSystem({
+        logLevel: 'info',
+        module: 'VoiceService',
+        message: 'Direct voice transcription completed',
+        metadata: {
+          language,
+          textLength: transcription.length,
+          confidence
+        }
+      });
+
+      return { 
+        text: transcription, 
+        confidence,
+        language 
+      };
+    } catch (error) {
+      await loggingService.logSystem({
+        logLevel: 'error',
+        module: 'VoiceService',
+        message: 'Failed to transcribe base64 audio',
+        errorDetails: {
+          error: error.message,
+          language
         }
       });
       throw error;

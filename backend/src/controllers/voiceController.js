@@ -131,3 +131,44 @@ exports.translateText = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Direct transcription from base64 audio
+ * Used for real-time voice input in chat
+ */
+exports.transcribeAudio = async (req, res, next) => {
+  try {
+    const { audioBase64, language, mimeType } = req.body;
+
+    if (!audioBase64) {
+      throw new AppError('Audio data is required', 400);
+    }
+
+    if (!language) {
+      throw new AppError('Language is required', 400);
+    }
+
+    const result = await voiceService.transcribeBase64Audio(
+      audioBase64,
+      language,
+      mimeType || 'audio/m4a'
+    );
+
+    await loggingService.logUserActivity({
+      userId: req.user.id,
+      activityType: 'voice_transcription',
+      description: 'Transcribed voice input',
+      metadata: {
+        language,
+        textLength: result.text.length
+      }
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};

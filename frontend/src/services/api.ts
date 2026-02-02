@@ -179,6 +179,13 @@ export const api = {
                 body: JSON.stringify({ message, language, isVoice, farmId })
             }),
     },
+    voice: {
+        transcribe: (data: { audioBase64: string; language: string; mimeType?: string }) =>
+            request<{ status: string; data: { text: string; confidence: number; language: string } }>('/voice/transcribe', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            }),
+    },
     suggestions: {
         // Authenticated suggestions (include token in headers)
         get: (token: string) => {

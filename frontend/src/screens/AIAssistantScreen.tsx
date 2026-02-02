@@ -6,20 +6,58 @@ import {
   Platform,
   StyleSheet,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
-import { Text, TextInput, ActivityIndicator, Chip } from 'react-native-paper';
+import { Text, TextInput, ActivityIndicator, Chip, Menu } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ChatService, Message } from '../services/chatService';
 import { api } from '../services/api';
 import { useTranslation } from 'react-i18next';
+import { useVoiceRecognition, VoiceLanguage } from '../hooks/useVoiceRecognition';
 
 export default function AIAssistantScreen() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedActions, setSuggestedActions] = useState<string[]>([]);
-  const { t } = useTranslation();
+  const [voiceLanguage, setVoiceLanguage] = useState<VoiceLanguage>('fr-FR');
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const { t, i18n } = useTranslation();
   const scrollViewRef = useRef<ScrollView>(null);
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  
+  const {
+    isRecording,
+    isProcessing,
+    recordingDuration,
+    error: voiceError,
+    startRecording,
+    stopRecording,
+    cancelRecording,
+    clearError,
+  } = useVoiceRecognition();
+
+  // Pulse animation for recording indicator
+  useEffect(() => {
+    if (isRecording) {
+      const pulse = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.3,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      pulse.start();
+      return () => pulse.stop();
+    }
+  }, [isRecording, pulseAnim]);
 
   // Add initial greeting message
   useEffect(() => {
@@ -145,21 +183,106 @@ export default function AIAssistantScreen() {
         </ScrollView>
       )}
 
+      {/* Voice Error Display */}
+      {voiceError && (
+        <View style={styles.voiceErrorContainer}>
+          <Text style={styles.voiceErrorText}>{voiceError}</Text>
+          <TouchableOpacity onPress={clearError}>
+            <MaterialCommunityIcons name="close" size={20} color="#DC2626" />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Recording Indicator */}
+      {isRecording && (
+        <View style={styles.recordingIndicator}>
+          <Animated.View style={[styles.recordingDot, { transform: [{ scale: pulseAnim }] }]} />
+          <Text style={styles.recordingText}>
+            {t('voice.recording', 'Recording...')} {recordingDuration}s
+          </Text>
+          <TouchableOpacity onPress={cancelRecording} style={styles.cancelRecordingButton}>
+            <MaterialCommunityIcons name="close" size={20} color="#DC2626" />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Processing Indicator */}
+      {isProcessing && (
+        <View style={styles.processingIndicator}>
+          <ActivityIndicator size="small" color="#2D5016" />
+          <Text style={styles.processingText}>{t('voice.processing', 'Transcribing...')}</Text>
+        </View>
+      )}
+
       <View style={styles.inputContainer}>
+        {/* Language Selector */}
+        <Menu
+          visible={showLanguageMenu}
+          onDismiss={() => setShowLanguageMenu(false)}
+          anchor={
+            <TouchableOpacity 
+              onPress={() => setShowLanguageMenu(true)}
+              style={styles.languageButton}
+            >
+              <Text style={styles.languageButtonText}>
+                {voiceLanguage === 'fr-FR' ? 'FR' : 'EN'}
+              </Text>
+            </TouchableOpacity>
+          }
+        >
+          <Menu.Item 
+            onPress={() => { setVoiceLanguage('fr-FR'); setShowLanguageMenu(false); }} 
+            title="🇫🇷 Français" 
+          />
+          <Menu.Item 
+            onPress={() => { setVoiceLanguage('en-US'); setShowLanguageMenu(false); }} 
+            title="🇺🇸 English" 
+          />
+        </Menu>
+
         <TextInput
           value={inputText}
           onChangeText={setInputText}
-          placeholder={t('forum.chat.placeholder', "Type your message...")}
+          placeholder={isRecording 
+            ? t('voice.speakNow', 'Speak now...') 
+            : t('forum.chat.placeholder', "Type your message...")}
           style={styles.input}
           multiline
           maxLength={500}
           textColor="#000000"
           placeholderTextColor="#666666"
+          editable={!isRecording && !isProcessing}
         />
+
+        {/* Voice Button */}
+        <TouchableOpacity
+          onPress={async () => {
+            if (isRecording) {
+              const transcription = await stopRecording(voiceLanguage);
+              if (transcription) {
+                setInputText(prev => prev ? `${prev} ${transcription}` : transcription);
+              }
+            } else {
+              await startRecording();
+            }
+          }}
+          style={[
+            styles.voiceButton,
+            isRecording && styles.voiceButtonRecording,
+          ]}
+          disabled={isProcessing || isLoading}
+        >
+          <MaterialCommunityIcons
+            name={isRecording ? 'stop' : 'microphone'}
+            size={24}
+            color={isRecording ? '#FFFFFF' : '#2D5016'}
+          />
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={handleSend}
           style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
-          disabled={!inputText.trim() || isLoading}
+          disabled={!inputText.trim() || isLoading || isRecording || isProcessing}
         >
           <MaterialCommunityIcons
             name="send"
@@ -273,5 +396,85 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: {
     opacity: 0.5,
+  },
+  voiceButton: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#E5E7EB',
+    marginRight: 8,
+  },
+  voiceButtonRecording: {
+    backgroundColor: '#DC2626',
+  },
+  languageButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 8,
+    backgroundColor: '#E5E7EB',
+    marginRight: 8,
+  },
+  languageButtonText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#2D5016',
+  },
+  recordingIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FEE2E2',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginBottom: 8,
+  },
+  recordingDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#DC2626',
+    marginRight: 8,
+  },
+  recordingText: {
+    color: '#DC2626',
+    fontSize: 14,
+    fontWeight: '500',
+    flex: 1,
+  },
+  cancelRecordingButton: {
+    padding: 4,
+  },
+  processingIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E5E7EB',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginBottom: 8,
+  },
+  processingText: {
+    color: '#2D5016',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  voiceErrorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FEE2E2',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    borderRadius: 8,
+  },
+  voiceErrorText: {
+    color: '#DC2626',
+    fontSize: 14,
+    flex: 1,
   },
 });
