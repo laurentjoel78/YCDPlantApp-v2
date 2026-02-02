@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
 import { theme } from '../theme';
 
@@ -21,6 +22,7 @@ interface CartItem {
 }
 
 export default function CartScreen() {
+    const { t } = useTranslation();
     const navigation = useNavigation<any>();
     const [loading, setLoading] = useState(true);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -46,7 +48,7 @@ export default function CartScreen() {
             });
         } catch (error) {
             console.error('Load cart error:', error);
-            Alert.alert('Error', 'Failed to load cart');
+            Alert.alert(t('common.error', 'Error'), t('ecommerce.cart.loadError', 'Failed to load cart'));
         } finally {
             setLoading(false);
         }
@@ -59,25 +61,25 @@ export default function CartScreen() {
             await api.cart.updateItem(itemId, newQuantity);
             await loadCart(); // Reload to get updated totals
         } catch (error: any) {
-            Alert.alert('Error', error.response?.data?.error || 'Failed to update quantity');
+            Alert.alert(t('common.error', 'Error'), error.response?.data?.error || t('ecommerce.cart.updateError', 'Failed to update quantity'));
         }
     };
 
     const removeItem = async (itemId: string) => {
         Alert.alert(
-            'Remove Item',
-            'Are you sure you want to remove this item from cart?',
+            t('ecommerce.cart.removeItem', 'Remove Item'),
+            t('ecommerce.cart.confirmRemove', 'Are you sure you want to remove this item from cart?'),
             [
-                { text: 'Cancel', style: 'cancel' },
+                { text: t('common.cancel', 'Cancel'), style: 'cancel' },
                 {
-                    text: 'Remove',
+                    text: t('ecommerce.cart.remove', 'Remove'),
                     style: 'destructive',
                     onPress: async () => {
                         try {
                             await api.cart.removeItem(itemId);
                             await loadCart();
                         } catch (error) {
-                            Alert.alert('Error', 'Failed to remove item');
+                            Alert.alert(t('common.error', 'Error'), t('ecommerce.cart.removeError', 'Failed to remove item'));
                         }
                     }
                 }
@@ -87,7 +89,7 @@ export default function CartScreen() {
 
     const proceedToCheckout = () => {
         if (cartItems.length === 0) {
-            Alert.alert('Empty Cart', 'Your cart is empty');
+            Alert.alert(t('ecommerce.cart.empty', 'Empty Cart'), t('ecommerce.cart.emptyMessage', 'Your cart is empty'));
             return;
         }
         navigation.navigate('Checkout', { totals });
@@ -151,12 +153,12 @@ export default function CartScreen() {
             {cartItems.length === 0 ? (
                 <View style={styles.emptyCart}>
                     <MaterialCommunityIcons name="cart-outline" size={80} color="#CCC" />
-                    <Text style={styles.emptyText}>Your cart is empty</Text>
+                    <Text style={styles.emptyText}>{t('ecommerce.cart.emptyMessage', 'Your cart is empty')}</Text>
                     <TouchableOpacity
                         style={styles.shopButton}
                         onPress={() => navigation.navigate('Main', { screen: 'Marketplace' })}
                     >
-                        <Text style={styles.shopButtonText}>Start Shopping</Text>
+                        <Text style={styles.shopButtonText}>{t('ecommerce.cart.startShopping', 'Start Shopping')}</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -171,15 +173,15 @@ export default function CartScreen() {
                     <View style={styles.footer}>
                         <View style={styles.totalsContainer}>
                             <View style={styles.totalRow}>
-                                <Text style={styles.totalLabel}>Subtotal:</Text>
+                                <Text style={styles.totalLabel}>{t('ecommerce.cart.subtotal', 'Subtotal')}:</Text>
                                 <Text style={styles.totalValue}>{Number(totals.subtotal).toLocaleString('en-US')} XAF</Text>
                             </View>
                             <View style={styles.totalRow}>
-                                <Text style={styles.totalLabel}>Delivery:</Text>
+                                <Text style={styles.totalLabel}>{t('ecommerce.cart.delivery', 'Delivery')}:</Text>
                                 <Text style={styles.totalValue}>{Number(totals.deliveryFee).toLocaleString('en-US')} XAF</Text>
                             </View>
                             <View style={[styles.totalRow, styles.grandTotal]}>
-                                <Text style={styles.grandTotalLabel}>Total:</Text>
+                                <Text style={styles.grandTotalLabel}>{t('ecommerce.cart.total', 'Total')}:</Text>
                                 <Text style={styles.grandTotalValue}>{Number(totals.total).toLocaleString('en-US')} XAF</Text>
                             </View>
                         </View>
@@ -188,7 +190,7 @@ export default function CartScreen() {
                             style={styles.checkoutButton}
                             onPress={proceedToCheckout}
                         >
-                            <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
+                            <Text style={styles.checkoutButtonText}>{t('ecommerce.cart.proceedToCheckout', 'Proceed to Checkout')}</Text>
                             <MaterialCommunityIcons name="arrow-right" size={24} color="#FFF" />
                         </TouchableOpacity>
                     </View>

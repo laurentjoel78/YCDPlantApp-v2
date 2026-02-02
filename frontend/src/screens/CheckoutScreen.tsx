@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { api } from '../services/api';
 import { theme } from '../theme';
 
@@ -19,6 +20,7 @@ type RouteParams = {
 };
 
 export default function CheckoutScreen() {
+    const { t } = useTranslation();
     const navigation = useNavigation<any>();
     const route = useRoute<RouteProp<RouteParams, 'Checkout'>>();
     const { totals } = route.params;
@@ -35,15 +37,15 @@ export default function CheckoutScreen() {
     const handleCheckout = async () => {
         // Validation
         if (!address.trim()) {
-            Alert.alert('Error', 'Please enter delivery address');
+            Alert.alert(t('common.error', 'Error'), t('ecommerce.checkout.errors.addressRequired', 'Please enter delivery address'));
             return;
         }
         if (!city.trim()) {
-            Alert.alert('Error', 'Please enter city');
+            Alert.alert(t('common.error', 'Error'), t('ecommerce.checkout.errors.cityRequired', 'Please enter city'));
             return;
         }
         if (paymentMethod !== 'cash_on_delivery' && !phoneNumber.trim()) {
-            Alert.alert('Error', 'Please enter phone number for Mobile Money');
+            Alert.alert(t('common.error', 'Error'), t('ecommerce.checkout.errors.phoneRequired', 'Please enter phone number for Mobile Money'));
             return;
         }
 
@@ -69,7 +71,7 @@ export default function CheckoutScreen() {
             }
         } catch (error: any) {
             console.error('Checkout error:', error);
-            Alert.alert('Error', error.response?.data?.error || 'Checkout failed');
+            Alert.alert(t('common.error', 'Error'), error.response?.data?.error || t('ecommerce.checkout.failed', 'Checkout failed'));
         } finally {
             setLoading(false);
         }
@@ -78,11 +80,11 @@ export default function CheckoutScreen() {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Delivery Address</Text>
+                <Text style={styles.sectionTitle}>{t('ecommerce.checkout.deliveryAddress', 'Delivery Address')}</Text>
 
                 <TextInput
                     style={styles.input}
-                    placeholder="Street address"
+                    placeholder={t('ecommerce.checkout.streetAddress', 'Street address')}
                     value={address}
                     onChangeText={setAddress}
                     multiline
@@ -91,12 +93,12 @@ export default function CheckoutScreen() {
 
                 <TextInput
                     style={styles.input}
-                    placeholder="City"
+                    placeholder={t('ecommerce.checkout.city', 'City')}
                     value={city}
                     onChangeText={setCity}
                 />
 
-                <Text style={styles.label}>Region</Text>
+                <Text style={styles.label}>{t('ecommerce.checkout.region', 'Region')}</Text>
                 <View style={styles.regionButtons}>
                     {regions.map((r) => (
                         <TouchableOpacity
@@ -113,7 +115,7 @@ export default function CheckoutScreen() {
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Payment Method</Text>
+                <Text style={styles.sectionTitle}>{t('ecommerce.checkout.paymentMethod', 'Payment Method')}</Text>
 
                 <TouchableOpacity
                     style={[styles.paymentOption, paymentMethod === 'mtn' && styles.paymentOptionActive]}
@@ -127,9 +129,9 @@ export default function CheckoutScreen() {
                         />
                         <View style={styles.paymentOptionText}>
                             <Text style={[styles.paymentOptionTitle, paymentMethod === 'mtn' && styles.activeText]}>
-                                MTN Mobile Money
+                                {t('ecommerce.checkout.mtn', 'MTN Mobile Money')}
                             </Text>
-                            <Text style={styles.paymentOptionSubtitle}>Pay with *126#</Text>
+                            <Text style={styles.paymentOptionSubtitle}>{t('ecommerce.checkout.payWithMtn', 'Pay with *126#')}</Text>
                         </View>
                     </View>
                     {paymentMethod === 'mtn' && (
@@ -149,9 +151,9 @@ export default function CheckoutScreen() {
                         />
                         <View style={styles.paymentOptionText}>
                             <Text style={[styles.paymentOptionTitle, paymentMethod === 'orange' && styles.activeText]}>
-                                Orange Money
+                                {t('ecommerce.checkout.orange', 'Orange Money')}
                             </Text>
-                            <Text style={styles.paymentOptionSubtitle}>Pay with #150#</Text>
+                            <Text style={styles.paymentOptionSubtitle}>{t('ecommerce.checkout.payWithOrange', 'Pay with #150#')}</Text>
                         </View>
                     </View>
                     {paymentMethod === 'orange' && (
@@ -171,9 +173,9 @@ export default function CheckoutScreen() {
                         />
                         <View style={styles.paymentOptionText}>
                             <Text style={[styles.paymentOptionTitle, paymentMethod === 'cash_on_delivery' && styles.activeText]}>
-                                Cash on Delivery
+                                {t('ecommerce.checkout.cashOnDelivery', 'Cash on Delivery')}
                             </Text>
-                            <Text style={styles.paymentOptionSubtitle}>Pay when you receive</Text>
+                            <Text style={styles.paymentOptionSubtitle}>{t('ecommerce.checkout.payOnDelivery', 'Pay when you receive')}</Text>
                         </View>
                     </View>
                     {paymentMethod === 'cash_on_delivery' && (
@@ -184,7 +186,7 @@ export default function CheckoutScreen() {
                 {paymentMethod !== 'cash_on_delivery' && (
                     <TextInput
                         style={styles.input}
-                        placeholder="Phone number (e.g., +237 6XX XXX XXX)"
+                        placeholder={t('ecommerce.checkout.phoneNumber', 'Phone number (e.g., +237 6XX XXX XXX)')}
                         value={phoneNumber}
                         onChangeText={setPhoneNumber}
                         keyboardType="phone-pad"
@@ -193,17 +195,17 @@ export default function CheckoutScreen() {
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Order Summary</Text>
+                <Text style={styles.sectionTitle}>{t('ecommerce.checkout.orderSummary', 'Order Summary')}</Text>
                 <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>Subtotal:</Text>
+                    <Text style={styles.summaryLabel}>{t('ecommerce.cart.subtotal', 'Subtotal')}:</Text>
                     <Text style={styles.summaryValue}>{Number(totals.subtotal).toLocaleString('en-US')} XAF</Text>
                 </View>
                 <View style={styles.summaryRow}>
-                    <Text style={styles.summaryLabel}>Delivery:</Text>
+                    <Text style={styles.summaryLabel}>{t('ecommerce.cart.delivery', 'Delivery')}:</Text>
                     <Text style={styles.summaryValue}>{Number(totals.deliveryFee).toLocaleString('en-US')} XAF</Text>
                 </View>
                 <View style={[styles.summaryRow, styles.totalRow]}>
-                    <Text style={styles.totalLabel}>Total:</Text>
+                    <Text style={styles.totalLabel}>{t('ecommerce.cart.total', 'Total')}:</Text>
                     <Text style={styles.totalValue}>{Number(totals.total).toLocaleString('en-US')} XAF</Text>
                 </View>
             </View>
@@ -217,7 +219,7 @@ export default function CheckoutScreen() {
                     <ActivityIndicator color="#FFF" />
                 ) : (
                     <>
-                        <Text style={styles.checkoutButtonText}>Complete Order</Text>
+                        <Text style={styles.checkoutButtonText}>{t('ecommerce.checkout.completeOrder', 'Complete Order')}</Text>
                         <MaterialCommunityIcons name="check" size={24} color="#FFF" />
                     </>
                 )}

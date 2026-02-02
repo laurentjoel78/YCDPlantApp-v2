@@ -1,4 +1,24 @@
 {
+  "home": {
+    "title": "YCD Guide Agricole",
+    "subtitle": "L'Agriculture Intelligente Simplifiée",
+    "searchPlaceholder": "Rechercher des fonctionnalités...",
+    "features": {
+      "diseaseDetection": "Détection de Maladies",
+      "weather": "Météo",
+      "marketplace": "Marché",
+      "aiAssistant": "Assistant IA"
+    },
+    "errors": {
+      "locationPermission": "Permission de localisation requise pour les informations météo",
+      "weatherLoadFailed": "Échec du chargement des informations météo"
+    }
+  },
+  "voice": {
+    "recording": "Enregistrement...",
+    "processing": "Transcription...",
+    "speakNow": "Parlez maintenant..."
+  },
   "common": {
     "next": "Suivant",
     "back": "Retour",
@@ -10,7 +30,11 @@
     "edit": "Modifier",
     "loading": "Chargement...",
     "or": "OU",
-    "comingSoon": "Bientôt disponible"
+    "comingSoon": "Bientôt disponible",
+    "retry": "Réessayer",
+    "notSet": "Non défini",
+    "error": "Erreur",
+    "success": "Succès"
   },
   "navigation": {
     "back": "Retour",
@@ -218,7 +242,8 @@
   "ecommerce": {
     "cart": {
       "title": "Mon Panier",
-      "empty": "Votre panier est vide",
+      "empty": "Panier Vide",
+      "emptyMessage": "Votre panier est vide",
       "startShopping": "Commencer les achats",
       "addToCart": "Ajouter au Panier",
       "added": "Ajouté au Panier",
@@ -232,7 +257,10 @@
       "proceedToCheckout": "Passer à la Caisse",
       "removeItem": "Retirer l'Article",
       "confirmRemove": "Êtes-vous sûr de vouloir retirer cet article du panier?",
-      "remove": "Retirer"
+      "remove": "Retirer",
+      "loadError": "Échec du chargement du panier",
+      "updateError": "Échec de la mise à jour de la quantité",
+      "removeError": "Échec du retrait de l'article"
     },
     "checkout": {
       "title": "Paiement",
@@ -245,10 +273,13 @@
       "orange": "Orange Money",
       "cashOnDelivery": "Paiement à la Livraison",
       "payWith": "Payer avec {{method}}",
+      "payWithMtn": "Payer avec *126#",
+      "payWithOrange": "Payer avec #150#",
       "payOnDelivery": "Payer à la réception",
       "phoneNumber": "Numéro de téléphone (ex: +237 6XX XXX XXX)",
       "orderSummary": "Résumé de la Commande",
       "completeOrder": "Finaliser la Commande",
+      "failed": "Échec du paiement",
       "errors": {
         "addressRequired": "Veuillez entrer l'adresse de livraison",
         "cityRequired": "Veuillez entrer la ville",

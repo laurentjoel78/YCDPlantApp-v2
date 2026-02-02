@@ -1,4 +1,24 @@
 {
+  "home": {
+    "title": "YCD Farmer Guide",
+    "subtitle": "Smart Farming Made Simple",
+    "searchPlaceholder": "Search features...",
+    "features": {
+      "diseaseDetection": "Disease Detection",
+      "weather": "Weather",
+      "marketplace": "Marketplace",
+      "aiAssistant": "AI Assistant"
+    },
+    "errors": {
+      "locationPermission": "Location permission required for weather information",
+      "weatherLoadFailed": "Failed to load weather information"
+    }
+  },
+  "voice": {
+    "recording": "Recording...",
+    "processing": "Transcribing...",
+    "speakNow": "Speak now..."
+  },
   "navigation": {
     "back": "Back",
     "diseaseDetection": "Disease Detection",
@@ -17,7 +37,11 @@
     "edit": "Edit",
     "loading": "Loading...",
     "or": "OR",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "retry": "Retry",
+    "notSet": "Not set",
+    "error": "Error",
+    "success": "Success"
   },
   "auth": {
     "signIn": "Sign In",
@@ -218,7 +242,8 @@
   "ecommerce": {
     "cart": {
       "title": "My Cart",
-      "empty": "Your cart is empty",
+      "empty": "Empty Cart",
+      "emptyMessage": "Your cart is empty",
       "startShopping": "Start Shopping",
       "addToCart": "Add to Cart",
       "added": "Added to Cart",
@@ -232,7 +257,10 @@
       "proceedToCheckout": "Proceed to Checkout",
       "removeItem": "Remove Item",
       "confirmRemove": "Are you sure you want to remove this item from cart?",
-      "remove": "Remove"
+      "remove": "Remove",
+      "loadError": "Failed to load cart",
+      "updateError": "Failed to update quantity",
+      "removeError": "Failed to remove item"
     },
     "checkout": {
       "title": "Checkout",
@@ -245,10 +273,13 @@
       "orange": "Orange Money",
       "cashOnDelivery": "Cash on Delivery",
       "payWith": "Pay with {{method}}",
+      "payWithMtn": "Pay with *126#",
+      "payWithOrange": "Pay with #150#",
       "payOnDelivery": "Pay when you receive",
       "phoneNumber": "Phone number (e.g., +237 6XX XXX XXX)",
       "orderSummary": "Order Summary",
       "completeOrder": "Complete Order",
+      "failed": "Checkout failed",
       "errors": {
         "addressRequired": "Please enter delivery address",
         "cityRequired": "Please enter city",

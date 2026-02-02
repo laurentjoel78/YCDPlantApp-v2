@@ -393,13 +393,13 @@ export default function SignupScreen({ navigation }: Props) {
           )}
 
           <View style={styles.loginContainer}>
-            <Text>Already have an account? </Text>
+            <Text>{t('auth.alreadyHaveAccount')} </Text>
             <Button
               onPress={() => navigation.navigate('Login')}
               mode="text"
               compact
             >
-              Sign In
+              {t('auth.signIn')}
             </Button>
           </View>
 

@@ -52,6 +52,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "babel-preset-expo": "^54.0.9",
     "baseline-browser-mapping": "^2.8.31",
+    "expo-module-scripts": "^5.0.8",
     "jest": "^29.7.0",
     "jest-expo": "~54.0.12",
     "typescript": "^5.9.2"

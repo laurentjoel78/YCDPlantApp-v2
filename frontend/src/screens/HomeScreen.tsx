@@ -44,12 +44,13 @@ interface FeatureItem {
   route: keyof RootStackParamList;
 }
 
-const features: FeatureItem[] = [
-  { id: 'disease', title: 'Disease Detection', icon: 'leaf', route: 'DiseaseDetection' },
-  { id: 'weather', title: 'Weather', icon: 'weather-partly-cloudy', route: 'Weather' },
-  { id: 'marketplace', title: 'Marketplace', icon: 'store', route: 'Marketplace' },
-  { id: 'ai', title: 'AI Assistant', icon: 'robot', route: 'AIAssistant' }
-];
+// Feature items with translation keys
+const featureKeys = [
+  { id: 'disease', titleKey: 'home.features.diseaseDetection', icon: 'leaf', route: 'DiseaseDetection' },
+  { id: 'weather', titleKey: 'home.features.weather', icon: 'weather-partly-cloudy', route: 'Weather' },
+  { id: 'marketplace', titleKey: 'home.features.marketplace', icon: 'store', route: 'Marketplace' },
+  { id: 'ai', titleKey: 'home.features.aiAssistant', icon: 'robot', route: 'AIAssistant' }
+] as const;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,7 +76,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       setError(null);
       const hasPermission = await requestLocationPermission();
       if (!hasPermission) {
-        setError('Location permission required for weather information');
+        setError(t('home.errors.locationPermission', 'Location permission required for weather information'));
         return;
       }
 
@@ -89,7 +90,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       cacheService.set(CACHE_KEYS.WEATHER, { weather: weatherData, location: address.city }, 10 * 60 * 1000); // 10 min TTL
     } catch (error: any) {
       console.error('Error fetching weather:', error);
-      setError(error.message || 'Failed to load weather information');
+      setError(error.message || t('home.errors.weatherLoadFailed', 'Failed to load weather information'));
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -131,6 +132,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     navigation.navigate(feature.route);
   };
 
+  // Create features array with translated titles
+  const features: FeatureItem[] = featureKeys.map(f => ({
+    id: f.id as FeatureType,
+    title: t(f.titleKey, f.titleKey.split('.').pop() || ''),
+    icon: f.icon,
+    route: f.route as keyof RootStackParamList
+  }));
+
   const filteredFeatures = features.filter(feature =>
     (feature.title || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -152,8 +161,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         <View style={styles.header}>
           <View style={styles.headerTop}>
             <View>
-              <Text style={styles.title}>YCD Farmer Guide</Text>
-              <Text style={styles.subtitle}>Smart Farming Made Simple</Text>
+              <Text style={styles.title}>{t('home.title', 'YCD Farmer Guide')}</Text>
+              <Text style={styles.subtitle}>{t('home.subtitle', 'Smart Farming Made Simple')}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
               <TouchableOpacity
@@ -184,11 +193,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             <Icon name="magnify" size={24} color="#6B7280" />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search features..."
+              placeholder={t('home.searchPlaceholder', 'Search features...')}
               value={searchQuery}
               onChangeText={setSearchQuery}
               placeholderTextColor="#9CA3AF"
-              accessibilityLabel="Search features"
+              accessibilityLabel={t('home.searchPlaceholder', 'Search features')}
             />
           </View>
         </View>
