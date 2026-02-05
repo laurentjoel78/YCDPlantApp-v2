@@ -199,7 +199,7 @@ All graphics are:
 - **Optimized** for tablet viewing during investor pitches
 - **Print-ready** (300 DPI quality)
 
----
+
 
 ### ✅ Quality Assurance
 

@@ -21,6 +21,10 @@
   },
   "navigation": {
     "back": "Back",
+    "home": "Home",
+    "experts": "Experts",
+    "marketplace": "Marketplace",
+    "profile": "Profile",
     "diseaseDetection": "Disease Detection",
     "consultation": "Consultation",
     "forumDetails": "Forum Details",
@@ -214,6 +218,14 @@
     "noMarkets": "No nearby market data available."
   },
   "forum": {
+    "title": "Forums",
+    "yourRegion": "Your Region",
+    "subtitle": "Connect with farmers in your region",
+    "searchPlaceholder": "Search forums...",
+    "noForumsFound": "No forums found in your region",
+    "regionSpecific": "Forums are region-specific to facilitate local collaboration",
+    "joinedSuccess": "You have joined the forum \"{{name}}\"",
+    "joinError": "Unable to join forum. Please try again.",
     "chat": {
       "loading": "Loading chat...",
       "title": "Forum Chat",

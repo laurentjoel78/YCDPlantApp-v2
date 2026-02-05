@@ -38,6 +38,10 @@
   },
   "navigation": {
     "back": "Retour",
+    "home": "Accueil",
+    "experts": "Experts",
+    "marketplace": "Marché",
+    "profile": "Profil",
     "diseaseDetection": "Détection de Maladies",
     "consultation": "Consultation",
     "forumDetails": "Détails du Forum",
@@ -214,6 +218,14 @@
     "noMarkets": "Aucune donnée sur les marchés à proximité."
   },
   "forum": {
+    "title": "Forums",
+    "yourRegion": "Votre Région",
+    "subtitle": "Connectez-vous avec les agriculteurs de votre région",
+    "searchPlaceholder": "Rechercher un forum...",
+    "noForumsFound": "Aucun forum trouvé dans votre région",
+    "regionSpecific": "Les forums sont spécifiques à chaque région pour faciliter la collaboration locale",
+    "joinedSuccess": "Vous avez rejoint le forum \"{{name}}\"",
+    "joinError": "Impossible de rejoindre le forum. Veuillez réessayer.",
     "chat": {
       "loading": "Chargement du chat...",
       "title": "Chat du Forum",

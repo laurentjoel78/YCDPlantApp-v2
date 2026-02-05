@@ -94,6 +94,7 @@ function AdminStack() {
 
 function MainTabs() {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   if (user?.role === 'admin') {
     return <AdminStack />;
@@ -111,6 +112,7 @@ function MainTabs() {
         name="Home"
         component={HomeStack}
         options={{
+          tabBarLabel: t('navigation.home', 'Home'),
           tabBarIcon: ({ color }: { color: string }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
@@ -120,6 +122,7 @@ function MainTabs() {
         name="Experts"
         component={ExpertsScreen}
         options={{
+          tabBarLabel: t('navigation.experts', 'Experts'),
           tabBarIcon: ({ color }: { color: string }) => (
             <MaterialCommunityIcons name="account-group" color={color} size={26} />
           ),
@@ -129,6 +132,7 @@ function MainTabs() {
         name="Marketplace"
         component={MarketplaceScreen}
         options={{
+          tabBarLabel: t('navigation.marketplace', 'Marketplace'),
           tabBarIcon: ({ color }: { color: string }) => (
             <MaterialCommunityIcons name="store" color={color} size={26} />
           ),
@@ -138,6 +142,7 @@ function MainTabs() {
         name="Profile"
         component={ProfileScreen}
         options={{
+          tabBarLabel: t('navigation.profile', 'Profile'),
           tabBarIcon: ({ color }: { color: string }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
           ),

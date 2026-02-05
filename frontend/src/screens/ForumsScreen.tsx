@@ -9,11 +9,13 @@ import { RootStackParamList } from '../navigation/types';
 import { useAuth } from '../hooks/useAuth';
 import { useSocket } from '../context/SocketContext';
 import { cacheService, CACHE_KEYS } from '../services/cacheService';
+import { useTranslation } from 'react-i18next';
 
 export default function ForumsScreen() {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { user } = useAuth();
     const { subscribe } = useSocket();
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
     // Use cached forums to avoid loading spinner on return visits
     const cachedForums = cacheService.get<ForumCategory[]>(CACHE_KEYS.FORUMS);
@@ -91,15 +93,15 @@ export default function ForumsScreen() {
             ));
 
             Alert.alert(
-                'Succès',
-                `Vous avez rejoint le forum "${forum.name || forum.title}"`,
+                t('common.success', 'Success'),
+                t('forum.joinedSuccess', { name: forum.name || forum.title }),
                 [{ text: 'OK' }]
             );
         } catch (error: any) {
             console.error('Failed to join forum:', error);
             Alert.alert(
-                'Erreur',
-                error.message || 'Impossible de rejoindre le forum. Veuillez réessayer.',
+                t('common.error', 'Error'),
+                error.message || t('forum.joinError', 'Unable to join forum. Please try again.'),
                 [{ text: 'OK' }]
             );
         } finally {
@@ -126,9 +128,9 @@ export default function ForumsScreen() {
             }
         >
             <View style={styles.header}>
-                <Text style={styles.title}>Forums de {user?.region || 'votre région'}</Text>
+                <Text style={styles.title}>{t('forum.title', 'Forums')} - {user?.region || t('forum.yourRegion', 'Your Region')}</Text>
                 <Text style={styles.subtitle}>
-                    Connectez-vous avec les agriculteurs de votre région
+                    {t('forum.subtitle', 'Connect with farmers in your region')}
                 </Text>
             </View>
 
@@ -137,7 +139,7 @@ export default function ForumsScreen() {
                     <Icon name="magnify" size={20} color="#6B7280" />
                     <TextInput
                         style={styles.searchInput}
-                        placeholder="Rechercher un forum..."
+                        placeholder={t('forum.searchPlaceholder', 'Search forums...')}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                     />
@@ -156,7 +158,7 @@ export default function ForumsScreen() {
                         style={styles.retryButton}
                         onPress={fetchForums}
                     >
-                        <Text style={styles.retryButtonText}>Réessayer</Text>
+                        <Text style={styles.retryButtonText}>{t('common.retry', 'Retry')}</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -165,10 +167,10 @@ export default function ForumsScreen() {
                         <View style={styles.noResultsContainer}>
                             <Icon name="forum-outline" size={48} color="#6B7280" />
                             <Text style={styles.noResultsText}>
-                                Aucun forum trouvé dans votre région
+                                {t('forum.noForumsFound', 'No forums found in your region')}
                             </Text>
                             <Text style={styles.noResultsSubtext}>
-                                Les forums sont spécifiques à chaque région pour faciliter la collaboration locale
+                                {t('forum.regionSpecific', 'Forums are region-specific to facilitate local collaboration')}
                             </Text>
                         </View>
                     ) : (
