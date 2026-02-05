@@ -1,18 +1,22 @@
 const { Readable } = require('stream');
 const fs = require('fs').promises;
 const path = require('path');
-const ffmpeg = require('fluent-ffmpeg');
-const speech = require('@google-cloud/speech');
-const { Translate } = require('@google-cloud/translate').v2;
+const Groq = require('groq-sdk');
 const VoiceRecording = require('../models/voiceRecording');
 const loggingService = require('./loggingService');
 const { AppError } = require('../middleware/errorHandling');
 
 class VoiceService {
   constructor() {
-    this.speechClient = new speech.SpeechClient();
-    this.translateClient = new Translate();
-    this.supportedLanguages = new Set(['en-US', 'fr-FR', 'ta-IN', 'hi-IN', 'te-IN', 'kn-IN']);
+    // Use Groq's Whisper API for transcription (free tier available)
+    const apiKey = process.env.GROQ_API_KEY;
+    if (apiKey) {
+      this.groq = new Groq({ apiKey });
+    } else {
+      console.warn('GROQ_API_KEY not found - voice transcription will not work');
+      this.groq = null;
+    }
+    this.supportedLanguages = new Set(['en', 'fr', 'en-US', 'fr-FR']);
     this.uploadDir = path.join(__dirname, '../../uploads/voice');
   }
 
@@ -23,28 +27,29 @@ class VoiceService {
 
   async processVoiceRecording(file, userId, language) {
     try {
-      if (!this.supportedLanguages.has(language)) {
+      // Normalize language
+      const langCode = language.split('-')[0];
+      if (!['en', 'fr'].includes(langCode)) {
         throw new AppError(`Language ${language} is not supported`, 400);
       }
 
       // Generate unique filename
-      const filename = `${Date.now()}-${Math.random().toString(36).substring(7)}.wav`;
+      const filename = `${Date.now()}-${Math.random().toString(36).substring(7)}.m4a`;
       const outputPath = path.join(this.uploadDir, filename);
 
-      // Convert to WAV format suitable for Google Speech-to-Text
-      await this.convertAudio(file.path, outputPath);
+      // Copy the uploaded file
+      await fs.copyFile(file.path, outputPath);
 
       // Create recording record
       const recording = await VoiceRecording.create({
         userId,
         recordingPath: filename,
-        language,
-        duration: await this.getAudioDuration(outputPath),
+        language: langCode,
         processingStatus: 'processing'
       });
 
-      // Process in background
-      this.transcribeAudio(recording.id, outputPath, language)
+      // Process transcription using Groq Whisper
+      this.transcribeFromFile(recording.id, outputPath, langCode)
         .catch(error => {
           loggingService.logSystem({
             logLevel: 'error',
@@ -72,93 +77,74 @@ class VoiceService {
     }
   }
 
-  async convertAudio(inputPath, outputPath) {
-    return new Promise((resolve, reject) => {
-      ffmpeg(inputPath)
-        .toFormat('wav')
-        .audioChannels(1)
-        .audioFrequency(16000)
-        .on('end', resolve)
-        .on('error', reject)
-        .save(outputPath);
-    });
-  }
-
-  async getAudioDuration(filePath) {
-    return new Promise((resolve, reject) => {
-      ffmpeg.ffprobe(filePath, (error, metadata) => {
-        if (error) reject(error);
-        else resolve(Math.ceil(metadata.format.duration));
-      });
-    });
-  }
-
-  async transcribeAudio(recordingId, audioPath, language) {
+  async transcribeFromFile(recordingId, audioPath, language) {
     try {
-      const audioBytes = await fs.readFile(audioPath);
+      if (!this.groq) {
+        throw new AppError('Groq API not configured', 503);
+      }
 
-      const audio = {
-        content: audioBytes.toString('base64')
-      };
-
-      const config = {
-        encoding: 'LINEAR16',
-        sampleRateHertz: 16000,
-        languageCode: language,
-        model: 'default',
-        enableAutomaticPunctuation: true
-      };
-
-      const request = {
-        audio,
-        config
-      };
-
-      const [response] = await this.speechClient.recognize(request);
-      const transcription = response.results
-        .map(result => result.alternatives[0].transcript)
-        .join('\n');
+      const transcription = await this.groq.audio.transcriptions.create({
+        file: require('fs').createReadStream(audioPath),
+        model: 'whisper-large-v3',
+        language: language,
+        response_format: 'json',
+      });
 
       await VoiceRecording.update({
-        transcription,
+        transcription: transcription.text,
         processingStatus: 'completed'
       }, {
         where: { id: recordingId }
       });
 
-      await loggingService.logSystem({
-        logLevel: 'info',
-        module: 'VoiceService',
-        message: 'Successfully transcribed audio',
-        metadata: {
-          recordingId,
-          language
-        }
-      });
-
-      return transcription;
+      return transcription.text;
     } catch (error) {
       await VoiceRecording.update({
         processingStatus: 'failed',
-        metadata: {
-          error: error.message
-        }
+        metadata: { error: error.message }
       }, {
         where: { id: recordingId }
       });
-
       throw error;
     }
   }
 
+  // Removed convertAudio and getAudioDuration - not needed with Groq Whisper
+
+  /**
+   * Translate text using Groq LLM
+   * Used for disease detection translations
+   */
   async translateText(text, targetLanguage) {
     try {
-      const [translation] = await this.translateClient.translate(text, targetLanguage);
+      if (!this.groq) {
+        throw new AppError('Groq API not configured for translation', 503);
+      }
+
+      const langName = targetLanguage === 'fr' ? 'French' : 'English';
+      
+      const completion = await this.groq.chat.completions.create({
+        model: 'llama-3.1-8b-instant',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a translator. Translate the following text to ${langName}. Only output the translation, nothing else.`
+          },
+          {
+            role: 'user',
+            content: text
+          }
+        ],
+        temperature: 0.1,
+        max_tokens: 500
+      });
+
+      const translation = completion.choices[0]?.message?.content?.trim() || text;
 
       await loggingService.logSystem({
         logLevel: 'info',
         module: 'VoiceService',
-        message: 'Successfully translated text',
+        message: 'Successfully translated text with Groq',
         metadata: {
           targetLanguage,
           textLength: text.length
@@ -176,95 +162,86 @@ class VoiceService {
           targetLanguage
         }
       });
-      throw error;
+      // Return original text if translation fails
+      return text;
     }
   }
 
   /**
-   * Direct transcription from base64 audio data
+   * Direct transcription from base64 audio data using Groq Whisper
    * Used for real-time voice input in chat
    */
   async transcribeBase64Audio(audioBase64, language, mimeType = 'audio/m4a') {
     try {
-      if (!this.supportedLanguages.has(language)) {
-        throw new AppError(`Language ${language} is not supported`, 400);
+      if (!this.groq) {
+        throw new AppError('Voice transcription service not configured. Please set GROQ_API_KEY.', 503);
       }
 
-      // Map MIME types to Google encoding formats
-      const encodingMap = {
-        'audio/m4a': 'MP3',
-        'audio/mp4': 'MP3',
-        'audio/mpeg': 'MP3',
-        'audio/wav': 'LINEAR16',
-        'audio/webm': 'WEBM_OPUS',
-        'audio/ogg': 'OGG_OPUS',
-      };
-
-      const encoding = encodingMap[mimeType] || 'MP3';
-
-      const audio = {
-        content: audioBase64
-      };
-
-      const config = {
-        encoding,
-        languageCode: language,
-        model: language === 'fr-FR' ? 'default' : 'default',
-        enableAutomaticPunctuation: true,
-        // Allow alternative languages for better accuracy
-        alternativeLanguageCodes: language === 'fr-FR' ? ['en-US'] : ['fr-FR'],
-      };
-
-      // Only set sample rate for LINEAR16 encoding
-      if (encoding === 'LINEAR16') {
-        config.sampleRateHertz = 16000;
-      }
-
-      const request = {
-        audio,
-        config
-      };
-
-      const [response] = await this.speechClient.recognize(request);
+      // Normalize language code (accept both 'fr' and 'fr-FR')
+      const langCode = language.split('-')[0]; // 'fr-FR' -> 'fr', 'en-US' -> 'en'
       
-      if (!response.results || response.results.length === 0) {
-        return { text: '', confidence: 0 };
+      if (!['en', 'fr'].includes(langCode)) {
+        throw new AppError(`Language ${language} is not supported. Use English (en) or French (fr).`, 400);
       }
 
-      const transcription = response.results
-        .map(result => result.alternatives[0]?.transcript || '')
-        .join(' ')
-        .trim();
+      // Convert base64 to buffer
+      const audioBuffer = Buffer.from(audioBase64, 'base64');
+      
+      // Create a temporary file for the audio (Groq requires file upload)
+      const tempFilename = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.m4a`;
+      const tempPath = path.join(this.uploadDir, tempFilename);
+      
+      // Ensure upload directory exists
+      await fs.mkdir(this.uploadDir, { recursive: true });
+      
+      // Write audio to temp file
+      await fs.writeFile(tempPath, audioBuffer);
 
-      const confidence = response.results[0]?.alternatives[0]?.confidence || 0;
+      try {
+        // Use Groq's Whisper API for transcription
+        const transcription = await this.groq.audio.transcriptions.create({
+          file: require('fs').createReadStream(tempPath),
+          model: 'whisper-large-v3',
+          language: langCode, // 'en' or 'fr'
+          response_format: 'json',
+        });
 
-      await loggingService.logSystem({
-        logLevel: 'info',
-        module: 'VoiceService',
-        message: 'Direct voice transcription completed',
-        metadata: {
-          language,
-          textLength: transcription.length,
-          confidence
-        }
-      });
+        // Clean up temp file
+        await fs.unlink(tempPath).catch(() => {});
 
-      return { 
-        text: transcription, 
-        confidence,
-        language 
-      };
+        const text = transcription.text?.trim() || '';
+
+        await loggingService.logSystem({
+          logLevel: 'info',
+          module: 'VoiceService',
+          message: 'Groq Whisper transcription completed',
+          metadata: {
+            language: langCode,
+            textLength: text.length,
+          }
+        });
+
+        return { 
+          text, 
+          confidence: 0.95, // Whisper doesn't return confidence, assume high
+          language: langCode 
+        };
+      } catch (groqError) {
+        // Clean up temp file on error
+        await fs.unlink(tempPath).catch(() => {});
+        throw groqError;
+      }
     } catch (error) {
       await loggingService.logSystem({
         logLevel: 'error',
         module: 'VoiceService',
-        message: 'Failed to transcribe base64 audio',
+        message: 'Failed to transcribe audio with Groq Whisper',
         errorDetails: {
           error: error.message,
           language
         }
       });
-      throw error;
+      throw new AppError(error.message || 'Failed to transcribe audio', error.statusCode || 500);
     }
   }
 
