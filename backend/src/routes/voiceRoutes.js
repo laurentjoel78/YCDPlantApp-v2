@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { protect } = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 const { checkVoiceConfig, validateLanguage } = require('../middleware/voiceConfigMiddleware');
 const voiceConfig = require('../config/voiceConfig');
 const {
@@ -43,7 +43,7 @@ const upload = multer({
 });
 
 // Apply protection to all routes
-router.use(protect);
+router.use(auth);
 
 // Apply voice configuration check to all routes
 router.use(checkVoiceConfig);
