@@ -21,6 +21,7 @@ const cartRoutes = require('./cartRoutes');
 const checkoutRoutes = require('./checkoutRoutes');
 const adminEcommerceRoutes = require('./adminEcommerceRoutes');
 const consultationRoutes = require('./consultationRoutes');
+const voiceRoutes = require('./voiceRoutes');
 
 router.use('/auth', authRoutes);
 router.use('/approvals', approvalRoutes);
@@ -44,4 +45,5 @@ router.use('/checkout', checkoutRoutes);
 router.use('/orders', checkoutRoutes); // Orders use checkout controller
 router.use('/admin/ecommerce', adminEcommerceRoutes);
 router.use('/consultations', consultationRoutes);
+router.use('/voice', voiceRoutes);
 module.exports = router;
