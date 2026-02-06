@@ -1,14 +1,37 @@
 const path = require('path');
 
 const voiceConfig = {
-  // Speech-to-Text and Translation credentials will be loaded from environment variables:
-  // GOOGLE_APPLICATION_CREDENTIALS should point to your JSON credentials file
+  // Speech-to-Text using Groq Whisper API
   
   // Supported languages
   supportedLanguages: [
     {
+      code: 'en',
+      name: 'English',
+      supported: {
+        speech: true,
+        translation: true
+      }
+    },
+    {
       code: 'en-US',
       name: 'English (US)',
+      supported: {
+        speech: true,
+        translation: true
+      }
+    },
+    {
+      code: 'fr',
+      name: 'French',
+      supported: {
+        speech: true,
+        translation: true
+      }
+    },
+    {
+      code: 'fr-FR',
+      name: 'French (France)',
       supported: {
         speech: true,
         translation: true
@@ -58,7 +81,10 @@ const voiceConfig = {
       'audio/mp3',
       'audio/mpeg',
       'audio/ogg',
-      'audio/webm'
+      'audio/webm',
+      'audio/m4a',
+      'audio/mp4',
+      'audio/x-m4a'
     ]
   },
 
@@ -71,8 +97,8 @@ const voiceConfig = {
 
   // Feature flags (for graceful degradation when services are unavailable)
   features: {
-    transcription: false, // Will be enabled when credentials are configured
-    translation: false,   // Will be enabled when credentials are configured
+    transcription: true,  // Enabled - using Groq Whisper API
+    translation: true,    // Enabled - using Groq LLM
     audioProcessing: true
   }
 };
