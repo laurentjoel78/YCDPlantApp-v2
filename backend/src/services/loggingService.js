@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const logger = require('../config/logger');
 
 // Lazy load models to avoid circular dependencies
 let AuditLog, UserActivityLog, SystemLog;
@@ -6,8 +7,7 @@ let AuditLog, UserActivityLog, SystemLog;
 const getModels = () => {
   if (!AuditLog || !UserActivityLog || !SystemLog) {
     try {
-      const logger = require('../config/logger');
-const models = require('../models');
+      const models = require('../models');
       AuditLog = models.AuditLog;
       UserActivityLog = models.UserActivityLog;
       SystemLog = models.SystemLog;
