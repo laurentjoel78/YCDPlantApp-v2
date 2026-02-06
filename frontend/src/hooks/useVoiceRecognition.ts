@@ -1,10 +1,35 @@
 import { useState, useEffect, useRef } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { api } from '../services/api';
 
-export type VoiceLanguage = 'en-US' | 'fr-FR';
+export type VoiceLanguage = 'en' | 'fr' | 'en-US' | 'fr-FR';
+
+// Custom recording options for Groq Whisper compatibility
+const RECORDING_OPTIONS: Audio.RecordingOptions = {
+  isMeteringEnabled: true,
+  android: {
+    extension: '.m4a',
+    outputFormat: Audio.AndroidOutputFormat.MPEG_4,
+    audioEncoder: Audio.AndroidAudioEncoder.AAC,
+    sampleRate: 44100,
+    numberOfChannels: 1,
+    bitRate: 128000,
+  },
+  ios: {
+    extension: '.m4a',
+    outputFormat: Audio.IOSOutputFormat.MPEG4AAC,
+    audioQuality: Audio.IOSAudioQuality.HIGH,
+    sampleRate: 44100,
+    numberOfChannels: 1,
+    bitRate: 128000,
+  },
+  web: {
+    mimeType: 'audio/webm',
+    bitsPerSecond: 128000,
+  },
+};
 
 interface VoiceRecognitionState {
   isRecording: boolean;
@@ -66,9 +91,8 @@ export const useVoiceRecognition = () => {
         playsInSilentModeIOS: true,
       });
 
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
+      // Use custom recording options for Groq Whisper compatibility
+      const { recording } = await Audio.Recording.createAsync(RECORDING_OPTIONS);
       
       recordingRef.current = recording;
       
@@ -203,9 +227,18 @@ async function sendAudioForTranscription(
       encoding: 'base64' as const,
     });
 
+    // Normalize language code (fr-FR -> fr, en-US -> en)
+    const langCode = language.split('-')[0];
+
+    console.log('Sending audio for transcription:', {
+      audioLength: base64Audio.length,
+      language: langCode,
+      mimeType: 'audio/m4a',
+    });
+
     const response = await api.voice.transcribe({
       audioBase64: base64Audio,
-      language,
+      language: langCode,
       mimeType: 'audio/m4a',
     });
 
