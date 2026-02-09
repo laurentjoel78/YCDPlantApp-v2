@@ -25,19 +25,21 @@
         "backgroundColor": "#4CAF50"
       },
       "package": "com.ycd.farmerguide",
+      "versionCode": 1,
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
+        "ACCESS_COARSE_LOCATION",
+        "RECORD_AUDIO"
       ]
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
     "extra": {
-      "apiUrl": "https://zippy-flow-production-62fe.up.railway.app/api",
+      "apiUrl": "https://ycdplantapp-production.up.railway.app/api",
       "eas": {
         "projectId": "47ae6fd6-45d4-408c-a463-2ce4eec47373"
       }
