@@ -2,6 +2,7 @@ const { Readable } = require('stream');
 const fs = require('fs').promises;
 const path = require('path');
 const Groq = require('groq-sdk');
+const { toFile } = require('groq-sdk');
 const VoiceRecording = require('../models/voiceRecording');
 const loggingService = require('./loggingService');
 const { AppError } = require('../middleware/errorHandling');
@@ -173,6 +174,7 @@ class VoiceService {
   /**
    * Direct transcription from base64 audio data using Groq Whisper
    * Used for real-time voice input in chat
+   * Uses in-memory buffer (no filesystem needed - works on Railway)
    */
   async transcribeBase64Audio(audioBase64, language, mimeType = 'audio/m4a') {
     try {
@@ -194,8 +196,7 @@ class VoiceService {
       console.log('Received audio for transcription:', {
         bufferSize: audioBuffer.length,
         language: langCode,
-        mimeType,
-        uploadDir: this.uploadDir
+        mimeType
       });
       
       // Determine file extension from mimeType
@@ -210,60 +211,40 @@ class VoiceService {
         'audio/ogg': 'ogg'
       };
       const ext = extMap[mimeType] || 'm4a';
+      const filename = `audio.${ext}`;
+
+      // Use Groq's toFile utility to create file-like object from buffer (no filesystem needed)
+      console.log('Creating in-memory file for Groq Whisper...');
+      const audioFile = await toFile(audioBuffer, filename, { type: mimeType });
+
+      // Use Groq's Whisper API for transcription
+      console.log('Calling Groq Whisper API...');
+      const transcription = await this.groq.audio.transcriptions.create({
+        file: audioFile,
+        model: 'whisper-large-v3',
+        language: langCode,
+        response_format: 'json',
+      });
       
-      // Create a temporary file for the audio (Groq requires file upload)
-      const tempFilename = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
-      const tempPath = path.join(this.uploadDir, tempFilename);
-      
-      // Ensure upload directory exists
-      await fs.mkdir(this.uploadDir, { recursive: true });
-      
-      // Write audio to temp file
-      await fs.writeFile(tempPath, audioBuffer);
-      console.log('Audio file written to:', tempPath);
+      console.log('Groq Whisper response:', transcription);
 
-      try {
-        // Use Groq's Whisper API for transcription
-        console.log('Calling Groq Whisper API...');
-        const transcription = await this.groq.audio.transcriptions.create({
-          file: require('fs').createReadStream(tempPath),
-          model: 'whisper-large-v3',
-          language: langCode, // 'en' or 'fr'
-          response_format: 'json',
-        });
-        
-        console.log('Groq Whisper response:', transcription);
+      const text = transcription.text?.trim() || '';
 
-        // Clean up temp file
-        await fs.unlink(tempPath).catch(() => {});
+      await loggingService.logSystem({
+        logLevel: 'info',
+        module: 'VoiceService',
+        message: 'Groq Whisper transcription completed',
+        metadata: {
+          language: langCode,
+          textLength: text.length,
+        }
+      });
 
-        const text = transcription.text?.trim() || '';
-
-        await loggingService.logSystem({
-          logLevel: 'info',
-          module: 'VoiceService',
-          message: 'Groq Whisper transcription completed',
-          metadata: {
-            language: langCode,
-            textLength: text.length,
-          }
-        });
-
-        return { 
-          text, 
-          confidence: 0.95, // Whisper doesn't return confidence, assume high
-          language: langCode 
-        };
-      } catch (groqError) {
-        // Clean up temp file on error
-        await fs.unlink(tempPath).catch(() => {});
-        console.error('Groq Whisper API error:', {
-          message: groqError.message,
-          status: groqError.status,
-          error: groqError.error,
-        });
-        throw groqError;
-      }
+      return { 
+        text, 
+        confidence: 0.95, // Whisper doesn't return confidence, assume high
+        language: langCode 
+      };
     } catch (error) {
       console.error('Voice transcription failed:', {
         message: error.message,
