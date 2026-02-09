@@ -17,7 +17,10 @@ class VoiceService {
       this.groq = null;
     }
     this.supportedLanguages = new Set(['en', 'fr', 'en-US', 'fr-FR']);
-    this.uploadDir = path.join(__dirname, '../../uploads/voice');
+    // Use /tmp for Railway (ephemeral filesystem) or local uploads folder
+    this.uploadDir = process.env.NODE_ENV === 'production' 
+      ? '/tmp/voice' 
+      : path.join(__dirname, '../../uploads/voice');
   }
 
   async init() {
@@ -174,6 +177,7 @@ class VoiceService {
   async transcribeBase64Audio(audioBase64, language, mimeType = 'audio/m4a') {
     try {
       if (!this.groq) {
+        console.error('GROQ_API_KEY not set - voice transcription unavailable');
         throw new AppError('Voice transcription service not configured. Please set GROQ_API_KEY.', 503);
       }
 
@@ -187,8 +191,28 @@ class VoiceService {
       // Convert base64 to buffer
       const audioBuffer = Buffer.from(audioBase64, 'base64');
       
+      console.log('Received audio for transcription:', {
+        bufferSize: audioBuffer.length,
+        language: langCode,
+        mimeType,
+        uploadDir: this.uploadDir
+      });
+      
+      // Determine file extension from mimeType
+      const extMap = {
+        'audio/m4a': 'm4a',
+        'audio/mp4': 'm4a',
+        'audio/x-m4a': 'm4a',
+        'audio/mpeg': 'mp3',
+        'audio/mp3': 'mp3',
+        'audio/wav': 'wav',
+        'audio/webm': 'webm',
+        'audio/ogg': 'ogg'
+      };
+      const ext = extMap[mimeType] || 'm4a';
+      
       // Create a temporary file for the audio (Groq requires file upload)
-      const tempFilename = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.m4a`;
+      const tempFilename = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
       const tempPath = path.join(this.uploadDir, tempFilename);
       
       // Ensure upload directory exists
@@ -196,15 +220,19 @@ class VoiceService {
       
       // Write audio to temp file
       await fs.writeFile(tempPath, audioBuffer);
+      console.log('Audio file written to:', tempPath);
 
       try {
         // Use Groq's Whisper API for transcription
+        console.log('Calling Groq Whisper API...');
         const transcription = await this.groq.audio.transcriptions.create({
           file: require('fs').createReadStream(tempPath),
           model: 'whisper-large-v3',
           language: langCode, // 'en' or 'fr'
           response_format: 'json',
         });
+        
+        console.log('Groq Whisper response:', transcription);
 
         // Clean up temp file
         await fs.unlink(tempPath).catch(() => {});
@@ -229,9 +257,18 @@ class VoiceService {
       } catch (groqError) {
         // Clean up temp file on error
         await fs.unlink(tempPath).catch(() => {});
+        console.error('Groq Whisper API error:', {
+          message: groqError.message,
+          status: groqError.status,
+          error: groqError.error,
+        });
         throw groqError;
       }
     } catch (error) {
+      console.error('Voice transcription failed:', {
+        message: error.message,
+        stack: error.stack
+      });
       await loggingService.logSystem({
         logLevel: 'error',
         module: 'VoiceService',
