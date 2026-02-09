@@ -1,13 +1,20 @@
 const { Crop, FarmCrop } = require('../models');
 const { validationResult } = require('express-validator');
 const logger = require('../config/logger');
+const { cacheService, CacheKeys, CacheTTL } = require('../services/cacheService');
 
-// Get all available crops
+// Get all available crops (CACHED - 24 hours)
 exports.getAllCrops = async (req, res) => {
   try {
-    const crops = await Crop.findAll({
-      where: { is_active: true }
-    });
+    // Try cache first (saves Neon compute hours)
+    const crops = await cacheService.getOrSet(
+      CacheKeys.allCrops(),
+      async () => {
+        logger.debug('Cache miss for allCrops - fetching from database');
+        return await Crop.findAll({ where: { is_active: true } });
+      },
+      CacheTTL.VERY_LONG // 24 hours - crop data rarely changes
+    );
     res.status(200).json({ crops });
   } catch (error) {
     logger.error('Error in getAllCrops:', error);
@@ -15,12 +22,18 @@ exports.getAllCrops = async (req, res) => {
   }
 };
 
-// Get crop by ID
+// Get crop by ID (CACHED - 24 hours)
 exports.getCropById = async (req, res) => {
   try {
-    const crop = await Crop.findOne({
-      where: { id: req.params.cropId, is_active: true }
-    });
+    const { cropId } = req.params;
+    
+    const crop = await cacheService.getOrSet(
+      CacheKeys.cropById(cropId),
+      async () => {
+        return await Crop.findOne({ where: { id: cropId, is_active: true } });
+      },
+      CacheTTL.VERY_LONG
+    );
 
     if (!crop) {
       return res.status(404).json({ error: 'Crop not found' });
@@ -57,6 +70,10 @@ exports.createCrop = async (req, res) => {
     };
 
     const crop = await Crop.create(cropData);
+    
+    // Invalidate crops cache
+    await cacheService.del(CacheKeys.allCrops());
+    
     res.status(201).json({ crop });
   } catch (error) {
     logger.error('Error in createCrop:', error);
@@ -96,6 +113,11 @@ exports.updateCrop = async (req, res) => {
     };
 
     await crop.update(updateData);
+    
+    // Invalidate crops cache
+    await cacheService.del(CacheKeys.allCrops());
+    await cacheService.del(CacheKeys.cropById(req.params.cropId));
+    
     res.status(200).json({ crop });
   } catch (error) {
     logger.error('Error in updateCrop:', error);
@@ -130,6 +152,10 @@ exports.deleteCrop = async (req, res) => {
       is_active: false,
       updated_by: req.user.id
     });
+
+    // Invalidate crops cache
+    await cacheService.del(CacheKeys.allCrops());
+    await cacheService.del(CacheKeys.cropById(cropId));
 
     res.status(200).json({ message: 'Crop deleted successfully' });
   } catch (error) {

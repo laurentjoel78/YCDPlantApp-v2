@@ -7,6 +7,7 @@ const hpp = require('hpp');
 const db = require('./models');
 const errorHandler = require('./middleware/errorHandler');
 const socketService = require('./services/socketService');
+const { cacheService } = require('./services/cacheService');
 const { version: appVersion } = require('../package.json');
 const logger = require('./config/logger');
 
@@ -97,6 +98,9 @@ async function startServer() {
     await db.sequelize.authenticate();
     logger.info('Database connection has been established successfully');
     logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+
+    // Initialize Redis cache (optional - falls back gracefully if unavailable)
+    await cacheService.connect();
 
     // DISABLED: Sync causes issues with column naming in production
     // Schema is handled by migrations only
