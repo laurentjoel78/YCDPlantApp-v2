@@ -211,20 +211,26 @@ class VoiceService {
         'audio/ogg': 'ogg'
       };
       const ext = extMap[mimeType] || 'm4a';
-      const filename = `audio.${ext}`;
 
-      // Use Groq's toFile utility to create file-like object from buffer (no filesystem needed)
-      console.log('Creating in-memory file for Groq Whisper...');
-      const audioFile = await toFile(audioBuffer, filename, { type: mimeType });
+      // Write buffer to temp file and use createReadStream (most reliable for Groq SDK)
+      const tmpDir = '/tmp/voice';
+      await fs.mkdir(tmpDir, { recursive: true });
+      const tmpFile = path.join(tmpDir, `transcribe_${Date.now()}.${ext}`);
+      await fs.writeFile(tmpFile, audioBuffer);
+      console.log('Wrote temp audio file:', tmpFile, 'size:', audioBuffer.length);
 
-      // Use Groq's Whisper API for transcription
+      // Use Groq's Whisper API for transcription with file stream
       console.log('Calling Groq Whisper API...');
+      const fsSync = require('fs');
       const transcription = await this.groq.audio.transcriptions.create({
-        file: audioFile,
+        file: fsSync.createReadStream(tmpFile),
         model: 'whisper-large-v3',
         language: langCode,
         response_format: 'json',
       });
+
+      // Clean up temp file
+      await fs.unlink(tmpFile).catch(() => {});
       
       console.log('Groq Whisper response:', transcription);
 
