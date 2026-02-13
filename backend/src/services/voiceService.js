@@ -190,32 +190,62 @@ class VoiceService {
         throw new AppError(`Language ${language} is not supported. Use English (en) or French (fr).`, 400);
       }
 
-      // Convert base64 to buffer
-      const audioBuffer = Buffer.from(audioBase64, 'base64');
+      // Convert base64 to buffer - strip data URI prefix if present
+      let cleanBase64 = audioBase64;
+      if (cleanBase64.includes(',')) {
+        cleanBase64 = cleanBase64.split(',')[1];
+      }
+      const audioBuffer = Buffer.from(cleanBase64, 'base64');
       
-      console.log('Received audio for transcription:', {
+      // Log first bytes for format detection
+      const header = audioBuffer.slice(0, 16);
+      const headerHex = header.toString('hex');
+      const headerAscii = header.toString('ascii').replace(/[^\x20-\x7E]/g, '.');
+      console.log('Audio buffer debug:', {
         bufferSize: audioBuffer.length,
         language: langCode,
-        mimeType
+        mimeType,
+        headerHex,
+        headerAscii,
+        first4bytes: headerHex.substring(0, 8),
       });
-      
-      // Determine file extension from mimeType
-      const extMap = {
-        'audio/m4a': 'm4a',
-        'audio/mp4': 'm4a',
-        'audio/x-m4a': 'm4a',
-        'audio/mpeg': 'mp3',
-        'audio/mp3': 'mp3',
-        'audio/wav': 'wav',
-        'audio/webm': 'webm',
-        'audio/ogg': 'ogg'
-      };
-      const ext = extMap[mimeType] || 'm4a';
 
-      // Write buffer to temp file and use createReadStream (most reliable for Groq SDK)
+      // Detect actual format from magic bytes
+      let detectedExt = 'm4a';
+      let detectedMime = mimeType || 'audio/m4a';
+      
+      if (headerHex.startsWith('52494646')) { // RIFF = WAV
+        detectedExt = 'wav';
+        detectedMime = 'audio/wav';
+      } else if (headerHex.startsWith('fff1') || headerHex.startsWith('fff9') || headerHex.startsWith('fff3') || headerHex.startsWith('ffe3')) { // AAC ADTS raw
+        detectedExt = 'aac';
+        detectedMime = 'audio/aac';
+      } else if (headerHex.startsWith('4944330') || headerHex.startsWith('fffb') || headerHex.startsWith('fff3')) { // ID3/MP3
+        detectedExt = 'mp3';
+        detectedMime = 'audio/mpeg';
+      } else if (headerHex.startsWith('1a45dfa3')) { // EBML = WebM/MKV
+        detectedExt = 'webm';
+        detectedMime = 'audio/webm';
+      } else if (headerHex.startsWith('4f676753')) { // OggS
+        detectedExt = 'ogg';
+        detectedMime = 'audio/ogg';
+      } else if (headerHex.startsWith('664c6143')) { // fLaC
+        detectedExt = 'flac';
+        detectedMime = 'audio/flac';
+      } else if (headerHex.substring(8, 16) === '66747970') { // ftyp at offset 4 = MP4/M4A
+        detectedExt = 'm4a';
+        detectedMime = 'audio/mp4';
+      } else if (headerHex.substring(0, 6) === '000000') { // Another MP4 variant
+        detectedExt = 'mp4';
+        detectedMime = 'audio/mp4';
+      }
+      
+      console.log('Detected audio format:', { detectedExt, detectedMime, requestedMime: mimeType });
+
+      // Write buffer to temp file
       const tmpDir = '/tmp/voice';
       await fs.mkdir(tmpDir, { recursive: true });
-      const tmpFile = path.join(tmpDir, `transcribe_${Date.now()}.${ext}`);
+      const tmpFile = path.join(tmpDir, `transcribe_${Date.now()}.${detectedExt}`);
       await fs.writeFile(tmpFile, audioBuffer);
       console.log('Wrote temp audio file:', tmpFile, 'size:', audioBuffer.length);
 
