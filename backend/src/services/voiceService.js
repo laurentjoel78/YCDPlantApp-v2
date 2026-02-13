@@ -249,15 +249,29 @@ class VoiceService {
       await fs.writeFile(tmpFile, audioBuffer);
       console.log('Wrote temp audio file:', tmpFile, 'size:', audioBuffer.length);
 
-      // Use Groq's Whisper API for transcription with file stream
+      // Try Groq Whisper API - first with createReadStream, then toFile fallback
       console.log('Calling Groq Whisper API...');
       const fsSync = require('fs');
-      const transcription = await this.groq.audio.transcriptions.create({
-        file: fsSync.createReadStream(tmpFile),
-        model: 'whisper-large-v3',
-        language: langCode,
-        response_format: 'json',
-      });
+      let transcription;
+      
+      try {
+        transcription = await this.groq.audio.transcriptions.create({
+          file: fsSync.createReadStream(tmpFile),
+          model: 'whisper-large-v3',
+          language: langCode,
+          response_format: 'json',
+        });
+      } catch (streamErr) {
+        console.warn('ReadStream approach failed, trying toFile fallback:', streamErr.message);
+        // Fallback: use Groq SDK toFile utility with explicit MIME type
+        const audioFile = await toFile(audioBuffer, `audio.${detectedExt}`, { type: detectedMime });
+        transcription = await this.groq.audio.transcriptions.create({
+          file: audioFile,
+          model: 'whisper-large-v3',
+          language: langCode,
+          response_format: 'json',
+        });
+      }
 
       // Clean up temp file
       await fs.unlink(tmpFile).catch(() => {});

@@ -1,10 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system/legacy';
 import { api } from '../services/api';
 
 export type VoiceLanguage = 'en' | 'fr' | 'en-US' | 'fr-FR';
+
+// Custom recording options optimized for Groq Whisper compatibility
+// Android: OGG container with OPUS codec (Groq natively supports ogg)
+// iOS: WAV with LINEAR PCM (universally supported)
+const WHISPER_RECORDING_OPTIONS: Audio.RecordingOptions = {
+  isMeteringEnabled: true,
+  android: {
+    extension: '.ogg',
+    outputFormat: 11, // OGG (Audio.AndroidOutputFormat.OGG)
+    audioEncoder: 7,  // OPUS (Audio.AndroidAudioEncoder.OPUS)
+    sampleRate: 16000,
+    numberOfChannels: 1,
+    bitRate: 64000,
+  },
+  ios: {
+    extension: '.wav',
+    outputFormat: 6, // LINEARPCM
+    audioQuality: 127, // MAX
+    sampleRate: 16000,
+    numberOfChannels: 1,
+    bitRate: 256000,
+    linearPCMBitDepth: 16,
+    linearPCMIsBigEndian: false,
+    linearPCMIsFloat: false,
+  },
+  web: {
+    mimeType: 'audio/webm',
+    bitsPerSecond: 128000,
+  },
+};
 
 interface VoiceRecognitionState {
   isRecording: boolean;
@@ -66,10 +96,19 @@ export const useVoiceRecognition = () => {
         playsInSilentModeIOS: true,
       });
 
-      // Use HIGH_QUALITY preset for best Whisper compatibility
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
+      // Use custom recording options optimized for Groq Whisper
+      // Falls back to HIGH_QUALITY if OGG/OPUS not supported (older Android)
+      let recording: Audio.Recording;
+      try {
+        const result = await Audio.Recording.createAsync(WHISPER_RECORDING_OPTIONS);
+        recording = result.recording;
+      } catch (formatError) {
+        console.warn('OGG/OPUS recording not supported, falling back to HIGH_QUALITY:', formatError);
+        const result = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+        recording = result.recording;
+      }
       
       recordingRef.current = recording;
       
@@ -207,16 +246,30 @@ async function sendAudioForTranscription(
     // Normalize language code (fr-FR -> fr, en-US -> en)
     const langCode = language.split('-')[0];
 
+    // Detect mimeType from file extension
+    const ext = uri.split('.').pop()?.toLowerCase() || 'ogg';
+    const mimeMap: Record<string, string> = {
+      'amr': 'audio/amr',
+      'wav': 'audio/wav',
+      'm4a': 'audio/m4a',
+      'mp4': 'audio/mp4',
+      'webm': 'audio/webm',
+      'ogg': 'audio/ogg',
+      'mp3': 'audio/mpeg',
+    };
+    const mimeType = mimeMap[ext] || 'audio/ogg';
+
     console.log('Sending audio for transcription:', {
       audioLength: base64Audio.length,
       language: langCode,
-      mimeType: 'audio/m4a',
+      mimeType,
+      ext,
     });
 
     const response = await api.voice.transcribe({
       audioBase64: base64Audio,
       language: langCode,
-      mimeType: 'audio/m4a',
+      mimeType,
     });
 
     if (response.data?.text) {
