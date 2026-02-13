@@ -172,6 +172,127 @@ class VoiceService {
   }
 
   /**
+   * Transcribe audio from an uploaded file (multipart upload)
+   * No base64 encoding/decoding - file is written directly by multer
+   * Converts to WAV via ffmpeg then sends to Groq Whisper
+   */
+  async transcribeFileUpload(filePath, language, mimeType = 'audio/m4a') {
+    try {
+      if (!this.groq) {
+        throw new AppError('Voice transcription service not configured.', 503);
+      }
+
+      const langCode = language.split('-')[0];
+      if (!['en', 'fr'].includes(langCode)) {
+        throw new AppError(`Language ${language} is not supported.`, 400);
+      }
+
+      const fsSync = require('fs');
+      const fileStats = fsSync.statSync(filePath);
+      
+      // Read first 16 bytes for format detection
+      const fd = fsSync.openSync(filePath, 'r');
+      const headerBuf = Buffer.alloc(16);
+      fsSync.readSync(fd, headerBuf, 0, 16, 0);
+      fsSync.closeSync(fd);
+      const headerHex = headerBuf.toString('hex');
+      
+      console.log('transcribeFileUpload:', {
+        filePath,
+        fileSize: fileStats.size,
+        language: langCode,
+        mimeType,
+        headerHex,
+        headerAscii: headerBuf.toString('ascii').replace(/[^\x20-\x7E]/g, '.'),
+      });
+
+      // Convert to WAV via ffmpeg (Groq accepts WAV reliably)
+      const ffmpegPath = require('ffmpeg-static');
+      const { execSync } = require('child_process');
+      const wavFile = filePath.replace(/\.[^.]+$/, '.wav');
+      
+      console.log('Converting uploaded audio to WAV via ffmpeg...');
+      let useWav = false;
+      try {
+        const ffmpegCmd = `"${ffmpegPath}" -i "${filePath}" -acodec pcm_s16le -ar 16000 -ac 1 -y "${wavFile}"`;
+        execSync(ffmpegCmd, { timeout: 15000, stdio: 'pipe' });
+        const wavStats = fsSync.statSync(wavFile);
+        console.log('WAV conversion successful. WAV size:', wavStats.size);
+        useWav = true;
+      } catch (ffErr) {
+        console.error('ffmpeg conversion failed:', ffErr.message);
+        if (ffErr.stderr) console.error('ffmpeg stderr:', ffErr.stderr.toString().substring(0, 500));
+      }
+
+      const fileToSend = useWav ? wavFile : filePath;
+      const sendMime = useWav ? 'audio/wav' : mimeType;
+      const sendExt = useWav ? 'wav' : (filePath.split('.').pop() || 'm4a');
+      console.log('Sending to Groq:', { file: fileToSend, ext: sendExt, mime: sendMime });
+
+      // Upload to Groq via axios + form-data
+      const axios = require('axios');
+      const FormData = require('form-data');
+      
+      const form = new FormData();
+      form.append('file', fsSync.createReadStream(fileToSend), {
+        filename: `audio.${sendExt}`,
+        contentType: sendMime,
+      });
+      form.append('model', 'whisper-large-v3');
+      form.append('language', langCode);
+      form.append('response_format', 'json');
+
+      let transcription;
+      try {
+        const response = await axios.post(
+          'https://api.groq.com/openai/v1/audio/transcriptions',
+          form,
+          {
+            headers: {
+              'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+              ...form.getHeaders(),
+            },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
+            timeout: 30000,
+          }
+        );
+        console.log('Groq Whisper response status:', response.status);
+        transcription = response.data;
+      } catch (axiosError) {
+        const status = axiosError.response?.status || 'unknown';
+        const body = axiosError.response?.data ? JSON.stringify(axiosError.response.data) : axiosError.message;
+        console.error('Groq API error:', { status, body: body.substring(0, 500) });
+        throw new Error(`Groq API error ${status}: ${body}`);
+      }
+
+      // Clean up WAV file
+      if (useWav) await fs.unlink(wavFile).catch(() => {});
+
+      const text = transcription.text?.trim() || '';
+      console.log('Transcription result:', text.substring(0, 200));
+
+      await loggingService.logSystem({
+        logLevel: 'info',
+        module: 'VoiceService',
+        message: 'File upload transcription completed',
+        metadata: { language: langCode, textLength: text.length }
+      });
+
+      return { text, confidence: 0.95, language: langCode };
+    } catch (error) {
+      console.error('File upload transcription failed:', { message: error.message });
+      await loggingService.logSystem({
+        logLevel: 'error',
+        module: 'VoiceService',
+        message: 'Failed to transcribe uploaded audio',
+        errorDetails: { error: error.message, language }
+      });
+      throw new AppError(error.message || 'Failed to transcribe audio', error.statusCode || 500);
+    }
+  }
+
+  /**
    * Direct transcription from base64 audio data using Groq Whisper
    * Used for real-time voice input in chat
    * Uses in-memory buffer (no filesystem needed - works on Railway)

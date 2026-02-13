@@ -185,6 +185,11 @@ export const api = {
                 method: 'POST',
                 body: JSON.stringify(data)
             }),
+        transcribeFile: (formData: FormData) =>
+            request<{ status: string; data: { text: string; confidence: number; language: string } }>('/voice/transcribe-file', {
+                method: 'POST',
+                body: formData,
+            }),
     },
     suggestions: {
         // Authenticated suggestions (include token in headers)

@@ -233,21 +233,18 @@ export const useVoiceRecognition = () => {
   };
 };
 
-// Helper function to send audio to backend
+// Helper function to send audio to backend as multipart file upload
+// (base64 encoding was corrupting audio data - OGG CRC errors, M4A missing moov atom)
 async function sendAudioForTranscription(
   uri: string,
   language: VoiceLanguage
 ): Promise<string> {
   try {
-    const base64Audio = await FileSystem.readAsStringAsync(uri, {
-      encoding: 'base64' as const,
-    });
-
     // Normalize language code (fr-FR -> fr, en-US -> en)
     const langCode = language.split('-')[0];
 
     // Detect mimeType from file extension
-    const ext = uri.split('.').pop()?.toLowerCase() || 'ogg';
+    const ext = uri.split('.').pop()?.toLowerCase() || 'm4a';
     const mimeMap: Record<string, string> = {
       'amr': 'audio/amr',
       'wav': 'audio/wav',
@@ -257,20 +254,28 @@ async function sendAudioForTranscription(
       'ogg': 'audio/ogg',
       'mp3': 'audio/mpeg',
     };
-    const mimeType = mimeMap[ext] || 'audio/ogg';
+    const mimeType = mimeMap[ext] || 'audio/m4a';
 
-    console.log('Sending audio for transcription:', {
-      audioLength: base64Audio.length,
+    // Get file info for logging
+    const fileInfo = await FileSystem.getInfoAsync(uri);
+    console.log('Sending audio file for transcription:', {
+      uri,
+      fileSize: (fileInfo as any).size,
       language: langCode,
       mimeType,
       ext,
     });
 
-    const response = await api.voice.transcribe({
-      audioBase64: base64Audio,
-      language: langCode,
-      mimeType,
-    });
+    // Send as multipart FormData (raw binary - no base64 encoding corruption)
+    const formData = new FormData();
+    formData.append('audio', {
+      uri: uri,
+      type: mimeType,
+      name: `recording.${ext}`,
+    } as any);
+    formData.append('language', langCode);
+
+    const response = await api.voice.transcribeFile(formData);
 
     if (response.data?.text) {
       return response.data.text;

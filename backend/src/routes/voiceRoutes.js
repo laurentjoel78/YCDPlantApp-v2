@@ -60,6 +60,24 @@ router.post('/translate', validateLanguage, translateText);
 // Direct transcription route (for real-time voice chat)
 router.post('/transcribe', transcribeAudio);
 
+// File-based transcription route (multipart upload - avoids base64 encoding corruption)
+const transcribeUpload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      const tmpDir = process.env.NODE_ENV === 'production' ? '/tmp/voice' : voiceConfig.upload.tempDir;
+      require('fs').mkdirSync(tmpDir, { recursive: true });
+      cb(null, tmpDir);
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, 'transcribe-' + uniqueSuffix + path.extname(file.originalname));
+    }
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 }
+});
+const { transcribeAudioFile } = require('../controllers/voiceController');
+router.post('/transcribe-file', transcribeUpload.single('audio'), transcribeAudioFile);
+
 // Language support information
 router.get('/languages', (req, res) => {
   res.json({

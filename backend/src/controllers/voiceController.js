@@ -70,8 +70,66 @@ exports.listVoiceRecordings = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * Transcribe audio from a multipart file upload
+ * Avoids base64 encoding which was corrupting audio data
+ */
+exports.transcribeAudioFile = async (req, res, next) => {
+  try {
+    const language = req.body.language;
+    const file = req.file;
 
-exports.deleteVoiceRecording = async (req, res, next) => {
+    if (!file) {
+      throw new AppError('Audio file is required', 400);
+    }
+
+    if (!language) {
+      throw new AppError('Language is required', 400);
+    }
+
+    console.log('transcribeAudioFile: received file', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+      path: file.path,
+      language,
+    });
+
+    const result = await voiceService.transcribeFileUpload(
+      file.path,
+      language,
+      file.mimetype
+    );
+
+    // Clean up uploaded file
+    const fsP = require('fs').promises;
+    await fsP.unlink(file.path).catch(() => {});
+
+    await loggingService.logUserActivity({
+      userId: req.user.id,
+      activityType: 'voice_transcription',
+      description: 'Transcribed voice input (file upload)',
+      metadata: {
+        language,
+        textLength: result.text.length,
+        fileSize: file.size,
+        mimeType: file.mimetype,
+      }
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
+  } catch (error) {
+    // Clean up file on error
+    if (req.file) {
+      const fsP = require('fs').promises;
+      await fsP.unlink(req.file.path).catch(() => {});
+    }
+    next(error);
+  }
+};exports.deleteVoiceRecording = async (req, res, next) => {
   try {
     const { id } = req.params;
     
