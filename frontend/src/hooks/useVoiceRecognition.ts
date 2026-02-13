@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Alert } from 'react-native';
 import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { api } from '../services/api';
 
 export type VoiceLanguage = 'en' | 'fr' | 'en-US' | 'fr-FR';
