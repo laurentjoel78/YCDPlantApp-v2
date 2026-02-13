@@ -249,32 +249,58 @@ class VoiceService {
       await fs.writeFile(tmpFile, audioBuffer);
       console.log('Wrote temp audio file:', tmpFile, 'size:', audioBuffer.length);
 
-      // Try Groq Whisper API - first with createReadStream, then toFile fallback
-      console.log('Calling Groq Whisper API...');
+      // Use Groq REST API directly with FormData (bypasses SDK multipart issues)
+      console.log('Calling Groq Whisper API via direct REST...');
       const fsSync = require('fs');
-      let transcription;
+      const FormData = require('form-data');
       
-      try {
-        transcription = await this.groq.audio.transcriptions.create({
-          file: fsSync.createReadStream(tmpFile),
-          model: 'whisper-large-v3',
-          language: langCode,
-          response_format: 'json',
+      const form = new FormData();
+      form.append('file', fsSync.createReadStream(tmpFile), {
+        filename: `audio.${detectedExt}`,
+        contentType: detectedMime,
+      });
+      form.append('model', 'whisper-large-v3');
+      form.append('language', langCode);
+      form.append('response_format', 'json');
+
+      const transcription = await new Promise((resolve, reject) => {
+        const https = require('https');
+        const options = {
+          hostname: 'api.groq.com',
+          path: '/openai/v1/audio/transcriptions',
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+            ...form.getHeaders(),
+          },
+        };
+
+        const req = https.request(options, (res) => {
+          let data = '';
+          res.on('data', (chunk) => { data += chunk; });
+          res.on('end', () => {
+            console.log('Groq API response status:', res.statusCode);
+            console.log('Groq API response body:', data.substring(0, 500));
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              try {
+                resolve(JSON.parse(data));
+              } catch (e) {
+                reject(new Error(`Failed to parse Groq response: ${data}`));
+              }
+            } else {
+              reject(new Error(`Groq API error ${res.statusCode}: ${data}`));
+            }
+          });
         });
-      } catch (streamErr) {
-        console.warn('ReadStream approach failed, trying toFile fallback:', streamErr.message);
-        // Fallback: use Groq SDK toFile utility with explicit MIME type
-        const audioFile = await toFile(audioBuffer, `audio.${detectedExt}`, { type: detectedMime });
-        transcription = await this.groq.audio.transcriptions.create({
-          file: audioFile,
-          model: 'whisper-large-v3',
-          language: langCode,
-          response_format: 'json',
-        });
-      }
+
+        req.on('error', (err) => reject(err));
+        form.pipe(req);
+      });
 
       // Clean up temp file
       await fs.unlink(tmpFile).catch(() => {});
+
+      console.log('Groq Whisper response:', transcription);
       
       console.log('Groq Whisper response:', transcription);
 
