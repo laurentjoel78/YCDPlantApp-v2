@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { User, Wallet, Farm, Crop, FarmCrop } = require('../models');
+const { User, Wallet, Farm, Crop, FarmCrop, sequelize } = require('../models');
 const emailService = require('../services/emailService');
 const { uploadImage } = require('../services/uploadService');
 const auditService = require('../services/auditService');
@@ -102,7 +102,10 @@ const register = async (req, res) => {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
+    // Wrap all DB operations in a transaction so if anything fails, everything rolls back
+    const t = await sequelize.transaction();
 
+    try {
     // Generate verification token
     const verificationToken = crypto.randomBytes(32).toString('hex');
     const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
@@ -131,7 +134,7 @@ const register = async (req, res) => {
       region,
       preferred_language,
       approval_status: role === 'farmer' ? 'pending' : 'approved'
-    });
+    }, { transaction: t });
 
     // Create wallet
     const roleToWalletType = {
@@ -148,7 +151,7 @@ const register = async (req, res) => {
       currency: 'XAF',
       wallet_type: walletType,
       verification_level: 'basic'
-    });
+    }, { transaction: t });
 
     // Create farm if farmer
     if (role === 'farmer' && farm_name) {
@@ -167,10 +170,10 @@ const register = async (req, res) => {
         region: farmRegion,
         size: farmSize,
         size_hectares: farmSize,
-        soil_type: 'Not specified',
-        irrigation_system: 'Not specified',
+        soil_type: 'Other',
+        irrigation_system: null,
         is_active: true
-      });
+      }, { transaction: t });
 
       if (Array.isArray(crops_grown) && crops_grown.length > 0) {
         const numCrops = crops_grown.length;
@@ -182,7 +185,8 @@ const register = async (req, res) => {
           if (!cropName || typeof cropName !== 'string') continue;
           const [crop] = await Crop.findOrCreate({
             where: { name: cropName },
-            defaults: { category: 'general' }
+            defaults: { category: 'general' },
+            transaction: t
           });
 
           await FarmCrop.create({
@@ -193,14 +197,17 @@ const register = async (req, res) => {
             expected_harvest_date: expectedHarvestDate,
             status: 'planning',
             is_active: true
-          }).catch(err => {
+          }, { transaction: t }).catch(err => {
             requestLogger.warn('Failed to create FarmCrop for registration', { error: err.message, cropName, farmId: createdFarm.id });
           });
         }
       }
     }
 
-    // Send verification email
+    // Commit the transaction - all or nothing
+    await t.commit();
+
+    // Send verification email (outside transaction - non-critical)
     if (!autoVerify) {
       try {
         await emailService.sendVerificationEmail(user, verificationToken);
@@ -209,7 +216,7 @@ const register = async (req, res) => {
       }
     }
 
-    // Log registration activity
+    // Log registration activity (outside transaction - non-critical)
     await auditService.logUserAction({
       userId: user.id,
       userRole: user.role,
@@ -237,6 +244,13 @@ const register = async (req, res) => {
         approval_status: user.approval_status
       }
     });
+
+    } catch (txError) {
+      // Rollback transaction on any failure - no partial data left behind
+      await t.rollback();
+      throw txError;
+    }
+
   } catch (error) {
     const logger = (req && req.log) ? req.log : console;
     logger.error('Registration failed', { error: error.message });
