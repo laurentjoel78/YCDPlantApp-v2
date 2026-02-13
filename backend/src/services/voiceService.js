@@ -248,100 +248,92 @@ class VoiceService {
       const tmpFile = path.join(tmpDir, `transcribe_${Date.now()}.${detectedExt}`);
       await fs.writeFile(tmpFile, audioBuffer);
       
-      // Verify written file matches buffer
       const fsSync = require('fs');
       const writtenStats = fsSync.statSync(tmpFile);
       console.log('Wrote temp audio file:', tmpFile, 'bufferSize:', audioBuffer.length, 'fileSize:', writtenStats.size);
-      
-      // Verify first bytes of written file match buffer
-      const fd = fsSync.openSync(tmpFile, 'r');
-      const verifyBuf = Buffer.alloc(16);
-      fsSync.readSync(fd, verifyBuf, 0, 16, 0);
-      fsSync.closeSync(fd);
-      console.log('Written file header verification:', verifyBuf.toString('hex'));
 
-      // Use curl for the most reliable multipart upload possible
-      console.log('Calling Groq Whisper API via curl...');
-      const { execSync } = require('child_process');
+      // Use axios + form-data for multipart upload to Groq
+      console.log('Calling Groq Whisper API via axios...');
+      const axios = require('axios');
+      const FormData = require('form-data');
       
-      const curlCmd = [
-        'curl', '-s', '-w', '\\n%{http_code}',
-        '-X', 'POST',
-        'https://api.groq.com/openai/v1/audio/transcriptions',
-        '-H', `Authorization: Bearer ${process.env.GROQ_API_KEY}`,
-        '-F', `file=@${tmpFile};type=${detectedMime}`,
-        '-F', 'model=whisper-large-v3',
-        '-F', `language=${langCode}`,
-        '-F', 'response_format=json',
-      ].join(' ');
-      
-      console.log('Curl command (key redacted):', curlCmd.replace(process.env.GROQ_API_KEY, 'REDACTED'));
-      
-      let curlOutput;
-      try {
-        curlOutput = execSync(curlCmd, { 
-          encoding: 'utf8', 
-          timeout: 30000,
-          maxBuffer: 1024 * 1024,
-        });
-      } catch (curlError) {
-        console.error('Curl execution failed:', curlError.message);
-        if (curlError.stdout) console.error('Curl stdout:', curlError.stdout);
-        if (curlError.stderr) console.error('Curl stderr:', curlError.stderr);
-        throw new Error(`Curl failed: ${curlError.message}`);
-      }
-      
-      // Parse curl output - last line is status code
-      const outputLines = curlOutput.trim().split('\n');
-      const httpStatus = parseInt(outputLines[outputLines.length - 1], 10);
-      const responseBody = outputLines.slice(0, -1).join('\n');
-      
-      console.log('Groq API response status (curl):', httpStatus);
-      console.log('Groq API response body (curl):', responseBody.substring(0, 500));
-      
+      const form = new FormData();
+      form.append('file', fsSync.createReadStream(tmpFile), {
+        filename: `audio.${detectedExt}`,
+        contentType: detectedMime,
+      });
+      form.append('model', 'whisper-large-v3');
+      form.append('language', langCode);
+      form.append('response_format', 'json');
+
       let transcription;
-      if (httpStatus >= 200 && httpStatus < 300) {
-        try {
-          transcription = JSON.parse(responseBody);
-        } catch (e) {
-          throw new Error(`Failed to parse Groq response: ${responseBody}`);
-        }
-      } else {
-        // If curl also fails, try generating a test WAV to verify API connectivity
-        console.log('Curl also failed! Testing API with a generated WAV...');
+      try {
+        const response = await axios.post(
+          'https://api.groq.com/openai/v1/audio/transcriptions',
+          form,
+          {
+            headers: {
+              'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+              ...form.getHeaders(),
+            },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
+            timeout: 30000,
+          }
+        );
+        console.log('Groq API response status (axios):', response.status);
+        console.log('Groq API response data (axios):', JSON.stringify(response.data).substring(0, 500));
+        transcription = response.data;
+      } catch (axiosError) {
+        const status = axiosError.response?.status || 'unknown';
+        const body = axiosError.response?.data ? JSON.stringify(axiosError.response.data) : axiosError.message;
+        console.error('Axios Groq request failed:', { status, body: body.substring(0, 500) });
+        
+        // DIAGNOSTIC: Try a generated test WAV to isolate whether it's the audio or the transport
+        console.log('OGG upload failed. Testing with a generated WAV to isolate the issue...');
         const testWav = this._generateTestWav();
         const testFile = path.join(tmpDir, 'test_tone.wav');
         await fs.writeFile(testFile, testWav);
+        console.log('Test WAV file size:', testWav.length);
         
-        const testCmd = [
-          'curl', '-s', '-w', '\\n%{http_code}',
-          '-X', 'POST',
-          'https://api.groq.com/openai/v1/audio/transcriptions',
-          '-H', `Authorization: Bearer ${process.env.GROQ_API_KEY}`,
-          '-F', `file=@${testFile};type=audio/wav`,
-          '-F', 'model=whisper-large-v3',
-          '-F', `language=${langCode}`,
-          '-F', 'response_format=json',
-        ].join(' ');
+        const testForm = new FormData();
+        testForm.append('file', fsSync.createReadStream(testFile), {
+          filename: 'test_tone.wav',
+          contentType: 'audio/wav',
+        });
+        testForm.append('model', 'whisper-large-v3');
+        testForm.append('language', langCode);
+        testForm.append('response_format', 'json');
         
         try {
-          const testOutput = execSync(testCmd, { encoding: 'utf8', timeout: 30000 });
-          const testLines = testOutput.trim().split('\n');
-          const testStatus = parseInt(testLines[testLines.length - 1], 10);
-          const testBody = testLines.slice(0, -1).join('\n');
-          console.log('Test WAV API status:', testStatus, 'body:', testBody.substring(0, 300));
+          const testResp = await axios.post(
+            'https://api.groq.com/openai/v1/audio/transcriptions',
+            testForm,
+            {
+              headers: {
+                'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+                ...testForm.getHeaders(),
+              },
+              maxContentLength: Infinity,
+              maxBodyLength: Infinity,
+              timeout: 30000,
+            }
+          );
+          console.log('TEST WAV SUCCEEDED! Status:', testResp.status, 'Data:', JSON.stringify(testResp.data).substring(0, 300));
+          console.log('DIAGNOSIS: API + transport work fine. Issue is with the recorded OGG/OPUS audio from Android.');
           
-          if (testStatus >= 200 && testStatus < 300) {
-            console.log('TEST WAV SUCCEEDED - issue is with the recorded audio format, not the API/transport');
-          } else {
-            console.log('TEST WAV ALSO FAILED - issue may be with API key or transport');
-          }
+          // Since the API works, the problem is the OGG file. 
+          // Try sending the raw buffer directly as WAV by wrapping it with a WAV header
+          // (This won't work for OGG, but confirms the issue)
         } catch (testErr) {
-          console.error('Test WAV curl failed:', testErr.message);
+          const testStatus = testErr.response?.status || 'unknown';
+          const testBody = testErr.response?.data ? JSON.stringify(testErr.response.data) : testErr.message;
+          console.log('TEST WAV ALSO FAILED! Status:', testStatus, 'Body:', testBody.substring(0, 300));
+          console.log('DIAGNOSIS: Issue is with API key, network, or Groq service itself.');
         }
         
         await fs.unlink(testFile).catch(() => {});
-        throw new Error(`Groq API error ${httpStatus}: ${responseBody}`);
+        throw new Error(`Groq API error ${status}: ${body}`);
       }
 
       // Clean up temp file
