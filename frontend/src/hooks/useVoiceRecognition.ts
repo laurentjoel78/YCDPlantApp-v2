@@ -7,14 +7,14 @@ import { api } from '../services/api';
 export type VoiceLanguage = 'en' | 'fr' | 'en-US' | 'fr-FR';
 
 // Custom recording options optimized for Groq Whisper compatibility
-// Android: OGG container with OPUS codec (Groq natively supports ogg)
-// iOS: WAV with LINEAR PCM (universally supported)
+// Android: M4A/AAC (reliable encoder, converted to WAV server-side via ffmpeg)
+// iOS: WAV with LINEAR PCM (universally supported, sent directly)
 const WHISPER_RECORDING_OPTIONS: Audio.RecordingOptions = {
   isMeteringEnabled: true,
   android: {
-    extension: '.ogg',
-    outputFormat: 11, // OGG (Audio.AndroidOutputFormat.OGG)
-    audioEncoder: 7,  // OPUS (Audio.AndroidAudioEncoder.OPUS)
+    extension: '.m4a',
+    outputFormat: 2,  // MPEG_4 (Audio.AndroidOutputFormat.MPEG_4) 
+    audioEncoder: 3,  // AAC (Audio.AndroidAudioEncoder.AAC)
     sampleRate: 16000,
     numberOfChannels: 1,
     bitRate: 64000,
