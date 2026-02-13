@@ -17,7 +17,7 @@ export default function RequestExpertScreen() {
     const [urgencyLevel, setUrgencyLevel] = useState<UrgencyLevel>('normal');
     const [consultationType, setConsultationType] = useState<ConsultationType>('virtual');
     const [maxBudget, setMaxBudget] = useState(50000);
-    const { isRecording, results, error, startRecording, stopRecording } = useVoiceRecognition();
+    const { isRecording, transcription, error, startRecording, stopRecording } = useVoiceRecognition();
     const { t } = useTranslation();
     const [messages, setMessages] = useState<Array<{ id: string; message: string; type: MessageType; timestamp: Date }>>([
         {
@@ -170,8 +170,8 @@ export default function RequestExpertScreen() {
                         onStopVoice={async () => {
                             try {
                                 await stopRecording();
-                                if (results.length > 0) {
-                                    const transcribedText = results[0];
+                                if (transcription) {
+                                    const transcribedText = transcription;
                                     const newMessage = {
                                         id: Date.now().toString(),
                                         message: transcribedText,

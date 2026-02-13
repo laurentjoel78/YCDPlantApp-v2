@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@react-native-community/cli": "^20.0.2"
+  },
+  "dependencies": {
+    "marked": "^17.0.1",
+    "puppeteer": "^24.37.2"
   }
 }

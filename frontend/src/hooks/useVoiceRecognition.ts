@@ -227,10 +227,17 @@ async function sendAudioForTranscription(
   } catch (error: any) {
     console.error('Transcription API error:', error);
     
-    if (error.response?.status === 503 || error.message?.includes('network')) {
+    const status = error.response?.status || error.status;
+    const detail = error.response?.data?.message || error.message || 'Unknown error';
+    console.error('Transcription failed - status:', status, 'detail:', detail);
+    
+    if (status === 503 || error.message?.includes('network')) {
       throw new Error('Voice service temporarily unavailable. Please type your message instead.');
     }
+    if (status === 413) {
+      throw new Error('Audio recording too long. Please try a shorter recording.');
+    }
     
-    throw new Error('Could not transcribe audio. Please try again or type your message.');
+    throw new Error(`Could not transcribe audio: ${detail}`);
   }
 }
