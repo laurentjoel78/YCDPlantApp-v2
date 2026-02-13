@@ -249,18 +249,42 @@ class VoiceService {
       await fs.writeFile(tmpFile, audioBuffer);
       
       const fsSync = require('fs');
-      const writtenStats = fsSync.statSync(tmpFile);
-      console.log('Wrote temp audio file:', tmpFile, 'bufferSize:', audioBuffer.length, 'fileSize:', writtenStats.size);
+      console.log('Wrote temp audio file:', tmpFile, 'size:', audioBuffer.length);
 
-      // Use axios + form-data for multipart upload to Groq
-      console.log('Calling Groq Whisper API via axios...');
+      // Convert ANY format to WAV using ffmpeg (Groq accepts WAV reliably)
+      const ffmpegPath = require('ffmpeg-static');
+      const { execSync } = require('child_process');
+      const wavFile = tmpFile.replace(/\.[^.]+$/, '.wav');
+      
+      console.log('Converting audio to WAV via ffmpeg...');
+      console.log('ffmpeg path:', ffmpegPath);
+      
+      try {
+        const ffmpegCmd = `"${ffmpegPath}" -i "${tmpFile}" -acodec pcm_s16le -ar 16000 -ac 1 -y "${wavFile}"`;
+        execSync(ffmpegCmd, { timeout: 15000, stdio: 'pipe' });
+        const wavStats = fsSync.statSync(wavFile);
+        console.log('WAV conversion successful. WAV size:', wavStats.size);
+      } catch (ffmpegError) {
+        console.error('ffmpeg conversion failed:', ffmpegError.message);
+        if (ffmpegError.stderr) console.error('ffmpeg stderr:', ffmpegError.stderr.toString());
+        // Fall back to sending original file
+        console.log('Falling back to original file format...');
+      }
+
+      // Use the WAV file if conversion succeeded, otherwise use original
+      const fileToSend = fsSync.existsSync(wavFile) ? wavFile : tmpFile;
+      const sendExt = fsSync.existsSync(wavFile) ? 'wav' : detectedExt;
+      const sendMime = fsSync.existsSync(wavFile) ? 'audio/wav' : detectedMime;
+      console.log('Sending to Groq:', { file: fileToSend, ext: sendExt, mime: sendMime });
+
+      // Upload to Groq via axios + form-data
       const axios = require('axios');
       const FormData = require('form-data');
       
       const form = new FormData();
-      form.append('file', fsSync.createReadStream(tmpFile), {
-        filename: `audio.${detectedExt}`,
-        contentType: detectedMime,
+      form.append('file', fsSync.createReadStream(fileToSend), {
+        filename: `audio.${sendExt}`,
+        contentType: sendMime,
       });
       form.append('model', 'whisper-large-v3');
       form.append('language', langCode);
@@ -281,69 +305,22 @@ class VoiceService {
             timeout: 30000,
           }
         );
-        console.log('Groq API response status (axios):', response.status);
-        console.log('Groq API response data (axios):', JSON.stringify(response.data).substring(0, 500));
+        console.log('Groq Whisper response status:', response.status);
+        console.log('Groq Whisper transcription:', JSON.stringify(response.data).substring(0, 500));
         transcription = response.data;
       } catch (axiosError) {
         const status = axiosError.response?.status || 'unknown';
         const body = axiosError.response?.data ? JSON.stringify(axiosError.response.data) : axiosError.message;
-        console.error('Axios Groq request failed:', { status, body: body.substring(0, 500) });
-        
-        // DIAGNOSTIC: Try a generated test WAV to isolate whether it's the audio or the transport
-        console.log('OGG upload failed. Testing with a generated WAV to isolate the issue...');
-        const testWav = this._generateTestWav();
-        const testFile = path.join(tmpDir, 'test_tone.wav');
-        await fs.writeFile(testFile, testWav);
-        console.log('Test WAV file size:', testWav.length);
-        
-        const testForm = new FormData();
-        testForm.append('file', fsSync.createReadStream(testFile), {
-          filename: 'test_tone.wav',
-          contentType: 'audio/wav',
-        });
-        testForm.append('model', 'whisper-large-v3');
-        testForm.append('language', langCode);
-        testForm.append('response_format', 'json');
-        
-        try {
-          const testResp = await axios.post(
-            'https://api.groq.com/openai/v1/audio/transcriptions',
-            testForm,
-            {
-              headers: {
-                'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-                ...testForm.getHeaders(),
-              },
-              maxContentLength: Infinity,
-              maxBodyLength: Infinity,
-              timeout: 30000,
-            }
-          );
-          console.log('TEST WAV SUCCEEDED! Status:', testResp.status, 'Data:', JSON.stringify(testResp.data).substring(0, 300));
-          console.log('DIAGNOSIS: API + transport work fine. Issue is with the recorded OGG/OPUS audio from Android.');
-          
-          // Since the API works, the problem is the OGG file. 
-          // Try sending the raw buffer directly as WAV by wrapping it with a WAV header
-          // (This won't work for OGG, but confirms the issue)
-        } catch (testErr) {
-          const testStatus = testErr.response?.status || 'unknown';
-          const testBody = testErr.response?.data ? JSON.stringify(testErr.response.data) : testErr.message;
-          console.log('TEST WAV ALSO FAILED! Status:', testStatus, 'Body:', testBody.substring(0, 300));
-          console.log('DIAGNOSIS: Issue is with API key, network, or Groq service itself.');
-        }
-        
-        await fs.unlink(testFile).catch(() => {});
+        console.error('Groq API error:', { status, body: body.substring(0, 500) });
         throw new Error(`Groq API error ${status}: ${body}`);
       }
 
-      // Clean up temp file
+      // Clean up temp files
       await fs.unlink(tmpFile).catch(() => {});
-
-      console.log('Groq Whisper response:', transcription);
-      
-      console.log('Groq Whisper response:', transcription);
+      await fs.unlink(wavFile).catch(() => {});
 
       const text = transcription.text?.trim() || '';
+      console.log('Transcription result:', text.substring(0, 200));
 
       await loggingService.logSystem({
         logLevel: 'info',
