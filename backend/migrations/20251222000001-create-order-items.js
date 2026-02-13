@@ -2,6 +2,21 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
+        // Check if table already exists
+        try {
+            const tableExists = await queryInterface.sequelize.query(
+                `SELECT to_regclass('public.order_items') AS exists`,
+                { type: Sequelize.QueryTypes.SELECT }
+            );
+
+            if (tableExists[0]?.exists) {
+                console.log('  ⏭️  order_items table already exists');
+                return;
+            }
+        } catch (e) {
+            // Continue with creation
+        }
+
         await queryInterface.createTable('order_items', {
             id: {
                 allowNull: false,
@@ -49,13 +64,19 @@ module.exports = {
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
             }
         });
+        console.log('  ✅ Created order_items table');
 
         // Add indexes for performance
-        await queryInterface.addIndex('order_items', ['order_id']);
-        await queryInterface.addIndex('order_items', ['product_id']);
+        try {
+            await queryInterface.addIndex('order_items', ['order_id']);
+            await queryInterface.addIndex('order_items', ['product_id']);
+            console.log('  ✅ Added indexes on order_items');
+        } catch (e) {
+            console.log('  ⏭️  Indexes on order_items may already exist');
+        }
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('order_items');
+        await queryInterface.dropTable('order_items').catch(() => {});
     }
 };

@@ -15,6 +15,8 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.removeColumn('orders', 'payment_reference');
+        // Note: payment_reference may have been created by 20251101000002-create-commerce-tables
+        // Only remove if it was NOT part of the original table definition
+        await queryInterface.removeColumn('orders', 'payment_reference').catch(() => {});
     }
 };
