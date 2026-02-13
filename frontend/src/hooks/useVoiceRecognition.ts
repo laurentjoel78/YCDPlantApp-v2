@@ -7,7 +7,7 @@ import { api } from '../services/api';
 export type VoiceLanguage = 'en' | 'fr' | 'en-US' | 'fr-FR';
 
 // Custom recording options optimized for Groq Whisper compatibility
-// Android: M4A/AAC (reliable encoder, converted to WAV server-side via ffmpeg)
+// Android: M4A/AAC at standard rates (converted to 16kHz WAV server-side via ffmpeg)
 // iOS: WAV with LINEAR PCM (universally supported, sent directly)
 const WHISPER_RECORDING_OPTIONS: Audio.RecordingOptions = {
   isMeteringEnabled: true,
@@ -15,9 +15,9 @@ const WHISPER_RECORDING_OPTIONS: Audio.RecordingOptions = {
     extension: '.m4a',
     outputFormat: 2,  // MPEG_4 (Audio.AndroidOutputFormat.MPEG_4) 
     audioEncoder: 3,  // AAC (Audio.AndroidAudioEncoder.AAC)
-    sampleRate: 16000,
-    numberOfChannels: 1,
-    bitRate: 64000,
+    sampleRate: 44100,
+    numberOfChannels: 2,
+    bitRate: 128000,
   },
   ios: {
     extension: '.wav',
