@@ -110,15 +110,15 @@ class LoggingService {
       const { UserActivityLog } = getModels();
       if (!UserActivityLog) return null;
       return await UserActivityLog.create({
-        userId,
-        activityType,
+        user_id: userId,
+        activity_type: activityType,
         description,
         metadata: {
           ...metadata,
           systemContext: this.systemContext
         },
         duration,
-        deviceInfo,
+        device_info: deviceInfo,
         location,
         status
       });
@@ -148,17 +148,18 @@ class LoggingService {
       const { SystemLog } = getModels();
       if (!SystemLog) return null;
       return await SystemLog.create({
-        level: logLevel || 'info',
+        log_level: logLevel || 'info',
+        module: module || 'System',
         category: module || 'System',
-        source: 'Backend',
         message,
-        details: {
+        error_details: {
           ...errorDetails,
           systemContext: this.systemContext,
           performanceMetrics
         },
+        source: 'Backend',
         environment: process.env.NODE_ENV || 'development',
-        requestId,
+        request_id: requestId,
         timestamp: new Date()
       });
     } catch (error) {
