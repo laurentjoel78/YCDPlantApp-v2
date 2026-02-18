@@ -1,11 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from './storage';
 import { api } from '../services/api';
 
 export const TOKEN_KEY = 'token';
 
 export async function getStoredToken() {
   try {
-    return await AsyncStorage.getItem(TOKEN_KEY);
+    return await MMKVStorage.getItem(TOKEN_KEY);
   } catch {
     return null;
   }
@@ -14,9 +14,9 @@ export async function getStoredToken() {
 export async function setStoredToken(token: string | null) {
   try {
     if (token) {
-      await AsyncStorage.setItem(TOKEN_KEY, token);
+      await MMKVStorage.setItem(TOKEN_KEY, token);
     } else {
-      await AsyncStorage.removeItem(TOKEN_KEY);
+      await MMKVStorage.removeItem(TOKEN_KEY);
     }
   } catch {
     // Handle error silently

@@ -11,7 +11,8 @@ interface ExpertBookingModalProps {
     expert: {
         id: string;
         name: string;
-        hourlyRate: number;
+        hourlyRate?: number;
+        hourly_rate?: number; // Backend may return snake_case
     };
     onClose: () => void;
     onBookingComplete: () => void;

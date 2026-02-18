@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 import en from './locales/en.json';
 import fr from './locales/fr.json';
 
@@ -16,7 +16,7 @@ declare module 'i18next' {
 // Get stored language preference
 const getStoredLanguage = async () => {
   try {
-    const lang = await AsyncStorage.getItem('appLanguage');
+    const lang = await MMKVStorage.getItem('appLanguage');
     return lang || 'fr'; // Default to French
   } catch {
     return 'fr';
@@ -49,7 +49,7 @@ getStoredLanguage().then((lang: string) => {
 });
 
 export const changeLanguage = async (lng: 'fr' | 'en'): Promise<void> => {
-  await AsyncStorage.setItem('appLanguage', lng);
+  await MMKVStorage.setItem('appLanguage', lng);
   await i18n.changeLanguage(lng);
 };
 

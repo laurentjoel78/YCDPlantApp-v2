@@ -1,7 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 
 /**
  * Production-grade cache manager with automatic invalidation
+ * Uses MMKV for 10x faster performance than AsyncStorage
  */
 
 // Cache version - increment this when user schema changes
@@ -27,7 +28,7 @@ export class CacheManager {
                 version: CACHE_VERSION
             };
 
-            await AsyncStorage.setItem(key, JSON.stringify(cacheEntry));
+            await MMKVStorage.setItem(key, JSON.stringify(cacheEntry));
         } catch (error) {
             console.error(`[CacheManager] Error setting ${key}:`, error);
         }
@@ -38,7 +39,7 @@ export class CacheManager {
      */
     static async get<T>(key: string): Promise<T | null> {
         try {
-            const cached = await AsyncStorage.getItem(key);
+            const cached = await MMKVStorage.getItem(key);
             if (!cached) return null;
 
             const entry = JSON.parse(cached);
@@ -69,7 +70,7 @@ export class CacheManager {
      */
     static async remove(key: string): Promise<void> {
         try {
-            await AsyncStorage.removeItem(key);
+            await MMKVStorage.removeItem(key);
         } catch (error) {
             console.error(`[CacheManager] Error removing ${key}:`, error);
         }
@@ -80,8 +81,8 @@ export class CacheManager {
      */
     static async clearAll(): Promise<void> {
         try {
-            await AsyncStorage.clear();
-            console.log('[CacheManager] All cache cleared');
+            await MMKVStorage.clear();
+            console.log('[CacheManager] All cache cleared (MMKV)');
         } catch (error) {
             console.error('[CacheManager] Error clearing cache:', error);
         }
@@ -104,11 +105,11 @@ export class CacheManager {
      */
     static async checkVersion(): Promise<boolean> {
         try {
-            const storedVersion = await AsyncStorage.getItem(VERSION_KEY);
+            const storedVersion = await MMKVStorage.getItem(VERSION_KEY);
             if (storedVersion !== CACHE_VERSION) {
                 console.log(`[CacheManager] Version upgrade: ${storedVersion} -> ${CACHE_VERSION}`);
                 await this.clearAll();
-                await AsyncStorage.setItem(VERSION_KEY, CACHE_VERSION);
+                await MMKVStorage.setItem(VERSION_KEY, CACHE_VERSION);
                 return false;
             }
             return true;

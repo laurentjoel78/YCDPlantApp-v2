@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Location from 'expo-location';
 import { api } from '../services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 
 export type AppUser = { 
   id: string;
@@ -53,7 +53,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     
     const logout = async () => {
         try {
-            await AsyncStorage.removeItem('token');
+            await MMKVStorage.removeItem('token');
             setUser(null);
         } catch (error) {
             console.error('Error during logout:', error);
@@ -83,7 +83,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         (async () => {
             try {
                 // Try to load token and profile
-                const token = await AsyncStorage.getItem('token');
+                const token = await MMKVStorage.getItem('token');
                 if (token) {
                     try {
                         const profile = await api.auth.profile(token);
@@ -91,7 +91,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
                         setUser(profile.user as any);
                     } catch (e) {
                         // invalid token / profile fetch failed, clear
-                        await AsyncStorage.removeItem('token');
+                        await MMKVStorage.removeItem('token');
                     }
                 }
 

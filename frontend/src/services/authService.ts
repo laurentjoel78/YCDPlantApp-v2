@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 import { api } from './api';
 import { STORAGE_KEYS } from '../config/constants';
 
@@ -10,8 +10,8 @@ export const authService = {
 
       // api.auth.login returns { token, user }
       if (response && response.token) {
-        await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
-        await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+        await MMKVStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
+        await MMKVStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
       }
 
       return response;
@@ -22,7 +22,7 @@ export const authService = {
 
   async logout() {
     try {
-      const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+      const token = await MMKVStorage.getItem(STORAGE_KEYS.TOKEN);
 
       // Call the backend logout endpoint via api wrapper (keeps base URL logic in one place)
       if (token) {
@@ -35,17 +35,17 @@ export const authService = {
       }
 
       // Clear local storage
-      await AsyncStorage.multiRemove([STORAGE_KEYS.TOKEN, STORAGE_KEYS.USER]);
+      await MMKVStorage.multiRemove([STORAGE_KEYS.TOKEN, STORAGE_KEYS.USER]);
     } catch (error) {
       // Even if the server request fails, we still want to clear local storage
-      await AsyncStorage.multiRemove([STORAGE_KEYS.TOKEN, STORAGE_KEYS.USER]);
+      await MMKVStorage.multiRemove([STORAGE_KEYS.TOKEN, STORAGE_KEYS.USER]);
       throw error;
     }
   },
 
   async getCurrentUser() {
     try {
-      const userStr = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+      const userStr = await MMKVStorage.getItem(STORAGE_KEYS.USER);
       return userStr ? JSON.parse(userStr) : null;
     } catch (error) {
       console.error('Error getting current user:', error);
@@ -55,7 +55,7 @@ export const authService = {
 
   async isAuthenticated() {
     try {
-      const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+      const token = await MMKVStorage.getItem(STORAGE_KEYS.TOKEN);
       return !!token;
     } catch (error) {
       console.error('Error checking authentication:', error);
@@ -65,7 +65,7 @@ export const authService = {
 
   async getToken() {
     try {
-      return await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+      return await MMKVStorage.getItem(STORAGE_KEYS.TOKEN);
     } catch (error) {
       console.error('Error getting token:', error);
       return null;
@@ -74,7 +74,7 @@ export const authService = {
 
   async getProfile() {
     try {
-      const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+      const token = await MMKVStorage.getItem(STORAGE_KEYS.TOKEN);
       if (!token) return null;
       const response = await api.auth.profile(token);
       return response.user;

@@ -7,7 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { request } from '../services/api';
 import { useTheme } from '../theme/ThemeContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 import { useApp } from '../store/AppContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useTranslation } from 'react-i18next';
@@ -95,7 +95,7 @@ export default function SignupScreen({ navigation }: Props) {
   React.useEffect(() => {
     (async () => {
       try {
-        const stored = await AsyncStorage.getItem('phoneCountryCode');
+        const stored = await MMKVStorage.getItem('phoneCountryCode');
         if (stored) setCountryCode(stored);
       } catch (e) {
         // ignore
@@ -106,7 +106,7 @@ export default function SignupScreen({ navigation }: Props) {
   const onCountryCodeChange = async (val: string) => {
     setCountryCode(val);
     try {
-      await AsyncStorage.setItem('phoneCountryCode', val);
+      await MMKVStorage.setItem('phoneCountryCode', val);
     } catch (e) {
       // ignore
     }

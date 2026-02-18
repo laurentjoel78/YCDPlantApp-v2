@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 import { SOCKET_URL, STORAGE_KEYS } from '../config/constants';
 
 interface SocketContextType {
@@ -34,8 +34,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         const initSocket = async () => {
             try {
                 // Use STORAGE_KEYS for consistency with AuthContext
-                const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
-                const storedUser = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+                const token = await MMKVStorage.getItem(STORAGE_KEYS.TOKEN);
+                const storedUser = await MMKVStorage.getItem(STORAGE_KEYS.USER);
                 const userId = storedUser ? JSON.parse(storedUser)?.id : null;
 
                 const newSocket = io(SOCKET_URL, {

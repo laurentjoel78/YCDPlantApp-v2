@@ -10,7 +10,9 @@ type RouteParams = {
     OrderSuccess: {
         order: {
             id: string;
-            total: number;
+            total?: number;
+            total_amount?: number; // Backend snake_case
+            totalAmount?: number; // Alternate camelCase
             status: string;
             type?: 'order' | 'consultation';
         };

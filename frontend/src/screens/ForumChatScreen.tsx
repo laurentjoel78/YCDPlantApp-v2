@@ -29,12 +29,16 @@ interface ChatMessage {
     id: string;
     content: string;
     messageType: string;
-    createdAt: string;
+    createdAt?: string;
+    created_at?: string; // Backend may return snake_case
     sender: {
         id: string;
-        first_name: string;
-        last_name: string;
+        first_name?: string;
+        firstName?: string; // Support camelCase
+        last_name?: string;
+        lastName?: string; // Support camelCase
         profile_image_url?: string;
+        profile_image?: string; // Support alternate naming
     };
 }
 
@@ -226,8 +230,8 @@ export default function ForumChatScreen() {
 
     const renderMessage = ({ item, index }: { item: ChatMessage; index: number }) => {
         const isOwnMessage = item.sender?.id === user?.id;
-        const itemDate = item.created_at || item.createdAt;
-        const prevDate = messages[index - 1]?.created_at || messages[index - 1]?.createdAt;
+        const itemDate = item.created_at || item.createdAt || '';
+        const prevDate = messages[index - 1]?.created_at || messages[index - 1]?.createdAt || '';
         const showDateHeader = index === 0 || formatDate(itemDate) !== formatDate(prevDate);
 
         return (

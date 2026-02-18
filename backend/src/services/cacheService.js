@@ -215,15 +215,15 @@ const CacheKeys = {
   diseaseById: (diseaseId) => `disease:${diseaseId}`,
   diseasesByCrop: (cropId) => `diseases:crop:${cropId}`,
   
-  // Markets - cache for 1 hour
+  // Markets - cache for 2 hours (optimized for poor connectivity)
   allMarkets: () => 'markets:all',
   marketsByRegion: (region) => `markets:region:${region}`,
   
-  // Weather - cache for 30 minutes
+  // Weather - cache for 1 hour (optimized for poor connectivity)
   weather: (farmId) => `weather:${farmId}`,
   forecast: (farmId) => `forecast:${farmId}`,
   
-  // Forum - cache for 5 minutes
+  // Forum - cache for 30 minutes (optimized for poor connectivity)
   forumPosts: (page) => `forum:posts:page:${page}`,
   forumPost: (postId) => `forum:post:${postId}`,
   
@@ -234,11 +234,12 @@ const CacheKeys = {
   chatResponse: (questionHash) => `chat:${questionHash}`,
 };
 
-// TTL constants (in seconds)
+// TTL constants (in seconds) - optimized for areas with poor connectivity
 const CacheTTL = {
-  SHORT: 300,        // 5 minutes
+  SHORT: 600,        // 10 minutes (was 5)
   MEDIUM: 1800,      // 30 minutes  
   LONG: 3600,        // 1 hour
+  EXTENDED: 7200,    // 2 hours (new - for markets, products)
   VERY_LONG: 86400,  // 24 hours
 };
 

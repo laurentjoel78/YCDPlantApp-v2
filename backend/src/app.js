@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const compression = require('compression');
 const errorHandler = require('./middleware/errorHandler');
 const checkEnvironment = require('./utils/checkEnvironment');
 require('dotenv').config();
@@ -14,6 +15,20 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(helmet());
+
+// Compression - reduces response size by ~70% for slow connections (Cameroon)
+app.use(compression({
+  level: 6, // Balance between speed and compression ratio
+  threshold: 1024, // Only compress responses > 1KB
+  filter: (req, res) => {
+    // Don't compress if client doesn't support it
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
+}));
+
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));  // Allow large base64 audio payloads
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

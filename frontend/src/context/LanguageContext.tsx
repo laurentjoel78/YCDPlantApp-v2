@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 import { changeLanguage } from '../i18n';
 
 interface LanguageContextType {
@@ -21,7 +21,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Load stored language preference
     const loadLanguage = async () => {
       try {
-        const storedLang = await AsyncStorage.getItem('appLanguage');
+        const storedLang = await MMKVStorage.getItem('appLanguage');
         if (storedLang) {
           setCurrentLanguage(storedLang);
         }

@@ -1,5 +1,5 @@
 import { request } from './api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 
 export interface Farm {
   id: string;
@@ -15,8 +15,8 @@ export interface Farm {
 
 export const farmService = {
   getUserFarms: async (userId: string) => {
-    // Read token from AsyncStorage - support both keys used in the app
-    const token = (await AsyncStorage.getItem('token')) || (await AsyncStorage.getItem('authToken')) || undefined;
+    // Read token from MMKV - support both keys used in the app
+    const token = (await MMKVStorage.getItem('token')) || (await MMKVStorage.getItem('authToken')) || undefined;
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (token) headers.Authorization = `Bearer ${token}`;
 

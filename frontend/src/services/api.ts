@@ -4,7 +4,13 @@ import i18n from '../i18n';
 // Simple API layer with swappable base URL and mock fallbacks
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-import Constants from 'expo-constants';
+// Use dynamic import to avoid type resolution issues
+let Constants: any = null;
+try {
+    Constants = require('expo-constants').default;
+} catch {
+    Constants = { expoConfig: { extra: {} } };
+}
 
 // Default to the backend server port used by the project (3000). When running on a device/emulator,
 // set EXPO_PUBLIC_API_URL to your machine's LAN IP (e.g. http://192.168.1.10:3000).
@@ -39,8 +45,8 @@ console.log('[api] BASE_URL=', BASE_URL);
 export async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     try {
         // Automatically include auth token if available
-        const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-        const token = await AsyncStorage.getItem('token'); // Use direct key instead of import
+        const MMKVStorage = (await import('../utils/storage')).default;
+        const token = await MMKVStorage.getItem('token'); // Use direct key instead of import
 
         const headers: Record<string, string> = {
             'Accept-Language': i18n.language || 'fr',
@@ -135,9 +141,9 @@ export const api = {
         profile: (token: string) => request<{ user: User }>(`/auth/me`, { headers: { Authorization: `Bearer ${token}` } }),
         logout: (token: string) => request<{ message?: string }>(`/auth/logout`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } }),
         updateProfile: async (data: UpdateProfileRequest | FormData) => {
-            // Read token from AsyncStorage to include Authorization header
-            const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-            const token = await AsyncStorage.getItem('token');
+            // Read token from MMKV to include Authorization header
+            const MMKVStorage = (await import('../utils/storage')).default;
+            const token = await MMKVStorage.getItem('token');
 
             if (data instanceof FormData) {
                 return request<{ user: User }>(`/auth/profile`, {
@@ -265,10 +271,10 @@ export const api = {
         getMarketProducts: (marketId: string) => request<{ products: any[] }>(`/market/${marketId}/products`),
         // Add product to a market (authenticated)
         addProduct: async (marketId: string, payload: any) => {
-            // Read token from AsyncStorage to include Authorization header
-            const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+            // Read token from MMKV to include Authorization header
+            const MMKVStorage = (await import('../utils/storage')).default;
             const { STORAGE_KEYS } = await import('../config/constants');
-            const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+            const token = await MMKVStorage.getItem(STORAGE_KEYS.TOKEN);
             if (!token) throw new Error('Authentication required');
             return request<any>(`/market/${marketId}/products`, {
                 method: 'POST',

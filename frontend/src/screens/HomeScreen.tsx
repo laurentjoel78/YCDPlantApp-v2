@@ -17,7 +17,7 @@ import { useSocket } from '../context/SocketContext';
 
 import { getCurrentLocation, getAddressFromCoords, requestLocationPermission, LocationCoords } from '../services/locationService';
 import { getWeather, getWeatherIcon, WeatherData } from '../services/weatherService';
-import { cacheService, CACHE_KEYS } from '../services/cacheService';
+import { cacheService, CACHE_KEYS, CACHE_TTL } from '../services/cacheService';
 
 type RootStackParamList = {
   DiseaseDetection: undefined;
@@ -54,8 +54,8 @@ const featureKeys = [
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  // Use cached weather to display immediately on return visits
-  const cachedWeatherData = cacheService.get<{ weather: WeatherData, location: string }>(CACHE_KEYS.WEATHER);
+  // Use cached weather to display immediately (allowStale=true for offline support)
+  const cachedWeatherData = cacheService.get<{ weather: WeatherData, location: string }>(CACHE_KEYS.WEATHER, true);
   const [weather, setWeather] = useState<WeatherData | null>(cachedWeatherData?.weather || null);
   const [location, setLocation] = useState<string>(cachedWeatherData?.location || '');
   const [loading, setLoading] = useState(!cachedWeatherData);
@@ -86,8 +86,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
       setLocation(address.city);
       setWeather(weatherData);
-      // Cache weather data for instant display on return
-      cacheService.set(CACHE_KEYS.WEATHER, { weather: weatherData, location: address.city }, 10 * 60 * 1000); // 10 min TTL
+      // Cache weather data for instant display on return (1 hour for poor connectivity)
+      cacheService.set(CACHE_KEYS.WEATHER, { weather: weatherData, location: address.city }, CACHE_TTL.LONG);
     } catch (error: any) {
       console.error('Error fetching weather:', error);
       setError(error.message || t('home.errors.weatherLoadFailed', 'Failed to load weather information'));

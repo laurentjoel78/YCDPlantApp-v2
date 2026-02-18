@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { CacheManager, CACHE_KEYS } from '../services/cacheManager';
 import { api } from '../services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MMKVStorage from '../utils/storage';
 
 export interface User {
   id: string;
@@ -59,8 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // If no cache, try legacy AsyncStorage (for migration)
-      const legacyToken = await AsyncStorage.getItem('token') || await AsyncStorage.getItem('authToken');
+      // If no cache, try legacy MMKV storage (for migration)
+      const legacyToken = await MMKVStorage.getItem('token') || await MMKVStorage.getItem('authToken');
 
       if (legacyToken) {
         console.log('[Auth] Migrating from legacy storage');
@@ -101,14 +101,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await CacheManager.set(CACHE_KEYS.TOKEN, response.token, 24 * 60 * 60 * 1000);
       await CacheManager.set(CACHE_KEYS.USER, userWithFarms, 24 * 60 * 60 * 1000);
 
-      // ALSO save token to AsyncStorage for API service
-      await AsyncStorage.setItem('token', response.token);
-      await AsyncStorage.setItem('user', JSON.stringify(userWithFarms));
+      // ALSO save token to MMKV for API service
+      await MMKVStorage.setItem('token', response.token);
+      await MMKVStorage.setItem('user', JSON.stringify(userWithFarms));
 
       setToken(response.token);
       setUser(userWithFarms);
       console.log('[Auth] Login successful, user cached');
-      console.log('[Auth] Token saved to AsyncStorage');
+      console.log('[Auth] Token saved to MMKV');
     } catch (error) {
       console.error('[Auth] Login error:', error);
       throw error;
@@ -121,8 +121,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     // Clear all auth-related cache
     await CacheManager.invalidate([CACHE_KEYS.TOKEN, CACHE_KEYS.USER, CACHE_KEYS.FARMS]);
-    // Also clear AsyncStorage
-    await AsyncStorage.multiRemove(['token', 'user']);
+    // Also clear MMKV
+    await MMKVStorage.multiRemove(['token', 'user']);
   };
 
   return (
