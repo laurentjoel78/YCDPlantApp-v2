@@ -4,6 +4,7 @@
     "slug": "ycd-farmer-guide",
     "version": "1.0.0",
     "sdkVersion": "54.0.0",
+    "scheme": "ycdfarmerguide",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -54,7 +55,8 @@
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ]
   }
 }

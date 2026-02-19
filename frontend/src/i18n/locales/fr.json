@@ -91,8 +91,13 @@
     "forgotPassword": "Mot de passe oublié ?",
     "noAccount": "Vous n'avez pas de compte ?",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "configRequired": "Configuration requise",
+    "googleNotConfigured": "La connexion Google n'est pas configurée. Veuillez contacter le support.",
+    "facebookNotConfigured": "La connexion Facebook n'est pas configurée. Veuillez contacter le support.",
     "errors": {
-      "loginFailed": "Échec de la connexion. Veuillez vérifier vos identifiants."
+      "loginFailed": "Échec de la connexion. Veuillez vérifier vos identifiants.",
+      "googleFailed": "Échec de la connexion Google. Veuillez réessayer.",
+      "facebookFailed": "Échec de la connexion Facebook. Veuillez réessayer."
     }
   },
   "farmer": {

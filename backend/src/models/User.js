@@ -157,6 +157,16 @@ module.exports = (sequelize) => {
     },
     profile_image_url: {
       type: DataTypes.TEXT
+    },
+    google_id: {
+      type: DataTypes.STRING(100),
+      unique: true,
+      allowNull: true
+    },
+    facebook_id: {
+      type: DataTypes.STRING(100),
+      unique: true,
+      allowNull: true
     }
   }, {
     sequelize,

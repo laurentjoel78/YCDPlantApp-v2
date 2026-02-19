@@ -41,4 +41,5 @@ export type RootStackParamList = {
   };
   OrderSuccess: { order: any };
   Orders: undefined;
+  EditProfile: undefined;
 };

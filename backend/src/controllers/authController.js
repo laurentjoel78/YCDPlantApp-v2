@@ -410,12 +410,11 @@ const updateProfile = async (req, res) => {
 
     if (req.file) {
       try {
-        const { uploadFile } = require('../services/uploadService');
-        const fs = require('fs').promises;
-
-        const result = await uploadFile(req.file.path, 'ycd_profiles');
+        const { uploadImage } = require('../services/uploadService');
+        
+        // Use uploadImage with buffer since middleware uses memoryStorage
+        const result = await uploadImage(req.file.buffer, 'ycd_profiles');
         updates.profile_image_url = result.secure_url;
-        await fs.unlink(req.file.path).catch(logger.error);
       } catch (uploadError) {
         logger.error('Error uploading profile image:', uploadError);
         return res.status(500).json({ error: 'Failed to upload profile image' });
@@ -461,10 +460,141 @@ const updateProfile = async (req, res) => {
   }
 };
 
+/**
+ * Social login handler (Google, Facebook)
+ * Creates user if not exists, logs them in
+ */
+const socialLogin = async (req, res) => {
+  try {
+    const { provider, accessToken, email, name, picture, providerId } = req.body;
+
+    if (!provider || !accessToken || !email || !name || !providerId) {
+      return res.status(400).json({
+        error: 'Missing required fields',
+        required: ['provider', 'accessToken', 'email', 'name', 'providerId']
+      });
+    }
+
+    if (!['google', 'facebook'].includes(provider)) {
+      return res.status(400).json({ error: 'Invalid provider. Supported: google, facebook' });
+    }
+
+    logger.info(`Social login attempt: ${provider} - ${email}`);
+
+    // Find existing user by email
+    let user = await User.findOne({ where: { email } });
+
+    if (user) {
+      // User exists - update social provider info if needed
+      const socialProvidersField = `${provider}_id`;
+      const updates = {};
+      
+      // Store provider ID if not already set
+      if (!user[socialProvidersField]) {
+        updates[socialProvidersField] = providerId;
+      }
+      
+      // Update profile picture if not set and we have one from social
+      if (!user.profile_image_url && picture) {
+        updates.profile_image_url = picture;
+      }
+
+      // Mark email as verified (they authenticated with provider)
+      if (!user.email_verified) {
+        updates.email_verified = true;
+      }
+
+      if (Object.keys(updates).length > 0) {
+        await user.update(updates);
+      }
+
+      logger.info(`Social login successful (existing user): ${email}`);
+    } else {
+      // Create new user with social login
+      const nameParts = name.split(' ');
+      const first_name = nameParts[0] || name;
+      const last_name = nameParts.slice(1).join(' ') || '';
+
+      // Generate a random secure password (user won't need it with social login)
+      const randomPassword = crypto.randomBytes(32).toString('hex');
+
+      user = await User.create({
+        email,
+        password_hash: randomPassword,
+        first_name,
+        last_name,
+        role: 'farmer', // Default role for social signups
+        email_verified: true, // Verified through social provider
+        is_active: true,
+        approval_status: 'pending', // Farmers still need approval
+        profile_image_url: picture || null,
+        [`${provider}_id`]: providerId
+      });
+
+      // Create wallet for new user
+      await Wallet.create({
+        user_id: user.id,
+        balance: 0,
+        currency: 'XAF',
+        wallet_type: 'farmer',
+        status: 'active'
+      });
+
+      logger.info(`Social login successful (new user created): ${email}`);
+
+      // Log the registration
+      await auditService.logUserAction({
+        userId: user.id,
+        userRole: user.role,
+        actionType: 'USER_REGISTERED',
+        actionDescription: `User registered via ${provider} social login`,
+        req
+      });
+    }
+
+    // Generate JWT token
+    const token = generateToken(user);
+
+    // Log the login
+    await auditService.logUserAction({
+      userId: user.id,
+      userRole: user.role,
+      actionType: 'USER_LOGIN',
+      actionDescription: `User logged in via ${provider}`,
+      req
+    });
+
+    // Return user without sensitive data
+    const safeUser = {
+      id: user.id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: user.role,
+      name: `${user.first_name} ${user.last_name}`.trim(),
+      region: user.region,
+      phone_number: user.phone_number,
+      approval_status: user.approval_status,
+      email_verified: user.email_verified,
+      profile_image_url: user.profile_image_url
+    };
+
+    res.json({
+      token,
+      user: safeUser
+    });
+
+  } catch (error) {
+    logger.error('Social login error:', error);
+    res.status(500).json({ error: 'Social login failed. Please try again.' });
+  }
+};
+
 module.exports = {
   register,
   login,
   getCurrentUser,
   logout,
-  updateProfile
+  updateProfile,
+  socialLogin
 };

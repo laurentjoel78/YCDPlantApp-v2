@@ -84,8 +84,13 @@
       }
     },
     "errors": {
-      "loginFailed": "Login failed. Please check your credentials."
+      "loginFailed": "Login failed. Please check your credentials.",
+      "googleFailed": "Google sign-in failed. Please try again.",
+      "facebookFailed": "Facebook sign-in failed. Please try again."
     },
+    "configRequired": "Configuration Required",
+    "googleNotConfigured": "Google sign-in is not configured. Please contact support.",
+    "facebookNotConfigured": "Facebook sign-in is not configured. Please contact support.",
     "social": {
       "google": "Continue with Google",
       "facebook": "Continue with Facebook",

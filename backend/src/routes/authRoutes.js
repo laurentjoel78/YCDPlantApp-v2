@@ -2,7 +2,7 @@ const logger = require('../config/logger');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
-const { register, login, getCurrentUser, logout } = require('../controllers/authController');
+const { register, login, getCurrentUser, logout, socialLogin } = require('../controllers/authController');
 const { sendVerificationEmail, verifyEmail, getVerificationToken } = require('../controllers/emailVerificationController');
 const { User } = require('../models');
 const { requestPasswordReset, resetPassword } = require('../controllers/passwordResetController');
@@ -21,6 +21,7 @@ const bruteForceProtection = require('../services/bruteForceProtection');
 // Public routes with rate limiting and brute force protection
 router.post('/register', authLimiter, registrationValidation, register);
 router.post('/login', authLimiter, bruteForceProtection.checkBlocked(), loginValidation, login);
+router.post('/social', authLimiter, socialLogin);
 router.post('/logout', auth, logout);
 router.put('/profile', auth, sensitiveLimiter, upload.single('profileImage'), async (req, res, next) => {
   // Delegate to controller method if available

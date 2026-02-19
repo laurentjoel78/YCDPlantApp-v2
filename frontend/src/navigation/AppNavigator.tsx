@@ -28,6 +28,7 @@ import ForumsScreen from '../screens/ForumsScreen';
 import ForumChatScreen from '../screens/ForumChatScreen';
 import NewForumPostScreen from '../screens/NewForumPostScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 // Admin screens
 import AdminDashboardScreen from '../screens/admin/AdminDashboardScreen';
@@ -218,6 +219,11 @@ function RootNavigator() {
             name="Orders"
             component={OrdersScreen}
             options={{ title: 'My Orders' }}
+          />
+          <RootStack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
+            options={{ title: t('profile.edit') }}
           />
         </>
       )}

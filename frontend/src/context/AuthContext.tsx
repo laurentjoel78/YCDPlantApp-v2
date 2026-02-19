@@ -27,6 +27,7 @@ export interface AuthContextType {
   token: string | null;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
+  socialLogin: (provider: 'google' | 'facebook', accessToken: string, userData: { email: string; name: string; picture?: string; providerId: string }) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -125,8 +126,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await MMKVStorage.multiRemove(['token', 'user']);
   };
 
+  const socialLogin = async (
+    provider: 'google' | 'facebook',
+    accessToken: string,
+    userData: { email: string; name: string; picture?: string; providerId: string }
+  ) => {
+    try {
+      console.log(`[Auth] Social login with ${provider}...`);
+      const response = await api.auth.socialLogin(provider, accessToken, userData);
+      const farmsData = await api.farms.getUserFarms(response.token);
+
+      const userWithFarms = { ...response.user, farms: farmsData.farms };
+
+      // Store with 24h TTL (auto-expires after 1 day)
+      await CacheManager.set(CACHE_KEYS.TOKEN, response.token, 24 * 60 * 60 * 1000);
+      await CacheManager.set(CACHE_KEYS.USER, userWithFarms, 24 * 60 * 60 * 1000);
+
+      // ALSO save token to MMKV for API service
+      await MMKVStorage.setItem('token', response.token);
+      await MMKVStorage.setItem('user', JSON.stringify(userWithFarms));
+
+      setToken(response.token);
+      setUser(userWithFarms);
+      console.log(`[Auth] ${provider} login successful, user cached`);
+    } catch (error) {
+      console.error(`[Auth] ${provider} login error:`, error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ token, user, login, socialLogin, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

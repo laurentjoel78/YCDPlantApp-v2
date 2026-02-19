@@ -172,6 +172,11 @@ export const api = {
         },
         requestPasswordReset: (email: string) => request<{ message: string; mockMode?: boolean; resetToken?: string; userNotFound?: boolean }>(`/auth/password-reset/request`, { method: 'POST', body: JSON.stringify({ email }) }),
         resetPassword: (token: string, password: string) => request<{ message: string }>(`/auth/password-reset/${token}`, { method: 'POST', body: JSON.stringify({ password }) }),
+        socialLogin: (provider: 'google' | 'facebook', accessToken: string, userData: { email: string; name: string; picture?: string; providerId: string }) =>
+            request<{ token: string; user: User }>('/auth/social', {
+                method: 'POST',
+                body: JSON.stringify({ provider, accessToken, ...userData })
+            }),
     },
     guidance: {
         crops: () => request<{ crops: any[] }>(`/crops`),

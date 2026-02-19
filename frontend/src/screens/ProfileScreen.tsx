@@ -72,7 +72,7 @@ const ProfileScreen = () => {
   };
 
   const handleEditProfile = () => {
-    Alert.alert(t('common.comingSoon'), t('profile.edit') + ' - ' + t('common.loading'));
+    navigation.navigate('EditProfile');
   };
 
   const handleComingSoon = (feature: string) => {

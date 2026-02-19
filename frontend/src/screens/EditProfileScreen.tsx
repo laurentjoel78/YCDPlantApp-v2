@@ -26,7 +26,7 @@ const EditProfileScreen: React.FC = () => {
   const [lastName, setLastName] = useState(userData?.last_name || user?.lastName || '');
   const [phoneNumber, setPhoneNumber] = useState(userData?.phone_number || user?.phoneNumber || '');
   const [region, setRegion] = useState(user?.region || '');
-  const [profileImage, setProfileImage] = useState<string | null>(userData?.profile_image || user?.profileImage || null);
+  const [profileImage, setProfileImage] = useState<string | null>(userData?.profile_image_url || user?.profileImage || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

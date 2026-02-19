@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { TextInput, Button, Text, Title, Paragraph, ActivityIndicator } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,6 +11,8 @@ import { useApp } from '../store/AppContext';
 import { useAuth } from '../hooks';
 import { setStoredToken } from '../utils/authStorage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useGoogleAuth, useFacebookAuth, getGoogleUserInfo, getFacebookUserInfo } from '../services/socialAuthService';
+import * as AuthSession from 'expo-auth-session';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -25,11 +27,123 @@ export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState<'google' | 'facebook' | null>(null);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const theme = useTheme();
-  const { login } = useAuth();
+  const { login, socialLogin } = useAuth();
   const { t } = useTranslation();
+
+  // Social auth hooks
+  const googleAuth = useGoogleAuth();
+  const facebookAuth = useFacebookAuth();
+
+  // Handle Google auth response
+  useEffect(() => {
+    if (googleAuth.response?.type === 'success') {
+      handleGoogleSuccess(googleAuth.response.authentication?.accessToken);
+    } else if (googleAuth.response?.type === 'error') {
+      setError(t('auth.errors.googleFailed') || 'Google sign-in failed');
+      setSocialLoading(null);
+    }
+  }, [googleAuth.response]);
+
+  // Handle Facebook auth response
+  useEffect(() => {
+    if (facebookAuth.response?.type === 'success') {
+      handleFacebookSuccess(facebookAuth.response.authentication?.accessToken);
+    } else if (facebookAuth.response?.type === 'error') {
+      setError(t('auth.errors.facebookFailed') || 'Facebook sign-in failed');
+      setSocialLoading(null);
+    }
+  }, [facebookAuth.response]);
+
+  const handleGoogleSuccess = async (accessToken?: string) => {
+    if (!accessToken) {
+      setError('No access token received from Google');
+      setSocialLoading(null);
+      return;
+    }
+
+    try {
+      const result = await getGoogleUserInfo(accessToken);
+      if (result.success && result.user) {
+        await socialLogin('google', accessToken, {
+          email: result.user.email,
+          name: result.user.name,
+          picture: result.user.picture,
+          providerId: result.user.id,
+        });
+      } else {
+        throw new Error(result.error || 'Failed to get user info');
+      }
+    } catch (err: any) {
+      console.error('Google login error:', err);
+      setError(err.message || t('auth.errors.googleFailed'));
+    } finally {
+      setSocialLoading(null);
+    }
+  };
+
+  const handleFacebookSuccess = async (accessToken?: string) => {
+    if (!accessToken) {
+      setError('No access token received from Facebook');
+      setSocialLoading(null);
+      return;
+    }
+
+    try {
+      const result = await getFacebookUserInfo(accessToken);
+      if (result.success && result.user) {
+        await socialLogin('facebook', accessToken, {
+          email: result.user.email,
+          name: result.user.name,
+          picture: result.user.picture,
+          providerId: result.user.id,
+        });
+      } else {
+        throw new Error(result.error || 'Failed to get user info');
+      }
+    } catch (err: any) {
+      console.error('Facebook login error:', err);
+      setError(err.message || t('auth.errors.facebookFailed'));
+    } finally {
+      setSocialLoading(null);
+    }
+  };
+
+  const handleSocialLogin = async (provider: 'google' | 'facebook') => {
+    setError('');
+    setSocialLoading(provider);
+
+    try {
+      if (provider === 'google') {
+        if (!googleAuth.isReady) {
+          Alert.alert(
+            t('auth.configRequired'),
+            t('auth.googleNotConfigured') || 'Google sign-in is not configured. Please contact support.'
+          );
+          setSocialLoading(null);
+          return;
+        }
+        await googleAuth.promptAsync();
+      } else {
+        if (!facebookAuth.isReady) {
+          Alert.alert(
+            t('auth.configRequired'),
+            t('auth.facebookNotConfigured') || 'Facebook sign-in is not configured. Please contact support.'
+          );
+          setSocialLoading(null);
+          return;
+        }
+        await facebookAuth.promptAsync();
+      }
+    } catch (err: any) {
+      console.error(`${provider} login error:`, err);
+      setError(err.message || `${provider} sign-in failed`);
+      setSocialLoading(null);
+    }
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -51,14 +165,6 @@ export default function LoginScreen({ navigation }: Props) {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    // TODO: Implement social login
-    Alert.alert(
-      t('common.comingSoon'),
-      t('auth.socialComingSoon', { provider: provider === 'google' ? 'Google' : 'Facebook' } as any)
-    );
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -78,8 +184,10 @@ export default function LoginScreen({ navigation }: Props) {
             <Button
               mode="outlined"
               style={[styles.socialButton, { marginBottom: 10 }]}
-              icon={() => <MaterialCommunityIcons name="google" size={20} color={theme.colors.primary} />}
+              icon={() => socialLoading === 'google' ? <ActivityIndicator size={20} /> : <MaterialCommunityIcons name="google" size={20} color={theme.colors.primary} />}
               onPress={() => handleSocialLogin('google')}
+              disabled={!!socialLoading || loading}
+              loading={socialLoading === 'google'}
             >
               {t('auth.social.google')}
             </Button>
@@ -87,8 +195,10 @@ export default function LoginScreen({ navigation }: Props) {
             <Button
               mode="outlined"
               style={styles.socialButton}
-              icon={() => <MaterialCommunityIcons name="facebook" size={20} color={theme.colors.primary} />}
+              icon={() => socialLoading === 'facebook' ? <ActivityIndicator size={20} /> : <MaterialCommunityIcons name="facebook" size={20} color={theme.colors.primary} />}
               onPress={() => handleSocialLogin('facebook')}
+              disabled={!!socialLoading || loading}
+              loading={socialLoading === 'facebook'}
             >
               {t('auth.social.facebook')}
             </Button>
