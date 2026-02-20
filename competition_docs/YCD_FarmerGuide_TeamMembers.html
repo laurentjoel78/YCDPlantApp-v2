@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YCD Farmer Guide - Team</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 50px;
+        }
+        
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .header h2 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: -1px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .team-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4CAF50 0%, #81C784 100%);
+        }
+        
+        .team-card.lead::before {
+            background: linear-gradient(90deg, #2196F3 0%, #64B5F6 100%);
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar span {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .team-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+        
+        .team-card .role {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4CAF50;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .team-card.lead .role {
+            color: #2196F3;
+        }
+        
+        .team-card .details {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .team-card .details strong {
+            color: #333;
+        }
+        
+        .team-card .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .skill-tag {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .team-card.lead .skill-tag {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        
+        .placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+        
+        .footer p {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            .team-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>YCD Farmer Guide</h1>
+            <h2>Meet The Team</h2>
+            <p>The innovators behind Cameroon's agricultural transformation</p>
+        </div>
+        
+        <div class="team-grid">
+            <!-- PROJECT LEAD -->
+            <div class="team-card lead">
+                <div class="avatar"><span>IJ</span></div>
+                <h3>Ikome Johnson</h3>
+                <div class="role">Team Lead / Systems & Connectivity</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 20</p>
+                    <p><strong>Date of Birth:</strong> 03/06/2005</p>
+                    <p><strong>Place of Birth:</strong> Limbe</p>
+                    <p><strong>Field:</strong> Network Engineering (Level 500)</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">Project Coordination</span>
+                    <span class="skill-tag">Systems Integration</span>
+                    <span class="skill-tag">Connectivity</span>
+                </div>
+            </div>
+
+            <!-- TECHNICAL LEAD -->
+            <div class="team-card">
+                <div class="avatar"><span>ML</span></div>
+                <h3>Mkounga Tatchum Laurent Joel</h3>
+                <div class="role">Technical Lead / Core Development</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 21</p>
+                    <p><strong>Date of Birth:</strong> 10/08/2004</p>
+                    <p><strong>Place of Birth:</strong> Bandjoun</p>
+                    <p><strong>Field:</strong> Software Engineering</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">System Architecture</span>
+                    <span class="skill-tag">Platform Design</span>
+                    <span class="skill-tag">Backend Development</span>
+                </div>
+            </div>
+
+            <!-- SOFTWARE DEVELOPER -->
+            <div class="team-card">
+                <div class="avatar"><span>NB</span></div>
+                <h3>Njobeka Boris Beyieh</h3>
+                <div class="role">Software Developer</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 20</p>
+                    <p><strong>Date of Birth:</strong> 29/12/2005</p>
+                    <p><strong>Field:</strong> Software Engineering (Level 300)</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">Application Development</span>
+                    <span class="skill-tag">Feature Implementation</span>
+                </div>
+            </div>
+
+            <!-- AGRICULTURAL ADVISOR -->
+            <div class="team-card">
+                <div class="avatar"><span>NN</span></div>
+                <h3>NDINGURU Hope Nchounyui</h3>
+                <div class="role">Agricultural & Field Systems Advisor</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 20</p>
+                    <p><strong>Date of Birth:</strong> 15/08/2005</p>
+                    <p><strong>Place of Birth:</strong> Bangolan</p>
+                    <p><strong>Field:</strong> Agricultural Engineering</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">Crop Management</span>
+                    <span class="skill-tag">Field Systems</span>
+                </div>
+            </div>
+
+            <!-- COMMUNITY & USER ENGAGEMENT -->
+            <div class="team-card">
+                <div class="avatar"><span>EK</span></div>
+                <h3>Emmanuela Kinyuy</h3>
+                <div class="role">Community & User Engagement</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 20</p>
+                    <p><strong>Date of Birth:</strong> 04/01/2006</p>
+                    <p><strong>Place of Birth:</strong> Shisong</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">Outreach</span>
+                    <span class="skill-tag">User Research</span>
+                </div>
+            </div>
+
+            <!-- POST-HARVEST ADVISOR -->
+            <div class="team-card">
+                <div class="avatar"><span>AS</span></div>
+                <h3>Awambeng Sylvie Mankambe</h3>
+                <div class="role">Post-Harvest & Value Chain Advisor</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 30</p>
+                    <p><strong>Date of Birth:</strong> 24/07/1995</p>
+                    <p><strong>Place of Birth:</strong> Nsem-Bafut</p>
+                    <p><strong>Field:</strong> Food Science</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">Post-Harvest</span>
+                    <span class="skill-tag">Value Chain</span>
+                </div>
+            </div>
+
+            <!-- MICROBIOLOGY SUPPORT -->
+            <div class="team-card">
+                <div class="avatar"><span>TL</span></div>
+                <h3>Tata Stanley Lem-Mola</h3>
+                <div class="role">Crop Health & Biological Systems Support</div>
+                <div class="details">
+                    <p><strong>Age:</strong> 18</p>
+                    <p><strong>Date of Birth:</strong> 23/07/2007</p>
+                    <p><strong>Place of Birth:</strong> Shisong</p>
+                    <p><strong>Field:</strong> Microbiology</p>
+                </div>
+                <div class="skills">
+                    <span class="skill-tag">Crop Health</span>
+                    <span class="skill-tag">Biological Analysis</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>GHSS Regional Youth Innovation Challenge 2026 | AgriTech Domain</p>
+        </div>
+    </div>
+</body>
+</html>

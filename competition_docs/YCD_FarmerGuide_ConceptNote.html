@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YCD Farmer Guide - Concept Note</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto;background:#ffffff;color:#1a1a2e;padding:18px}
+        .page{max-width:800px;margin:0 auto}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid #4CAF50}
+        .title{font-size:28px;font-weight:800;letter-spacing:-0.5px}
+        .tag{font-size:13px;color:#666;margin-top:6px}
+        .badge-container{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+        .badge{background:linear-gradient(135deg,#4CAF50 0%,#2E7D32 100%);padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;color:#fff;text-transform:uppercase}
+        .section{margin-bottom:12px}
+        .section h2{font-size:14px;text-transform:uppercase;letter-spacing:2px;color:#4CAF50;margin-bottom:12px;font-weight:700;display:flex;align-items:center;gap:10px}
+        .section h2::before{content:"";width:4px;height:20px;background:#4CAF50;border-radius:2px}
+        p{font-size:14px;line-height:1.6;color:#333;margin-bottom:8px}
+        ul{margin:6px 0 0 18px}
+        .highlight-box{background:linear-gradient(135deg,#E8F5E9 0%,#C8E6C9 100%);border-radius:12px;padding:18px;margin:14px 0}
+        .features-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+        .feature-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:#fafafa;border-radius:10px;border:1px solid #eee}
+        .feature-item .icon{font-size:22px}
+        .feature-item .content h4{font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:4px}
+        .feature-item .content p{font-size:12px;color:#666;line-height:1.4}
+        .impact-box{background:#1a1a2e;border-radius:12px;padding:12px;color:#fff;margin:10px 0}
+        .impact-grid{display:flex;justify-content:space-between;gap:12px}
+        .impact-item{text-align:center;flex:1}
+        .impact-item .number{font-size:28px;font-weight:800;color:#4CAF50}
+        .impact-item .label{font-size:12px;color:rgba(255,255,255,0.85);margin-top:6px}
+        .impact-note{font-size:12px;color:#333;margin-top:10px}
+        .footer{margin-top:12px;padding-top:10px;border-top:2px solid #eee;display:flex;justify-content:space-between;align-items:center}
+        .footer-left{font-size:12px;color:#999}
+        .footer-right{font-size:12px;color:#4CAF50;font-weight:600}
+        @media print{
+            body{padding:12px}
+            .impact-box{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+            .section{margin-bottom:8px}
+            .footer{page-break-inside:avoid;break-inside:avoid}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="title">YCD Farmer Guide</div>
+                <div class="tag">AI-Powered Agriculture for Cameroon's Future</div>
+            </div>
+            <div class="badge">AgriTech</div>
+        </div>
+
+        <div>
+            <h2 class="section-title">Competition</h2>
+            <p>GHSS Regional Youth Innovation Challenge 2026 — Agritech Domain</p>
+        </div>
+
+        <div>
+            <h2 class="section-title">Executive Summary</h2>
+            <p><strong>YCD Farmer Guide</strong> is a mobile application that empowers smallholder farmers in Cameroon with AI-driven plant disease diagnosis, hyperlocal weather advisories, access to agricultural experts, and a marketplace for essential farm inputs and buyer connections. The platform is lightweight, bilingual (French & English), and optimized for basic Android devices.</p>
+        </div>
+
+        <div>
+            <h2 class="section-title">Problem Statement</h2>
+            <p>Smallholder farmers face recurring losses from plant diseases and pests (20–40% of yield), limited access to extension services, poor market information, and climate variability. These challenges reduce productivity and income, worsening food insecurity and rural poverty.</p>
+        </div>
+
+        <div class="section">
+            <h2>Proposed Solution</h2>
+            <p>YCD Farmer Guide combines practical features to close critical gaps for farmers.</p>
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="icon">🔬</div>
+                    <div class="content">
+                        <h4>AI Diagnosis</h4>
+                        <p>Photo-based plant disease detection with treatment recommendations using Groq AI.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🌤️</div>
+                    <div class="content">
+                        <h4>Weather Intelligence</h4>
+                        <p>Hyperlocal forecasts and alerts tailored for planting and harvesting decisions.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">👨‍🌾</div>
+                    <div class="content">
+                        <h4>Expert Advisory</h4>
+                        <p>Affordable chat and video consultations with verified agronomists for personalized guidance.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🛒</div>
+                    <div class="content">
+                        <h4>Marketplace</h4>
+                        <p>Buy farm tools, fertilizers and essential inputs; connect directly with buyers to sell produce.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">💬</div>
+                    <div class="content">
+                        <h4>Community Forums</h4>
+                        <p>Region-specific knowledge sharing and farmer networking.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🎙️</div>
+                    <div class="content">
+                        <h4>Voice Interface</h4>
+                        <p>Natural language input in French and English for accessibility.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Projected Impact (expected)</h2>
+            <div class="impact-box">
+                <div class="impact-grid">
+                    <div class="impact-item">
+                        <div class="number">20,000</div>
+                        <div class="label">Expected reach</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="number">≈25%</div>
+                        <div class="label">Expected income increase</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="number">10</div>
+                        <div class="label">Regions Covered</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="number">25–30%</div>
+                        <div class="label">Crop loss reduction</div>
+                    </div>
+                </div>
+            </div>
+            <p class="impact-note">Assumption: Achievable through timely diagnostics, access to essential inputs, and advisory support during pilot and scale-up. Measurable shift (income): ≈25% average uplift observed in comparable pilots.</p>
+        </div>
+
+        <div class="footer">YCD Farmer Guide Team — February 2026</div>
+    </div>
+</body>
+</html>

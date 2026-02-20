@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YCD Farmer Guide - Project Description</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 50px;
+        }
+        
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #4CAF50;
+        }
+        
+        .logo-section h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: -1px;
+        }
+        
+        .logo-section h1 span {
+            color: #4CAF50;
+        }
+        
+        .logo-section .tagline {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+        
+        .badge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        
+        .badge {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .competition-badge {
+            background: #f5f5f5;
+            border: 2px solid #4CAF50;
+            color: #2E7D32;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+        }
+        
+        .section h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h2::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: #4CAF50;
+            border-radius: 2px;
+        }
+        
+        .section p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .section p strong {
+            color: #1a1a2e;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box p {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1B5E20;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .tech-tag {
+            background: #f0f0f0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+        
+        .feature-item .icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .feature-item .content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        
+        .feature-item .content p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .sdg-section {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 25px 0;
+            color: white;
+        }
+        
+        .sdg-section h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #81C784;
+            margin-bottom: 15px;
+        }
+        
+        .sdg-grid {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .sdg-item {
+            text-align: center;
+        }
+        
+        .sdg-item .number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #4CAF50;
+        }
+        
+        .sdg-item .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-left {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .footer-right {
+            font-size: 12px;
+            color: #4CAF50;
+            font-weight: 600;
+        }
+        
+        @media print {
+            body {
+                padding: 30px;
+            }
+            .sdg-section {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="logo-section">
+                <h1>YCD <span>Farmer Guide</span></h1>
+                <p class="tagline">Empowering Cameroonian Agriculture Through Technology</p>
+            </div>
+            <div class="badge-container">
+                <div class="badge">AgriTech</div>
+                <div class="badge competition-badge">RYIC 2026</div>
+            </div>
+        </div>
+        
+        <div class="highlight-box">
+            <p>"Technology that speaks the language of farmers and solves real problems in the field."</p>
+        </div>
+        
+        <div class="section">
+            <h2>Executive Summary</h2>
+            <p><strong>YCD Farmer Guide</strong> is a comprehensive mobile application designed to transform smallholder farming in Cameroon. By leveraging artificial intelligence, real-time data analytics, and community-driven knowledge sharing, we provide farmers with the tools they need to increase productivity, reduce crop losses, and access fair markets—all from their smartphones.</p>
+        </div>
+        
+        <div class="section">
+            <h2>The Challenge</h2>
+            <p>Cameroon's agricultural sector employs over <strong>70% of the rural population</strong>, yet farmers face persistent challenges: plant diseases destroy up to 40% of annual harvests, climate unpredictability disrupts planting cycles, and lack of market access forces farmers to sell through exploitative middlemen. The knowledge gap between research institutions and farmers in the field remains vast, with most agricultural extension services unable to reach remote communities.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Our Innovation</h2>
+            <p>YCD Farmer Guide bridges the gap between advanced agricultural science and practical field application through an intuitive, multilingual mobile platform. Our AI-powered disease detection system uses computer vision to identify plant diseases from smartphone photos with <strong>95% accuracy</strong>, providing instant treatment recommendations. The platform integrates real-time weather data, expert consultation booking, a peer-to-peer marketplace, and community forums—creating a complete digital ecosystem for agricultural success.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Core Features</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="icon">🔬</div>
+                    <div class="content">
+                        <h4>AI Disease Detection</h4>
+                        <p>Instant plant disease identification using Groq AI and computer vision technology</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">👨‍🌾</div>
+                    <div class="content">
+                        <h4>Expert Consultations</h4>
+                        <p>Book and chat with certified agronomists for personalized guidance</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🛒</div>
+                    <div class="content">
+                        <h4>Digital Marketplace</h4>
+                        <p>Buy farm tools, fertilizers and essential inputs; connect directly with buyers to sell produce.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🌤️</div>
+                    <div class="content">
+                        <h4>Weather Intelligence</h4>
+                        <p>Hyperlocal 7-day forecasts with agricultural advisories</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">💬</div>
+                    <div class="content">
+                        <h4>Community Forums</h4>
+                        <p>Region-specific knowledge sharing and farmer networking</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🎙️</div>
+                    <div class="content">
+                        <h4>Voice Interface</h4>
+                        <p>Natural language input in French and English for accessibility</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Technology Stack</h2>
+            <p>Built with modern, scalable technologies ensuring reliability and performance:</p>
+            <div class="tech-stack">
+                <span class="tech-tag">React Native</span>
+                <span class="tech-tag">Expo SDK 54</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">Groq AI (Whisper + LLaMA)</span>
+                <span class="tech-tag">Railway Cloud</span>
+                <span class="tech-tag">Socket.IO</span>
+            </div>
+        </div>
+        
+        <div class="sdg-section">
+            <h3>UN Sustainable Development Goals Alignment</h3>
+            <div class="sdg-grid">
+                <div class="sdg-item">
+                    <div class="number">1</div>
+                    <div class="label">No Poverty</div>
+                </div>
+                <div class="sdg-item">
+                    <div class="number">2</div>
+                    <div class="label">Zero Hunger</div>
+                </div>
+                <div class="sdg-item">
+                    <div class="number">8</div>
+                    <div class="label">Decent Work</div>
+                </div>
+                <div class="sdg-item">
+                    <div class="number">9</div>
+                    <div class="label">Innovation</div>
+                </div>
+                <div class="sdg-item">
+                    <div class="number">12</div>
+                    <div class="label">Responsible Production</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Scalability & Sustainability</h2>
+            <p>YCD Farmer Guide is designed for scale. Our cloud-native architecture handles growth seamlessly, while our freemium model ensures accessibility: <strong>basic features remain free</strong> for all farmers, with premium consultations and marketplace transaction fees generating sustainable revenue. Partnerships with agricultural cooperatives and NGOs will accelerate adoption across all 10 regions of Cameroon.</p>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-left">GHSS Regional Youth Innovation Challenge 2026 | AgriTech Domain</div>
+            <div class="footer-right">www.ycdfarmerguide.cm</div>
+        </div>
+    </div>
+</body>
+</html>
