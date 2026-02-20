@@ -41,6 +41,8 @@
     },
     "extra": {
       "apiUrl": "https://ycdplantapp-production.up.railway.app/api",
+      "googleClientId": "1039083157648-tvo9nuambi895br2vrdmu8d42nv2k61c.apps.googleusercontent.com",
+      "googleAndroidClientId": "1039083157648-e9uh7l5suc9dgccpqkv6n4drbg799avc.apps.googleusercontent.com",
       "eas": {
         "projectId": "47ae6fd6-45d4-408c-a463-2ce4eec47373"
       }
