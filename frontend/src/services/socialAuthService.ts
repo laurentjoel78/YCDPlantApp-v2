@@ -9,16 +9,16 @@ import { Platform } from 'react-native';
 WebBrowser.maybeCompleteAuthSession();
 
 // Get redirect URI for OAuth
-// Use the Expo proxy redirect when running inside Expo Go to avoid redirect mismatches
-// (Expo Go uses auth.expo.io proxy). For standalone builds we use a custom scheme.
-const useProxy = Constants.appOwnership === 'expo';
+// NOTE: The auth.expo.io proxy (useProxy) was removed in expo-auth-session v5+.
+// Google OAuth requires a development build or standalone build — it will NOT work in Expo Go.
+// The redirect URI is auto-generated from the scheme defined in app.json.
 const redirectUri = makeRedirectUri({
   scheme: 'ycdfarmerguide',
   path: 'auth',
-  useProxy,
 });
 
-console.log('[OAuth] appOwnership=', Constants.appOwnership, 'useProxy=', useProxy);
+console.log('[OAuth] appOwnership=', Constants.appOwnership);
+console.log('[OAuth] Platform=', Platform.OS);
 console.log('[OAuth] Redirect URI:', redirectUri);
 
 // OAuth Configuration
@@ -44,6 +44,8 @@ export interface SocialAuthResult {
 
 /**
  * Hook for Google Sign-In
+ * NOTE: For Android, the androidClientId is used automatically.
+ * The library generates the correct platform-specific redirect URI.
  */
 export function useGoogleAuth() {
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -51,7 +53,6 @@ export function useGoogleAuth() {
     androidClientId: GOOGLE_ANDROID_CLIENT_ID,
     iosClientId: GOOGLE_IOS_CLIENT_ID,
     scopes: ['profile', 'email'],
-    redirectUri,
   });
 
   return {
@@ -69,7 +70,6 @@ export function useFacebookAuth() {
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientId: FACEBOOK_APP_ID,
     scopes: ['public_profile', 'email'],
-    redirectUri,
   });
 
   return {
