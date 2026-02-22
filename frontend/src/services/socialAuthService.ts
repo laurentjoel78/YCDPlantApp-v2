@@ -3,17 +3,23 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri } from 'expo-auth-session';
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 // Required for web browser redirect
 WebBrowser.maybeCompleteAuthSession();
 
 // Get redirect URI for OAuth
+// Use the Expo proxy redirect when running inside Expo Go to avoid redirect mismatches
+// (Expo Go uses auth.expo.io proxy). For standalone builds we use a custom scheme.
+const useProxy = Constants.appOwnership === 'expo';
 const redirectUri = makeRedirectUri({
   scheme: 'ycdfarmerguide',
   path: 'auth',
+  useProxy,
 });
 
-console.log('OAuth Redirect URI:', redirectUri);
+console.log('[OAuth] appOwnership=', Constants.appOwnership, 'useProxy=', useProxy);
+console.log('[OAuth] Redirect URI:', redirectUri);
 
 // OAuth Configuration
 // You need to set these in your environment or app.json extra
