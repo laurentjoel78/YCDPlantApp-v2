@@ -7,6 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { api } from '../services/api';
 import { useApp } from '../store/AppContext';
+import { useAuth } from '../hooks/useAuth';
+import MMKVStorage from '../utils/storage';
+import { CacheManager, CACHE_KEYS } from '../services/cacheManager';
 
 interface EditProfileRequest {
   firstName?: string;
@@ -18,8 +21,11 @@ interface EditProfileRequest {
 
 const EditProfileScreen: React.FC = () => {
   const { colors } = useTheme();
-  const navigation = useNavigation();
-  const { user, setUser } = useApp();
+  const navigation = useNavigation<any>();
+  const { user: appUser, setUser: setAppUser } = useApp();
+  const { user: authUser, token, logout, setUser: setAuthUser } = useAuth();
+  // Prefer auth context user as source of truth
+  const user = (authUser || appUser) as any;
   // Handle both snake_case (from API) and camelCase (from type) with type casting
   const userData = user as any;
   const [firstName, setFirstName] = useState(userData?.first_name || user?.firstName || '');
@@ -53,11 +59,34 @@ const EditProfileScreen: React.FC = () => {
         } as any);
       }
 
+      console.log('[EditProfile] Using token:', token ? `${token.substring(0,12)}...` : 'no-token');
       const response = await api.auth.updateProfile(formData as any);
-      setUser(response.user);
+      // Update both AuthContext and AppContext to keep UI in sync
+      try {
+        if (setAuthUser) setAuthUser(response.user);
+      } catch {}
+      try {
+        if (setAppUser) setAppUser(response.user);
+      } catch {}
+      // Also update persistent caches
+      try {
+        await MMKVStorage.setItem('user', JSON.stringify(response.user));
+        await CacheManager.set(CACHE_KEYS.USER, response.user, 24 * 60 * 60 * 1000);
+      } catch (e) {
+        console.warn('Failed to update persisted user cache', e);
+      }
       navigation.goBack();
     } catch (err) {
       console.error('Error updating profile:', err);
+      const msg = (err as any)?.message || '';
+      if (msg.includes('Authentication') || msg.includes('401') || msg.includes('Authentication required')) {
+        // Token invalid or expired - force logout
+        try {
+          await logout();
+        } catch {}
+        (navigation as any).navigate('Login');
+        return;
+      }
       setError('Failed to update profile');
     } finally {
       setLoading(false);
