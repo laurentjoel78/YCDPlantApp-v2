@@ -271,7 +271,7 @@ const MarketplaceScreen: React.FC = () => {
                   name: product.seller ? `${product.seller.first_name} ${product.seller.last_name}` : 'Unknown Seller',
                   rating: 0
                 }}
-                onPress={() => Alert.alert(t('common.comingSoon'), t('marketplace.detailsComingSoon', 'Product details view will be available in the next update.'))}
+                onPress={() => navigation.navigate('ProductDetails', { product })}
                 onAddToCart={handleAddToCart}
                 style={{ width: '45%', marginBottom: 16 }}
               />

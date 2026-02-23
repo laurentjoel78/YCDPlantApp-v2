@@ -29,6 +29,7 @@ import ForumChatScreen from '../screens/ForumChatScreen';
 import NewForumPostScreen from '../screens/NewForumPostScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import ProductDetailsScreen from '../screens/ProductDetailsScreen';
 
 // Admin screens
 import AdminDashboardScreen from '../screens/admin/AdminDashboardScreen';
@@ -224,6 +225,11 @@ function RootNavigator() {
             name="EditProfile"
             component={EditProfileScreen}
             options={{ title: t('profile.edit') }}
+          />
+          <RootStack.Screen
+            name="ProductDetails"
+            component={ProductDetailsScreen}
+            options={{ title: t('marketplace.productDetails', 'Product Details') }}
           />
         </>
       )}
