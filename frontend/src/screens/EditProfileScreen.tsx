@@ -153,7 +153,7 @@ const EditProfileScreen: React.FC = () => {
         (navigation as any).navigate('Login');
         return;
       }
-      setError('Failed to update profile');
+      setError(err.message || 'Failed to update profile');
     } finally {
       setLoading(false);
     }
