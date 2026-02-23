@@ -17,6 +17,7 @@ const {
 const upload = require('../middleware/imageUpload');
 const { authLimiter, sensitiveLimiter } = require('../middleware/rateLimiter');
 const bruteForceProtection = require('../services/bruteForceProtection');
+const multer = require('multer'); // Added this line
 
 // Public routes with rate limiting and brute force protection
 router.post('/register', authLimiter, registrationValidation, register);
@@ -29,6 +30,15 @@ router.put('/profile', auth, sensitiveLimiter, upload.single('profileImage'), as
     const { updateProfile } = require('../controllers/authController');
     return updateProfile(req, res, next);
   } catch (err) {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        logger.warn('MulterError: File size limit exceeded during profile update.', { userId: req.user ? req.user.id : 'N/A' });
+        return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
+      }
+      // Handle other Multer errors if necessary
+      logger.error('MulterError during profile update:', err);
+      return res.status(400).json({ error: `File upload failed: ${err.message}` });
+    }
     logger.error('Failed to handle /auth/profile route:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }

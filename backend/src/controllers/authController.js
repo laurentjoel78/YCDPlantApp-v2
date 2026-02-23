@@ -417,7 +417,7 @@ const updateProfile = async (req, res) => {
         updates.profile_image_url = result.secure_url;
       } catch (uploadError) {
         logger.error('Error uploading profile image:', uploadError);
-        return res.status(500).json({ error: 'Failed to upload profile image' });
+        return res.status(500).json({ error: `Failed to upload profile image: ${uploadError.message || 'Unknown error'}` });
       }
     }
 
