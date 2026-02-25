@@ -144,7 +144,12 @@ const EditProfileScreen: React.FC = () => {
       navigation.goBack();
     } catch (err) {
       console.error('Error updating profile:', err);
-      const msg = (err as any)?.message || '';
+      let msg = '';
+      if (err instanceof Error) {
+        msg = err.message;
+      } else if (typeof err === 'object' && err !== null && 'message' in err) {
+        msg = String((err as any).message);
+      }
       if (msg.includes('Authentication') || msg.includes('401') || msg.includes('Authentication required')) {
         // Token invalid or expired - force logout
         try {
@@ -153,7 +158,7 @@ const EditProfileScreen: React.FC = () => {
         (navigation as any).navigate('Login');
         return;
       }
-      setError(err.message || 'Failed to update profile');
+      setError(msg || 'Failed to update profile');
     } finally {
       setLoading(false);
     }
