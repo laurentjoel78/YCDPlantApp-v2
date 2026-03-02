@@ -4,11 +4,13 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-    // Accept images only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-        return cb(new Error('Only image files are allowed!'), false);
+    // Accept images by mimetype (more reliable than extension for mobile uploads)
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (allowedMimes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.'), false);
     }
-    cb(null, true);
 };
 
 const upload = multer({

@@ -24,21 +24,29 @@ router.post('/register', authLimiter, registrationValidation, register);
 router.post('/login', authLimiter, bruteForceProtection.checkBlocked(), loginValidation, login);
 router.post('/social', authLimiter, socialLogin);
 router.post('/logout', auth, logout);
-router.put('/profile', auth, sensitiveLimiter, upload.single('profileImage'), async (req, res, next) => {
-  // Delegate to controller method if available
+router.put('/profile', auth, sensitiveLimiter, (req, res, next) => {
+  // Wrap multer to catch upload errors (file size, invalid type) properly
+  upload.single('profileImage')(req, res, (err) => {
+    if (err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          logger.warn('MulterError: File size limit exceeded during profile update.', { userId: req.user ? req.user.id : 'N/A' });
+          return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
+        }
+        logger.error('MulterError during profile update:', err);
+        return res.status(400).json({ error: `File upload failed: ${err.message}` });
+      }
+      // Handle fileFilter errors (invalid file type)
+      logger.warn('File upload rejected:', err.message);
+      return res.status(400).json({ error: err.message || 'File upload failed' });
+    }
+    next();
+  });
+}, async (req, res, next) => {
   try {
     const { updateProfile } = require('../controllers/authController');
     return updateProfile(req, res, next);
   } catch (err) {
-    if (err instanceof multer.MulterError) {
-      if (err.code === 'LIMIT_FILE_SIZE') {
-        logger.warn('MulterError: File size limit exceeded during profile update.', { userId: req.user ? req.user.id : 'N/A' });
-        return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
-      }
-      // Handle other Multer errors if necessary
-      logger.error('MulterError during profile update:', err);
-      return res.status(400).json({ error: `File upload failed: ${err.message}` });
-    }
     logger.error('Failed to handle /auth/profile route:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }

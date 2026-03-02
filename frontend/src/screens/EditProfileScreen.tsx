@@ -114,13 +114,32 @@ const EditProfileScreen: React.FC = () => {
       if (region) formData.append('region', region);
 
       if (profileImage && !profileImage.startsWith('http')) {
-        const filename = profileImage.split('/').pop();
-        const match = /\.(\w+)$/.exec(filename || '');
-        const type = match ? `image/${match[1]}` : 'image/jpeg';
+        const uriParts = profileImage.split('/');
+        let filename = uriParts.pop() || 'profile.jpg';
+        
+        // Detect mime type from extension, default to jpeg
+        const extMatch = /\.([\w]+)$/.exec(filename);
+        let ext = extMatch ? extMatch[1].toLowerCase() : '';
+        let type = 'image/jpeg';
+        
+        if (ext === 'png') {
+          type = 'image/png';
+        } else if (ext === 'gif') {
+          type = 'image/gif';
+        } else if (ext === 'webp') {
+          type = 'image/webp';
+        } else if (ext === 'jpg' || ext === 'jpeg') {
+          type = 'image/jpeg';
+        } else {
+          // No valid extension found — force .jpg so multer accepts it
+          ext = 'jpg';
+          type = 'image/jpeg';
+          filename = `${filename}.jpg`;
+        }
 
         formData.append('profileImage', {
           uri: profileImage,
-          name: filename || 'profile.jpg',
+          name: filename,
           type,
         } as any);
       }
@@ -169,7 +188,7 @@ const EditProfileScreen: React.FC = () => {
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.7,
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {

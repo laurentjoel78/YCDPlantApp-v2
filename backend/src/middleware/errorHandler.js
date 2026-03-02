@@ -1,6 +1,20 @@
 const ErrorLogger = require('../utils/errorLogger');
+const multer = require('multer');
 
 const errorHandler = (err, req, res, next) => {
+  // Handle Multer file upload errors early (before generic logging)
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
+    }
+    return res.status(400).json({ error: `Upload error: ${err.message}` });
+  }
+
+  // Handle file filter rejections (not MulterError but thrown by fileFilter)
+  if (err.message && (err.message.includes('file type') || err.message.includes('image'))) {
+    return res.status(400).json({ error: err.message });
+  }
+
   // Log error with full context
   const errorContext = ErrorLogger.logError(err, req, getErrorCategory(err));
 

@@ -53,7 +53,10 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
         };
 
         // Only set Content-Type to json if body is NOT FormData
-        if (!(options.body instanceof FormData)) {
+        // Use duck-typing check as instanceof may fail across realms in React Native
+        const isFormData = options.body instanceof FormData || 
+            (options.body && typeof (options.body as any).append === 'function');
+        if (!isFormData) {
             headers['Content-Type'] = 'application/json';
         }
 
