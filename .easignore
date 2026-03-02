@@ -3,6 +3,12 @@ node_modules/
 backend/
 .venv/
 .git/
+graphics/
+competition/
+competition_docs/
+*.py
+*.ps1
+*.md
 *.log
 npm-debug.log*
 .idea/
@@ -18,3 +24,5 @@ frontend/build/
 frontend/web-build/
 frontend/__tests__/
 frontend/coverage/
+frontend/tsc_errors.txt
+frontend/tsconfig.tsbuildinfo
