@@ -22,7 +22,7 @@ function makeBaseUrl() {
     // 3. Fallback to production URL
 
     // Production Railway URL as default
-    const defaultUrl = 'https://ycdplantapp-production.up.railway.app';
+    const defaultUrl = 'https://ycdapp-production.up.railway.app';
 
     const raw = process.env.EXPO_PUBLIC_API_URL ||
         Constants.expoConfig?.extra?.apiUrl ||
