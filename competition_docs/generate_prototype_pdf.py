@@ -291,7 +291,7 @@ def draw_cover(canvas, doc):
     canvas.circle(PAGE_W * 0.7, PAGE_H * 0.1, 90, fill=1, stroke=0)
 
     # Top badge
-    canvas.setFillColor(HexColor("#FFFFFF20"))
+    canvas.setFillColor(HexColor("#4A7C2E"))
     canvas.roundRect(PAGE_W/2 - 160, PAGE_H - 100, 320, 36, 18, fill=1, stroke=0)
     canvas.setFillColor(WHITE)
     canvas.setFont("Helvetica-Bold", 11)
@@ -304,17 +304,17 @@ def draw_cover(canvas, doc):
 
     # Subtitle
     canvas.setFont("Helvetica", 16)
-    canvas.setFillColor(HexColor("#C8E6C9"))
+    canvas.setFillColor(HexColor("#76FF03"))
     canvas.drawCentredString(PAGE_W/2, PAGE_H - 235,
                              "AI-Powered Agricultural Support Platform")
 
     # Divider line
-    canvas.setStrokeColor(ACCENT_ORANGE)
+    canvas.setStrokeColor(HexColor("#76FF03"))
     canvas.setLineWidth(3)
     canvas.line(PAGE_W/2 - 80, PAGE_H - 260, PAGE_W/2 + 80, PAGE_H - 260)
 
     # "APP PROTOTYPE" label
-    canvas.setFillColor(ACCENT_ORANGE)
+    canvas.setFillColor(HexColor("#76FF03"))
     canvas.setFont("Helvetica-Bold", 22)
     canvas.drawCentredString(PAGE_W/2, PAGE_H - 300, "APP PROTOTYPE")
 
@@ -326,7 +326,7 @@ def draw_cover(canvas, doc):
     # Stats boxes
     stats = [
         ("20+", "Screens"),
-        ("6", "User Flows"),
+        ("8", "User Flows"),
         ("AI", "Powered"),
         ("2", "Languages"),
     ]
@@ -337,17 +337,20 @@ def draw_cover(canvas, doc):
 
     for i, (val, label) in enumerate(stats):
         bx = start_x + i * (box_w + 12)
-        canvas.setFillColor(Color(1, 1, 1, 0.1))
+        canvas.setFillColor(HexColor("#4A7C2E"))
         canvas.roundRect(bx, y_stat, box_w, box_h, 8, fill=1, stroke=0)
-        canvas.setFillColor(WHITE)
+        canvas.setStrokeColor(HexColor("#76FF03"))
+        canvas.setLineWidth(1)
+        canvas.roundRect(bx, y_stat, box_w, box_h, 8, fill=0, stroke=1)
+        canvas.setFillColor(HexColor("#76FF03"))
         canvas.setFont("Helvetica-Bold", 22)
         canvas.drawCentredString(bx + box_w/2, y_stat + 30, val)
-        canvas.setFillColor(HexColor("#C8E6C9"))
-        canvas.setFont("Helvetica", 10)
+        canvas.setFillColor(WHITE)
+        canvas.setFont("Helvetica-Bold", 10)
         canvas.drawCentredString(bx + box_w/2, y_stat + 12, label)
 
     # Team info
-    canvas.setFillColor(HexColor("#A5D6A7"))
+    canvas.setFillColor(WHITE)
     canvas.setFont("Helvetica", 10)
     canvas.drawCentredString(PAGE_W/2, y_stat - 40,
                              "ICT & Agritech  |  Cameroon  |  March 2026")
@@ -357,12 +360,12 @@ def draw_cover(canvas, doc):
     canvas.setFont("Helvetica-Bold", 11)
     canvas.drawCentredString(PAGE_W/2, 100,
                              "Team YCD  —  University of Buea")
-    canvas.setFillColor(HexColor("#A5D6A7"))
+    canvas.setFillColor(WHITE)
     canvas.setFont("Helvetica", 9)
     canvas.drawCentredString(PAGE_W/2, 82,
-                             "Laurent Joel  •  Ikome Johnson  •  Albert Teghen  •  Ndinguru Hope  •  Stanley Lem-Mola")
+                             "Laurent Joel  •  Ikome Johnson  •  Ndinguru Hope  •  Stanley Lem-Mola")
     canvas.drawCentredString(PAGE_W/2, 66,
-                             "Software Eng. | Network Eng. | Environment | Agriculture | Microbiology")
+                             "Software Eng. | Network Eng. | Agriculture | Microbiology")
 
     canvas.restoreState()
 
@@ -536,8 +539,12 @@ def build_pdf():
     story.append(Spacer(1, 8))
     story.append(Paragraph(
         "An intelligent chat assistant that answers farming questions in natural "
-        "language. Supports voice input (Whisper V3) and provides region-specific "
-        "advice on planting schedules, soil management, pest control, and more.",
+        "language. Farmers can speak to the AI using voice input in <b>English or French</b> "
+        "(powered by Whisper V3 speech-to-text), making it accessible even for farmers "
+        "with limited literacy. The AI provides region-specific advice on planting schedules, "
+        "soil management, pest control, and more. <b>In our roadmap, we plan to add support "
+        "for Cameroonian local languages</b> including Pidgin, Ewondo, Fulfulde, Duala, "
+        "and Bamiléké to reach even more rural communities.",
         style_body
     ))
     story.append(Spacer(1, 8))
@@ -551,9 +558,10 @@ def build_pdf():
 
     ai_features = [
         ("💬", "Natural Chat", "Ask questions in English or French, get expert-level answers"),
-        ("🎤", "Voice Input", "Whisper V3 speech-to-text for hands-free use in the field"),
+        ("🎤", "Voice Input", "Speak to the AI in English or French — Whisper V3 speech-to-text"),
+        ("🗣️", "Voice Output", "AI reads responses aloud via Google Cloud Text-to-Speech"),
+        ("🌍", "Local Languages", "Roadmap: Pidgin, Ewondo, Fulfulde, Duala, Bamiléké support"),
         ("🌾", "Context-Aware", "Advice tailored to Cameroon's crops, climate, and soil types"),
-        ("📖", "Farming Guidance", "Step-by-step crop cultivation guides and best practices"),
     ]
     story.append(FeatureBox(ai_features, content_width))
 
@@ -733,9 +741,16 @@ def build_pdf():
     ))
     story.append(Spacer(1, 6))
     story.append(Paragraph(
+        '<b>Voice & Language:</b> The app features full voice interaction in English and French, '
+        'allowing farmers to speak their questions and hear AI responses aloud. '
+        'Our roadmap includes adding Cameroonian local languages (Pidgin, Ewondo, '
+        'Fulfulde, Duala, Bamiléké) to make the platform truly inclusive for rural communities.',
+        style_body
+    ))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(
         '<b>Scalability:</b> Designed for multi-country expansion across sub-Saharan Africa. '
-        'AI models can be fine-tuned for local crops and diseases in any region. '
-        'Roadmap includes Pidgin, Ewondo, Fulfulde, Duala, and Bamiléké language support.',
+        'AI models can be fine-tuned for local crops and diseases in any region.',
         style_body
     ))
 
