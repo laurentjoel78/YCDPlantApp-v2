@@ -6,17 +6,26 @@
         "development": {
             "developmentClient": true,
             "distribution": "internal",
-            "node": "20.19.4"
+            "node": "20.19.4",
+            "env": {
+                "EXPO_PUBLIC_API_URL": "https://ycdapp-production.up.railway.app"
+            }
         },
         "preview": {
             "distribution": "internal",
             "node": "20.19.4",
+            "env": {
+                "EXPO_PUBLIC_API_URL": "https://ycdapp-production.up.railway.app"
+            },
             "android": {
                 "buildType": "apk"
             }
         },
         "production": {
             "node": "20.19.4",
+            "env": {
+                "EXPO_PUBLIC_API_URL": "https://ycdapp-production.up.railway.app"
+            },
             "android": {
                 "buildType": "app-bundle"
             }
